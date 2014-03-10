@@ -1,0 +1,476 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		83FE341518CE6F450080C64C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FE341418CE6F450080C64C /* Foundation.framework */; };
+		83FE341718CE6F450080C64C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FE341618CE6F450080C64C /* CoreGraphics.framework */; };
+		83FE341918CE6F450080C64C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FE341818CE6F450080C64C /* UIKit.framework */; };
+		83FE341F18CE6F450080C64C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 83FE341D18CE6F450080C64C /* InfoPlist.strings */; };
+		83FE342118CE6F450080C64C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE342018CE6F450080C64C /* main.m */; };
+		83FE342518CE6F450080C64C /* VMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE342418CE6F450080C64C /* VMAppDelegate.m */; };
+		83FE342818CE6F450080C64C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83FE342618CE6F450080C64C /* Main.storyboard */; };
+		83FE342B18CE6F450080C64C /* VMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE342A18CE6F450080C64C /* VMViewController.m */; };
+		83FE342D18CE6F450080C64C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83FE342C18CE6F450080C64C /* Images.xcassets */; };
+		83FE343418CE6F460080C64C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FE343318CE6F460080C64C /* XCTest.framework */; };
+		83FE343518CE6F460080C64C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FE341418CE6F450080C64C /* Foundation.framework */; };
+		83FE343618CE6F460080C64C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FE341818CE6F450080C64C /* UIKit.framework */; };
+		83FE343E18CE6F460080C64C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 83FE343C18CE6F460080C64C /* InfoPlist.strings */; };
+		83FE344018CE6F460080C64C /* VMWareBlogsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE343F18CE6F460080C64C /* VMWareBlogsTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		83FE343718CE6F460080C64C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83FE340918CE6F450080C64C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 83FE341018CE6F450080C64C;
+			remoteInfo = VMWareBlogs;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		83FE341118CE6F450080C64C /* VMWareBlogs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VMWareBlogs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		83FE341418CE6F450080C64C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		83FE341618CE6F450080C64C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		83FE341818CE6F450080C64C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		83FE341C18CE6F450080C64C /* VMWareBlogs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VMWareBlogs-Info.plist"; sourceTree = "<group>"; };
+		83FE341E18CE6F450080C64C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		83FE342018CE6F450080C64C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		83FE342218CE6F450080C64C /* VMWareBlogs-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VMWareBlogs-Prefix.pch"; sourceTree = "<group>"; };
+		83FE342318CE6F450080C64C /* VMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMAppDelegate.h; sourceTree = "<group>"; };
+		83FE342418CE6F450080C64C /* VMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMAppDelegate.m; sourceTree = "<group>"; };
+		83FE342718CE6F450080C64C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		83FE342918CE6F450080C64C /* VMViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMViewController.h; sourceTree = "<group>"; };
+		83FE342A18CE6F450080C64C /* VMViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMViewController.m; sourceTree = "<group>"; };
+		83FE342C18CE6F450080C64C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		83FE343218CE6F460080C64C /* VMWareBlogsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VMWareBlogsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		83FE343318CE6F460080C64C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		83FE343B18CE6F460080C64C /* VMWareBlogsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VMWareBlogsTests-Info.plist"; sourceTree = "<group>"; };
+		83FE343D18CE6F460080C64C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		83FE343F18CE6F460080C64C /* VMWareBlogsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMWareBlogsTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		83FE340E18CE6F450080C64C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83FE341718CE6F450080C64C /* CoreGraphics.framework in Frameworks */,
+				83FE341918CE6F450080C64C /* UIKit.framework in Frameworks */,
+				83FE341518CE6F450080C64C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83FE342F18CE6F460080C64C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83FE343418CE6F460080C64C /* XCTest.framework in Frameworks */,
+				83FE343618CE6F460080C64C /* UIKit.framework in Frameworks */,
+				83FE343518CE6F460080C64C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		83FE340818CE6F450080C64C = {
+			isa = PBXGroup;
+			children = (
+				83FE341A18CE6F450080C64C /* VMWareBlogs */,
+				83FE343918CE6F460080C64C /* VMWareBlogsTests */,
+				83FE341318CE6F450080C64C /* Frameworks */,
+				83FE341218CE6F450080C64C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		83FE341218CE6F450080C64C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				83FE341118CE6F450080C64C /* VMWareBlogs.app */,
+				83FE343218CE6F460080C64C /* VMWareBlogsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		83FE341318CE6F450080C64C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				83FE341418CE6F450080C64C /* Foundation.framework */,
+				83FE341618CE6F450080C64C /* CoreGraphics.framework */,
+				83FE341818CE6F450080C64C /* UIKit.framework */,
+				83FE343318CE6F460080C64C /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		83FE341A18CE6F450080C64C /* VMWareBlogs */ = {
+			isa = PBXGroup;
+			children = (
+				83FE342318CE6F450080C64C /* VMAppDelegate.h */,
+				83FE342418CE6F450080C64C /* VMAppDelegate.m */,
+				83FE342618CE6F450080C64C /* Main.storyboard */,
+				83FE342918CE6F450080C64C /* VMViewController.h */,
+				83FE342A18CE6F450080C64C /* VMViewController.m */,
+				83FE342C18CE6F450080C64C /* Images.xcassets */,
+				83FE341B18CE6F450080C64C /* Supporting Files */,
+			);
+			path = VMWareBlogs;
+			sourceTree = "<group>";
+		};
+		83FE341B18CE6F450080C64C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				83FE341C18CE6F450080C64C /* VMWareBlogs-Info.plist */,
+				83FE341D18CE6F450080C64C /* InfoPlist.strings */,
+				83FE342018CE6F450080C64C /* main.m */,
+				83FE342218CE6F450080C64C /* VMWareBlogs-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		83FE343918CE6F460080C64C /* VMWareBlogsTests */ = {
+			isa = PBXGroup;
+			children = (
+				83FE343F18CE6F460080C64C /* VMWareBlogsTests.m */,
+				83FE343A18CE6F460080C64C /* Supporting Files */,
+			);
+			path = VMWareBlogsTests;
+			sourceTree = "<group>";
+		};
+		83FE343A18CE6F460080C64C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				83FE343B18CE6F460080C64C /* VMWareBlogsTests-Info.plist */,
+				83FE343C18CE6F460080C64C /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		83FE341018CE6F450080C64C /* VMWareBlogs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 83FE344318CE6F460080C64C /* Build configuration list for PBXNativeTarget "VMWareBlogs" */;
+			buildPhases = (
+				83FE340D18CE6F450080C64C /* Sources */,
+				83FE340E18CE6F450080C64C /* Frameworks */,
+				83FE340F18CE6F450080C64C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VMWareBlogs;
+			productName = VMWareBlogs;
+			productReference = 83FE341118CE6F450080C64C /* VMWareBlogs.app */;
+			productType = "com.apple.product-type.application";
+		};
+		83FE343118CE6F460080C64C /* VMWareBlogsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 83FE344618CE6F460080C64C /* Build configuration list for PBXNativeTarget "VMWareBlogsTests" */;
+			buildPhases = (
+				83FE342E18CE6F460080C64C /* Sources */,
+				83FE342F18CE6F460080C64C /* Frameworks */,
+				83FE343018CE6F460080C64C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				83FE343818CE6F460080C64C /* PBXTargetDependency */,
+			);
+			name = VMWareBlogsTests;
+			productName = VMWareBlogsTests;
+			productReference = 83FE343218CE6F460080C64C /* VMWareBlogsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		83FE340918CE6F450080C64C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = VM;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Justin Warmkessel";
+				TargetAttributes = {
+					83FE343118CE6F460080C64C = {
+						TestTargetID = 83FE341018CE6F450080C64C;
+					};
+				};
+			};
+			buildConfigurationList = 83FE340C18CE6F450080C64C /* Build configuration list for PBXProject "VMWareBlogs" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 83FE340818CE6F450080C64C;
+			productRefGroup = 83FE341218CE6F450080C64C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				83FE341018CE6F450080C64C /* VMWareBlogs */,
+				83FE343118CE6F460080C64C /* VMWareBlogsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		83FE340F18CE6F450080C64C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83FE342D18CE6F450080C64C /* Images.xcassets in Resources */,
+				83FE341F18CE6F450080C64C /* InfoPlist.strings in Resources */,
+				83FE342818CE6F450080C64C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83FE343018CE6F460080C64C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83FE343E18CE6F460080C64C /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		83FE340D18CE6F450080C64C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83FE342118CE6F450080C64C /* main.m in Sources */,
+				83FE342B18CE6F450080C64C /* VMViewController.m in Sources */,
+				83FE342518CE6F450080C64C /* VMAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83FE342E18CE6F460080C64C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83FE344018CE6F460080C64C /* VMWareBlogsTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		83FE343818CE6F460080C64C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 83FE341018CE6F450080C64C /* VMWareBlogs */;
+			targetProxy = 83FE343718CE6F460080C64C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		83FE341D18CE6F450080C64C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				83FE341E18CE6F450080C64C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		83FE342618CE6F450080C64C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				83FE342718CE6F450080C64C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		83FE343C18CE6F460080C64C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				83FE343D18CE6F460080C64C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		83FE344118CE6F460080C64C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		83FE344218CE6F460080C64C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		83FE344418CE6F460080C64C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VMWareBlogs/VMWareBlogs-Prefix.pch";
+				INFOPLIST_FILE = "VMWareBlogs/VMWareBlogs-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		83FE344518CE6F460080C64C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VMWareBlogs/VMWareBlogs-Prefix.pch";
+				INFOPLIST_FILE = "VMWareBlogs/VMWareBlogs-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		83FE344718CE6F460080C64C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/VMWareBlogs.app/VMWareBlogs";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VMWareBlogs/VMWareBlogs-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "VMWareBlogsTests/VMWareBlogsTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		83FE344818CE6F460080C64C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/VMWareBlogs.app/VMWareBlogs";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VMWareBlogs/VMWareBlogs-Prefix.pch";
+				INFOPLIST_FILE = "VMWareBlogsTests/VMWareBlogsTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		83FE340C18CE6F450080C64C /* Build configuration list for PBXProject "VMWareBlogs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83FE344118CE6F460080C64C /* Debug */,
+				83FE344218CE6F460080C64C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83FE344318CE6F460080C64C /* Build configuration list for PBXNativeTarget "VMWareBlogs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83FE344418CE6F460080C64C /* Debug */,
+				83FE344518CE6F460080C64C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		83FE344618CE6F460080C64C /* Build configuration list for PBXNativeTarget "VMWareBlogsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83FE344718CE6F460080C64C /* Debug */,
+				83FE344818CE6F460080C64C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 83FE340918CE6F450080C64C /* Project object */;
+}
