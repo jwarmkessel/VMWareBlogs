@@ -21,6 +21,8 @@
 		83FE343618CE6F460080C64C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FE341818CE6F450080C64C /* UIKit.framework */; };
 		83FE343E18CE6F460080C64C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 83FE343C18CE6F460080C64C /* InfoPlist.strings */; };
 		83FE344018CE6F460080C64C /* VMWareBlogsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE343F18CE6F460080C64C /* VMWareBlogsTests.m */; };
+		83FE344B18CE6FC90080C64C /* VMBlogFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE344A18CE6FC90080C64C /* VMBlogFeedViewController.m */; };
+		83FE344E18CE75670080C64C /* BlogModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 83FE344C18CE75670080C64C /* BlogModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,9 @@
 		83FE343B18CE6F460080C64C /* VMWareBlogsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VMWareBlogsTests-Info.plist"; sourceTree = "<group>"; };
 		83FE343D18CE6F460080C64C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		83FE343F18CE6F460080C64C /* VMWareBlogsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMWareBlogsTests.m; sourceTree = "<group>"; };
+		83FE344918CE6FC90080C64C /* VMBlogFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMBlogFeedViewController.h; sourceTree = "<group>"; };
+		83FE344A18CE6FC90080C64C /* VMBlogFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMBlogFeedViewController.m; sourceTree = "<group>"; };
+		83FE344D18CE75670080C64C /* BlogModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BlogModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +124,9 @@
 				83FE342A18CE6F450080C64C /* VMViewController.m */,
 				83FE342C18CE6F450080C64C /* Images.xcassets */,
 				83FE341B18CE6F450080C64C /* Supporting Files */,
+				83FE344918CE6FC90080C64C /* VMBlogFeedViewController.h */,
+				83FE344A18CE6FC90080C64C /* VMBlogFeedViewController.m */,
+				83FE344C18CE75670080C64C /* BlogModel.xcdatamodeld */,
 			);
 			path = VMWareBlogs;
 			sourceTree = "<group>";
@@ -253,6 +261,8 @@
 				83FE342118CE6F450080C64C /* main.m in Sources */,
 				83FE342B18CE6F450080C64C /* VMViewController.m in Sources */,
 				83FE342518CE6F450080C64C /* VMAppDelegate.m in Sources */,
+				83FE344E18CE75670080C64C /* BlogModel.xcdatamodeld in Sources */,
+				83FE344B18CE6FC90080C64C /* VMBlogFeedViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,6 +481,19 @@
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		83FE344C18CE75670080C64C /* BlogModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				83FE344D18CE75670080C64C /* BlogModel.xcdatamodel */,
+			);
+			currentVersion = 83FE344D18CE75670080C64C /* BlogModel.xcdatamodel */;
+			path = BlogModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 83FE340918CE6F450080C64C /* Project object */;
 }
