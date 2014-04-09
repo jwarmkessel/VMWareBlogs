@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VMBlogFeedViewController : UITableViewController
+@interface VMBlogFeedViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic,strong) NSManagedObjectContext* managedObjectContext;
+@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
+@property (nonatomic, strong) NSMutableArray *blogArray;
 
 @end
