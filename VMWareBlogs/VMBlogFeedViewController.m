@@ -17,7 +17,7 @@
 #import <dispatch/dispatch.h>
 #import "VMArticleViewController.h"
 
-#define UPDATE_ARTICLES_INTERVAL 5
+#define UPDATE_ARTICLES_INTERVAL 60
 
 @interface VMBlogFeedViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -25,7 +25,8 @@
 @property (nonatomic, strong) NSData *responseData;
 @property (nonatomic, strong) dispatch_queue_t backgroundQueue;
 @property (atomic, strong) NSManagedObjectContext *moc;
-@property (atomic, assign) BOOL updateFlag;
+@property (nonatomic, assign) BOOL updateFlag;
+- (IBAction)refreshListHandler:(id)sender;
 @end
 
 @implementation VMBlogFeedViewController
@@ -95,9 +96,6 @@
     [self.tableView reloadData];
     
     [self performSelectorInBackground:@selector(updateList:) withObject:self];
-    
-    //Update the article list every x number of seconds.
-    _updateBlogListTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_ARTICLES_INTERVAL target:self selector:@selector(updateList:) userInfo:nil repeats: YES];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -119,9 +117,8 @@
 - (void)appWillEnterForeground:(id)sender {
     if([self isKindOfClass:[VMBlogFeedViewController class]]) {
         NSLog(@"App is entering foreground from Blog feed update flag: %d", self.updateFlag);
-        
-        //Update the article list every x number of seconds.
-        _updateBlogListTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_ARTICLES_INTERVAL target:self selector:@selector(updateList:) userInfo:nil repeats: YES];
+
+        [self performSelectorInBackground:@selector(updateList:) withObject:self];
     }
 }
 
@@ -129,18 +126,18 @@
     if([self isKindOfClass:[VMBlogFeedViewController class]]) {
         NSLog(@"App is entering background from Blog feed update flag: %d", self.updateFlag);
         
-        [self.moc rollback];
-        if(self.updateFlag) {
-            NSLog(@"Rolling back the managed object context");
-            [self.moc rollback];
-            self.updateFlag = NO;
-        }
+//        [self.moc rollback];
+//        if(self.updateFlag) {
+//            NSLog(@"Rolling back the managed object context");
+//            [self.moc rollback];
+//            self.updateFlag = NO;
+//        }
         
-        NSError *error;
-        [managedObjectContext save:&error];
-        if(error) {
-            NSLog(@"Crap error");
-        }
+//        NSError *error;
+//        [managedObjectContext save:&error];
+//        if(error) {
+//            NSLog(@"Crap error");
+//        }
         [_updateBlogListTimer invalidate];
     }
 }
@@ -149,17 +146,18 @@
     NSLog(@"App will terminate from Blog feed");
     if([self isKindOfClass:[VMBlogFeedViewController class]]) {
         
-        if(self.updateFlag) {
-            NSLog(@"Rolling back the managed object context from termination");
-            [self.moc rollback];
-            self.updateFlag = NO;
-        }
-        
-        NSError *error;
-        [managedObjectContext save:&error];
-        if(error) {
-            NSLog(@"Crappers error");
-        }
+//        if(self.updateFlag) {
+//            //Apple’s template saves on each addition of an entity and also (curiously) in applicationWillTerminate.
+//            NSLog(@"Rolling back the managed object context from termination");
+//            [self.moc rollback];
+//            self.updateFlag = NO;
+//        }
+//        
+//        NSError *error;
+//        [managedObjectContext save:&error];
+//        if(error) {
+//            NSLog(@"Crappers error");
+//        }
 //        [_updateBlogListTimer invalidate];
     }
 }
@@ -435,8 +433,234 @@ finish:
 - (void)updateList:(id)sender {
     NSLog(@"Update Core Manager");
 
+    if(self.updateFlag) {
+        NSLog(@"No update this time");
+        return;
+    }
+
+    NSLog(@"Setting flag to YES");
     self.updateFlag = YES;
     
+    NSManagedObjectContext *updateListContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    
+    [updateListContext performBlock:^{
+        
+        NSLog(@"Start private thread");
+        
+        NSURL *urlString = [NSURL URLWithString:@"http://www.vmwareblogs.com/rss.jsp"];
+        
+        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:urlString cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+        
+        NSURLResponse* response = nil;
+        NSError *NSURLConnectionError = nil;
+        
+        NSLog(@"Making request");
+        
+        NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&NSURLConnectionError];
+
+        NSLog(@"Post request");
+        
+        if(!NSURLConnectionError) {
+
+            NSLog(@"Parse NSData response");
+            NSString* documentResponseString = [[NSString alloc] initWithData:data
+                                                                     encoding:NSASCIIStringEncoding];
+            //        NSLog(@"The documentResponseString %@", documentResponseString);
+            
+            int order = 1;
+            
+            NSLog(@"Retrieved Data and parsing.");
+            NSError *TBXMLError = nil;
+            
+            TBXML *tbxml = [[TBXML alloc] initWithXMLString:documentResponseString error:&TBXMLError];
+            //            TBXML *tbxml = [[TBXML alloc] initWithXMLData:data error:&TBXMLError];
+            
+            TBXMLElement * rootElement = tbxml.rootXMLElement;
+            NSString *rootElementSTr = [TBXML textForElement:rootElement];
+            
+            NSLog(@"Root Element String %@", rootElementSTr);
+            
+            if([rootElementSTr isEqualToString:@""]) {
+                NSLog(@"Root Element String empty");
+            } else if( rootElementSTr == NULL ) {
+                NSLog(@"Root Element String null");
+            }
+            
+            if (!TBXMLError) {
+                
+                NSLog(@"No error");
+                self.moc = updateListContext;
+                
+                VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+                
+                //Get the manager object context ******************************************************************
+                
+                NSPersistentStoreCoordinator *coordinator = [appDelegate persistentStoreCoordinator];
+                
+                NSError *temporaryMOCError;
+                
+                [self.moc setPersistentStoreCoordinator:coordinator];
+                
+                [[NSNotificationCenter defaultCenter] addObserver:self
+                                                         selector:@selector(contextDidSave:)
+                                                             name:NSManagedObjectContextDidSaveNotification
+                                                           object:self.moc];
+                
+                //Retrieve the entity description
+                NSEntityDescription *entityDescription = [NSEntityDescription
+                                                          entityForName:@"Blog" inManagedObjectContext:self.moc];
+                
+                // Create and configure a fetch request with the Book entity.
+                NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                NSError *fetchRequestError;
+                
+                [fetchRequest setEntity:entityDescription];
+                NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
+                NSArray *sortDescriptors = @[sort];
+                
+                [fetchRequest setSortDescriptors:sortDescriptors];
+                
+                NSArray *sortedArticleArray = [self.moc executeFetchRequest:fetchRequest error:&fetchRequestError];
+                
+                NSLog(@"sortedArticleArray count %d", [sortedArticleArray count]);
+                
+                TBXMLElement * rootXMLElement = tbxml.rootXMLElement;
+                TBXMLElement * channelElement = [TBXML childElementNamed:@"channel" parentElement:rootXMLElement];
+                TBXMLElement * itemElement = [TBXML childElementNamed:@"item" parentElement:channelElement];
+                
+                Blog *blogEntry;
+                
+                int j = 0;
+                
+                do {
+                    if( order == 101 ){
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Hello World!"
+                                                                              message:@"This is your first UIAlertview message."
+                                                                             delegate:nil
+                                                                    cancelButtonTitle:@"OK"
+                                                                    otherButtonTitles:nil];
+                            [message show];
+                        });
+                    }
+                    
+                    TBXMLElement * titleElem = [TBXML childElementNamed:@"title" parentElement:itemElement];
+                    TBXMLElement * linkElem = [TBXML childElementNamed:@"link" parentElement:itemElement];
+                    TBXMLElement * descElement = [TBXML childElementNamed:@"description" parentElement:itemElement];
+                    TBXMLElement * pubDateElement = [TBXML childElementNamed:@"pubDate" parentElement:itemElement];
+                    TBXMLElement * guidElement = [TBXML childElementNamed:@"guid" parentElement:itemElement];
+                    
+                    if([sortedArticleArray count] > 0) {
+                        NSLog(@"J COUNT %d", j);
+                        Blog *article = [sortedArticleArray objectAtIndex:j];
+                        if( [article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
+                            NSLog(@"Same %d, %@----%@", j, [TBXML textForElement:titleElem], article.title);
+                            j++;
+                            continue;
+                        } else {
+                            [self.moc deleteObject:article];
+                            
+                            if (![self.moc save:&temporaryMOCError]) {
+                                NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
+                                
+                            }
+                            
+                            [self.moc refreshObject:article mergeChanges:YES];
+                            
+                            if([article isDeleted]) {
+                                //If an object that was already fetched has been deleted on another thread or in a different ManagedObjectContext, it is possible that you receive an exception when you try to access a property of the deleted object
+                                
+                                NSLog(@"Article is deleted");
+                            }
+                            
+                        }
+                    }
+                    
+                    //Create an instance of the entity.
+                    blogEntry = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
+                                                              inManagedObjectContext:self.moc];
+                    
+                    //Set the title.
+                    NSString *titleStr = [self stringByDecodingXMLEntities:[TBXML textForElement:titleElem]];
+                    titleStr = [self stringByStrippingTags:titleStr];
+                    
+                    [blogEntry setValue:titleStr forKey:@"title"];
+                    
+                    //Set the link.
+                    [blogEntry setValue:[TBXML textForElement:linkElem] forKey:@"link"];
+                    
+                    NSString *descStr;
+                    
+                    //TODO Sometimes encoding is for latin handle this here.
+                    
+                    //                   if([TBXML textForElement:descElement] == NULL) {
+                    //                       NSLog(@"Description is null");
+                    //                       descStr = [NSString stringWithUTF8String:[[TBXML textForElement:descElement] cStringUsingEncoding:[NSString defaultCStringEncoding]]];
+                    //                   }
+                    
+                    descStr = [self stringByDecodingXMLEntities:[TBXML textForElement:descElement]];
+                    descStr = [self stringByStrippingTags:descStr];
+                    
+                    [blogEntry setValue:descStr forKey:@"descr"];
+                    
+                    //Set the description.
+                    [blogEntry setValue:[TBXML textForElement:pubDateElement] forKey:@"guid"];
+                    [blogEntry setValue:[TBXML textForElement:guidElement] forKey:@"pubDate"];
+                    
+                    NSNumber *myIntNumber = [NSNumber numberWithInt:order];
+                    
+                    //Set the order to be used for querying an ordered list.
+                    [blogEntry setValue:myIntNumber forKey:@"order"];
+                    
+                    order++;
+                    j++;
+                    
+                    if (![self.moc save:&temporaryMOCError]) {
+                        NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
+                        
+                    }
+                    
+                    [blogEntry.managedObjectContext refreshObject:blogEntry mergeChanges:YES];
+                    
+                } while ((itemElement = itemElement->nextSibling));
+                
+                // save parent to disk asynchronously
+                [appDelegate.managedObjectContext performBlock:^{
+                    NSLog(@"Perform save to the parent context");
+
+                    NSError *error;
+                    if (![appDelegate.managedObjectContext save:&error])
+                    {
+                        // handle error
+                    }
+                    
+                    NSLog(@"Reset the update flag on private queue.");
+                    self.updateFlag = NO;
+                    
+                    //Update the article list every x number of seconds.
+                    NSLog(@"Start timer");
+                    if([_updateBlogListTimer isValid]) {
+                        NSLog(@"-------------------> For some reason the timer is valid");
+                        [_updateBlogListTimer invalidate];
+                        _updateBlogListTimer = nil;
+                    }
+                    _updateBlogListTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_ARTICLES_INTERVAL target:self selector:@selector(updateList:) userInfo:nil repeats: YES];
+                }];
+                
+            } else {
+                NSLog(@"TBXML Error %@", TBXMLError);
+                self.updateFlag = NO;
+                [self performSelectorInBackground:@selector(updateList:) withObject:self];
+
+            }
+        } else {
+            NSLog(@"NSURLConnection Error");
+            self.updateFlag = NO;
+            [self performSelectorInBackground:@selector(updateList:) withObject:self];
+
+        }
+        
+    }];
     //TODO
     
     /*
@@ -450,185 +674,15 @@ finish:
     */
     
     // Perform the request on a new thread so we don't block the UI
-    dispatch_async(_backgroundQueue, ^(void) {
-        
-        NSURL *urlString = [NSURL URLWithString:@"http://www.vmwareblogs.com/rss.jsp"];
-        
-        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:urlString cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
-        
-        NSURLResponse* response = nil;
-        NSError *error = nil;
-        
-        NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
-        
-        
-        NSString* documentResponseString = [[NSString alloc] initWithData:data
-                                                                 encoding:NSASCIIStringEncoding];
-//        NSLog(@"The documentResponseString %@", documentResponseString);
-
-        int order = 1;
-       
-        
-        if(!error) {
-            NSError *TBXMLError = nil;
-            
-            TBXML *tbxml = [[TBXML alloc] initWithXMLString:documentResponseString error:&TBXMLError];
-//            TBXML *tbxml = [[TBXML alloc] initWithXMLData:data error:&TBXMLError];
-           
-           TBXMLElement * rootElement = tbxml.rootXMLElement;
-           NSString *rootElementSTr = [TBXML textForElement:rootElement];
-           
-           NSLog(@"Root Element String %@", rootElementSTr);
-           
-           if([rootElementSTr isEqualToString:@""]) {
-               NSLog(@"Root Element String empty");
-           } else if( rootElementSTr == NULL ) {
-               NSLog(@"Root Element String null");
-           }
-           
-           if (!TBXMLError) {
-
-               
-               NSLog(@"No error");
-               
-               VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
-               
-               //Get the manager object context ******************************************************************
-
-               NSPersistentStoreCoordinator *coordinator = [appDelegate persistentStoreCoordinator];
-               
-               self.moc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSConfinementConcurrencyType];
-               
-               [self.moc setPersistentStoreCoordinator:coordinator];
-               
-               [[NSNotificationCenter defaultCenter] addObserver:self
-                                                        selector:@selector(contextDidSave:)
-                                                            name:NSManagedObjectContextDidSaveNotification
-                                                          object:self.moc];
-               
-               //Retrieve the entity description
-               NSEntityDescription *entityDescription = [NSEntityDescription
-                                                         entityForName:@"Blog" inManagedObjectContext:self.moc];
-               
-               // Create and configure a fetch request with the Book entity.
-               NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-               NSError *fetchRequestError;
-
-              [fetchRequest setEntity:entityDescription];
-               NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
-               NSArray *sortDescriptors = @[sort];
-               
-               [fetchRequest setSortDescriptors:sortDescriptors];
-               
-               NSArray *sortedArticleArray = [self.moc executeFetchRequest:fetchRequest error:&fetchRequestError];
-               
-               TBXMLElement * rootXMLElement = tbxml.rootXMLElement;
-               TBXMLElement * channelElement = [TBXML childElementNamed:@"channel" parentElement:rootXMLElement];
-               TBXMLElement * itemElement = [TBXML childElementNamed:@"item" parentElement:channelElement];
-               
-               Blog *blogEntry;
-               
-               int j = 0;
-               
-               do {
-                   if( order == 101 ){
-                       dispatch_async(dispatch_get_main_queue(), ^{
-                           UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Hello World!"
-                                                                             message:@"This is your first UIAlertview message."
-                                                                            delegate:nil
-                                                                   cancelButtonTitle:@"OK"
-                                                                   otherButtonTitles:nil];
-                           [message show];
-                       });
-                   }
-                   
-                   TBXMLElement * titleElem = [TBXML childElementNamed:@"title" parentElement:itemElement];
-                   TBXMLElement * linkElem = [TBXML childElementNamed:@"link" parentElement:itemElement];
-                   TBXMLElement * descElement = [TBXML childElementNamed:@"description" parentElement:itemElement];
-                   TBXMLElement * pubDateElement = [TBXML childElementNamed:@"pubDate" parentElement:itemElement];
-                   TBXMLElement * guidElement = [TBXML childElementNamed:@"guid" parentElement:itemElement];
-                   
-                   if([sortedArticleArray count] > 0) {
-                       Blog *article = [sortedArticleArray objectAtIndex:j];
-                       if( [article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
-                           NSLog(@"Same %d, %@----%@", j, [TBXML textForElement:titleElem], article.title);
-                           j++;
-                           continue;
-                       } else {
-                           [self.moc deleteObject:article];
-                           
-                           if (![self.moc save:&error]) {
-                               NSLog(@"Failed to save - error: %@", [error localizedDescription]);
-                               
-                           }
-                           
-                           [self.moc refreshObject:article mergeChanges:YES];
-
-                       }
-                   }
-                   
-                   //Create an instance of the entity.
-                   blogEntry = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
-                                                             inManagedObjectContext:self.moc];
-
-                   //Set the title.
-                   NSString *titleStr = [self stringByDecodingXMLEntities:[TBXML textForElement:titleElem]];
-                   titleStr = [self stringByStrippingTags:titleStr];
-                   
-                   [blogEntry setValue:titleStr forKey:@"title"];
-                   
-                   //Set the link.
-                   [blogEntry setValue:[TBXML textForElement:linkElem] forKey:@"link"];
-                   
-                   NSString *descStr;
-                   
-                   //TODO Sometimes encoding is for latin handle this here.
-                   
-//                   if([TBXML textForElement:descElement] == NULL) {
-//                       NSLog(@"Description is null");
-//                       descStr = [NSString stringWithUTF8String:[[TBXML textForElement:descElement] cStringUsingEncoding:[NSString defaultCStringEncoding]]];
-//                   }
-                   
-                   descStr = [self stringByDecodingXMLEntities:[TBXML textForElement:descElement]];
-                   descStr = [self stringByStrippingTags:descStr];
-                   
-                   [blogEntry setValue:descStr forKey:@"descr"];
-
-                   //Set the description.
-                   [blogEntry setValue:[TBXML textForElement:pubDateElement] forKey:@"guid"];
-                   [blogEntry setValue:[TBXML textForElement:guidElement] forKey:@"pubDate"];
-                   
-                   NSNumber *myIntNumber = [NSNumber numberWithInt:order];
-
-                   //Set the order to be used for querying an ordered list.
-                   [blogEntry setValue:myIntNumber forKey:@"order"];
-                   
-                   order++;
-                   j++;
-                   
-                   if (![self.moc save:&error]) {
-                       NSLog(@"Failed to save - error: %@", [error localizedDescription]);
-                       
-                   }
-                   
-                   [blogEntry.managedObjectContext refreshObject:blogEntry mergeChanges:YES];
-                   
-               } while ((itemElement = itemElement->nextSibling));
-               
-               self.updateFlag = NO;
-           } else {
-               NSLog(@"Error %@", TBXMLError);
-           }
-       } else {
-           NSLog(@"Error");
-       }
-    });
+//    dispatch_async(_backgroundQueue, ^(void) {
+//        
+//    });
 }
 
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 142;
+    return 197;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -673,7 +727,7 @@ finish:
         [headerView setBackgroundColor:[self colorWithHexString:@"2F3485"]];
         UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(5.0f, 0, self.tableView.bounds.size.width, 21.5)];
         [sectionTitle setFont:[UIFont fontWithName:@"ArialMT" size:13]];
-        sectionTitle.text = @"Trending Now...";
+        sectionTitle.text = @"Trending now...";
         sectionTitle.textColor = [UIColor whiteColor];
         [headerView addSubview: sectionTitle];
     }
@@ -705,6 +759,7 @@ finish:
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     
     // Configure the cell to show the book's title
+    NSLog(@"Configuring Cell");
     Blog *blog = [_fetchedResultsController objectAtIndexPath:indexPath];
     
     UILabel *orderLbl = (UILabel *)[cell viewWithTag:100];
@@ -713,11 +768,11 @@ finish:
     UITextField *titleLbl = (UITextField *)[cell viewWithTag:101];
     [titleLbl setUserInteractionEnabled:NO];
     titleLbl.text = @"text";
-    [titleLbl setFont:[UIFont fontWithName:@"Arial" size:15.0f]];
+    [titleLbl setFont:[UIFont fontWithName:@"Arial" size:17.0f]];
     titleLbl.textColor = [self colorWithHexString:@"343A43"];
     
     UILabel *descLbl = (UILabel *)[cell viewWithTag:102];
-    [descLbl setFont:[UIFont fontWithName:@"Arial" size:14.0f]];
+    [descLbl setFont:[UIFont fontWithName:@"Arial" size:15.0f]];
     descLbl.textColor = [self colorWithHexString:@"8590A1"];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
@@ -738,7 +793,6 @@ finish:
 {
     //Stop the blog update;
     [_updateBlogListTimer invalidate];
-    [self.moc rollback];
     
     VMArticleViewController *vc = [segue destinationViewController];
 
@@ -813,17 +867,13 @@ finish:
     
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-//    NSPersistentStoreCoordinator *coordinator = appDelegate.persistentStoreCoordinator;
-//    if (coordinator != nil) {
-//        
-//        managedObjectContext = [[NSManagedObjectContext alloc] init];
-//        [managedObjectContext setPersistentStoreCoordinator:coordinator];
-//    }
-    
     managedObjectContext = appDelegate.managedObjectContext;
     
     // Create and configure a fetch request with the Book entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setReturnsObjectsAsFaults:NO];
+    
     NSLog(@"alloc FetchedResultsController");
     //Retrieve the entity description
 
@@ -835,17 +885,12 @@ finish:
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
     NSArray *sortDescriptors = @[sort];
     
-
-    
     [fetchRequest setSortDescriptors:sortDescriptors];
-    NSError *error;
-    
-    [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     
     NSLog(@"Create and initialize the fetch results controller.");
     // Create and initialize the fetch results controller.
     _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                    managedObjectContext:self.managedObjectContext
+                                                                    managedObjectContext:appDelegate.managedObjectContext
                                                                       sectionNameKeyPath:nil
                                                                                cacheName:@"Root"];
     
@@ -962,4 +1007,18 @@ finish:
 }
 
 
+- (IBAction)refreshListHandler:(id)sender {
+    
+    if(!self.updateFlag) {
+        
+        NSLog(@"Invalidate timer");
+        //Invalidate the previous timer.
+        [_updateBlogListTimer invalidate];
+        _updateBlogListTimer = nil;
+        
+        [self performSelectorInBackground:@selector(updateList:) withObject:self];
+    } else {
+        NSLog(@"No update this time");
+    }
+}
 @end
