@@ -11,7 +11,6 @@
 #import <TBXML.h>
 #import <TBXML+Compression.h>
 #import "Blog.h"
-#import "VMBlog.h"
 #import "VMAppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #import <dispatch/dispatch.h>
@@ -20,20 +19,20 @@
 #define UPDATE_ARTICLES_INTERVAL 60
 
 @interface VMBlogFeedViewController ()
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, strong) NSTimer *updateBlogListTimer;
-@property (nonatomic, strong) NSData *responseData;
-@property (nonatomic, strong) dispatch_queue_t backgroundQueue;
-@property (atomic, strong) NSManagedObjectContext *moc;
-@property (nonatomic, assign) BOOL updateFlag;
-- (IBAction)refreshListHandler:(id)sender;
+    @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+    @property (nonatomic, strong) NSTimer *updateBlogListTimer;
+    @property (nonatomic, strong) NSData *responseData;
+    @property (nonatomic, strong) dispatch_queue_t backgroundQueue;
+    @property (atomic, strong) NSManagedObjectContext *moc;
+    @property (nonatomic, assign) BOOL updateFlag;
+    - (IBAction)refreshListHandler:(id)sender;
 @end
 
 @implementation VMBlogFeedViewController
-@synthesize managedObjectContext;
-@synthesize blogArray;
-@synthesize updateFlag;
-@synthesize moc = _moc;
+    @synthesize managedObjectContext;
+    @synthesize blogArray;
+    @synthesize updateFlag;
+    @synthesize moc = _moc;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -73,8 +72,6 @@
         abort();
     }
     
-    
-    
     _backgroundQueue = dispatch_queue_create("com.vmwareblogs.articleupdater.bgqueue", NULL);
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterBackground:) name:@"UIApplicationDidEnterBackgroundNotification" object:nil];
@@ -82,6 +79,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillTerminate:) name:@"UIApplicationWillResignActiveNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:@"UIApplicationWillEnterForegroundNotification" object:nil];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -95,7 +93,7 @@
 
     [self.tableView reloadData];
     
-    [self performSelectorInBackground:@selector(updateList:) withObject:self];
+//    [self performSelectorInBackground:@selector(updateList:) withObject:self];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -697,7 +695,7 @@ finish:
 //    NSLog(@"Number of rows in tableView %lu", (unsigned long)[self.blogArray count]);
 
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    NSLog(@"NUMBER OF ROWS %d", [sectionInfo numberOfObjects]);
+    NSLog(@"------------------- >NUMBER OF ROWS %d", [sectionInfo numberOfObjects]);
     return [sectionInfo numberOfObjects];
 }
 

@@ -1,5 +1,5 @@
 //
-//  VMTestTableViewController.h
+//  VMArticleTableViewController.h
 //  VMWareBlogs
 //
 //  Created by Justin Warmkessel on 4/16/14.
@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VMTestTableViewController : UITableViewController
+
+@interface VMArticleTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@property (strong, nonatomic) NSMutableArray *listViewList;
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 
 @end

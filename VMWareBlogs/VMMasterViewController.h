@@ -1,5 +1,5 @@
 //
-//  VMArticleFeedViewController.h
+//  VMMasterViewController.h
 //  VMWareBlogs
 //
 //  Created by Justin Warmkessel on 4/15/14.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VMArticleFeedViewController : UIViewController
+@interface VMMasterViewController : UIViewController
+@property (strong, nonatomic) IBOutlet UIView *container;
 
+-(BOOL)helloWorld;
 @end

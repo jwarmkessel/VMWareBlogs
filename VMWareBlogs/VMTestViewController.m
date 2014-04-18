@@ -7,6 +7,7 @@
 //
 
 #import "VMTestViewController.h"
+#import "VMMasterViewController.h"
 
 @interface VMTestViewController ()
 
@@ -27,6 +28,14 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    VMMasterViewController *pc = (VMMasterViewController *)self.parentViewController;
+    [self transitionFromViewController:self toViewController:self.parentViewController.childViewControllers[0] duration:1 options:UIViewAnimationCurveEaseOut animations:nil completion:nil];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+
 }
 
 - (void)didReceiveMemoryWarning

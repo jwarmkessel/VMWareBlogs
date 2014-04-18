@@ -10,7 +10,6 @@
 #import <TBXML+HTTP.h>
 #import <TBXML.h>
 #import <TBXML+Compression.h>
-#import "VMBlog.h"
 #import "Blog.h"
 #import "VMAppDelegate.h"
 

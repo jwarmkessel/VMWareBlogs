@@ -1,12 +1,15 @@
 PODS:
+  - AwesomeMenu (1.0.0)
   - BNRSSFeedParser (2.1.3)
   - TBXML (1.5)
 
 DEPENDENCIES:
+  - AwesomeMenu (~> 1.0)
   - BNRSSFeedParser (~> 2.1)
   - TBXML (~> 1.5)
 
 SPEC CHECKSUMS:
+  AwesomeMenu: 3e9015fd1960170ee80099694a82cdc3f9be372f
   BNRSSFeedParser: 7e5010f1e10ca715b4bb392fc94c8caac3643cec
   TBXML: 0511ac325d83e59d3aefa4bc8cd6cbeff07a8d9e
 

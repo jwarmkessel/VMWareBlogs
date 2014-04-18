@@ -9,5 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface VMArticleEntityUpdater : NSObject
+@property (atomic, strong) NSManagedObjectContext *updateContext;
+@property (nonatomic, assign) BOOL updateFlag;
+@property (nonatomic, strong) NSTimer *updateBlogListTimer;
+
+- (void)updateList;
 
 @end

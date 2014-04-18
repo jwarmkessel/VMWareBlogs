@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AwesomeMenu.h>
 
-@interface VMBlogFeedViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface VMBlogFeedViewController : UITableViewController <NSFetchedResultsControllerDelegate, AwesomeMenuDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic, strong) NSMutableArray *blogArray;

@@ -6,6 +6,12 @@
 // project.
 
 
+// AwesomeMenu
+#define COCOAPODS_POD_AVAILABLE_AwesomeMenu
+#define COCOAPODS_VERSION_MAJOR_AwesomeMenu 1
+#define COCOAPODS_VERSION_MINOR_AwesomeMenu 0
+#define COCOAPODS_VERSION_PATCH_AwesomeMenu 0
+
 // BNRSSFeedParser
 #define COCOAPODS_POD_AVAILABLE_BNRSSFeedParser
 #define COCOAPODS_VERSION_MAJOR_BNRSSFeedParser 2

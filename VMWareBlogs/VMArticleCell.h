@@ -1,5 +1,5 @@
 //
-//  VMTestViewCell.h
+//  VMArticleCell.h
 //  VMWareBlogs
 //
 //  Created by Justin Warmkessel on 4/16/14.
@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VMTestViewCell : UITableViewCell
+@interface VMArticleCell : UITableViewCell
 
+@property (strong, nonatomic) IBOutlet UITextView *titleTextView;
+@property (strong, nonatomic) IBOutlet UILabel *descriptionLbl;
+@property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @end

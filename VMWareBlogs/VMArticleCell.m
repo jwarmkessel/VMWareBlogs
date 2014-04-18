@@ -6,9 +6,12 @@
 //  Copyright (c) 2014 Justin Warmkessel. All rights reserved.
 //
 
-#import "VMTestViewCell.h"
+#import "VMArticleCell.h"
 
-@implementation VMTestViewCell
+@implementation VMArticleCell
+@synthesize titleTextView;
+@synthesize descriptionLbl;
+@synthesize imageView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -17,6 +20,14 @@
         // Initialization code
     }
     return self;
+}
+
+- (void)setFrame:(CGRect)frame {
+    frame.origin.x = 10;
+    frame.size.width -= 2 * 10;
+    [super setFrame:frame];
+        
+    self.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)awakeFromNib
