@@ -42,6 +42,12 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    self.tVC = (VMTestViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"testView"];
+    [self addChildViewController:self.tVC];
+    self.tVC.view.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
+    [self.view addSubview:self.tVC.view];
+    [self.tVC didMoveToParentViewController:self];
+    
     //Instantiate the main view controller otherwise known as the home screen.
     self.atVC = (VMArticleTableViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"articleTableView"];
     [self addChildViewController:self.atVC];
