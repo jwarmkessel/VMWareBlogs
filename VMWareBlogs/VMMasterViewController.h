@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AwesomeMenu.h"
 
-@interface VMMasterViewController : UIViewController
+@interface VMMasterViewController : UIViewController <AwesomeMenuDelegate>
 @property (strong, nonatomic) IBOutlet UIView *container;
 
 -(BOOL)helloWorld;

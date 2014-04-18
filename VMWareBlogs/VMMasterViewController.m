@@ -29,23 +29,6 @@
     return YES;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"articleTableViewSegue"]) {
-        NSLog(@"articleTableViewSegue segue");
-        
-        _atVC = (VMArticleTableViewController *) [segue destinationViewController];
-//        [self.parentViewController addChildViewController:_atVC];
-
-        
-    } else if ([segue.identifier isEqualToString:@"articleViewSegue"]) {
-        NSLog(@"articleViewSegue segue");
-        _tVC = (VMTestViewController *) [segue destinationViewController];
-//        [self.parentViewController addChildViewController:_tVC];
-
-        NSLog(@"Count %lu", (unsigned long)[self.childViewControllers count]);
-    
-    }
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,14 +39,19 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
-    UIView *container = [self.view viewWithTag:1];
+    //Instantiate the main view controller otherwise known as the home screen.
+    self.atVC = (VMArticleTableViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"articleTableView"];
+    [self addChildViewController:self.atVC];
+    self.atVC.tableView.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
     
+    [self.view addSubview:self.atVC.tableView];
     
+    [self.atVC didMoveToParentViewController:self];
+    
+    //Add the menu
     UIImage *storyMenuItemImage = [UIImage imageNamed:@"bg-menuitem.png"];
     UIImage *storyMenuItemImagePressed = [UIImage imageNamed:@"bg-menuitem-highlighted.png"];
     UIImage *starImage = [UIImage imageNamed:@"icon-star.png"];
@@ -93,6 +81,16 @@
     menu.startPoint = CGPointMake(40.0, 284.0);
     [self.view addSubview:menu];
     [self.view bringSubviewToFront:self.view];
+    
+    
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+
+    
 }
 
 - (BOOL)prefersStatusBarHidden {
