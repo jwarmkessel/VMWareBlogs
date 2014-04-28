@@ -37,6 +37,9 @@
         //Decode data.
         responseString = [[NSString alloc] initWithData:data
                                                        encoding:NSASCIIStringEncoding];
+
+        responseString = [NSString stringWithCString:[responseString cStringUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding];
+        
     } else {
         NSLog(@"NSURLConnection Error");
     }

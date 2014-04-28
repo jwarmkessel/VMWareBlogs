@@ -463,6 +463,10 @@ finish:
             NSLog(@"Parse NSData response");
             NSString* documentResponseString = [[NSString alloc] initWithData:data
                                                                      encoding:NSASCIIStringEncoding];
+            
+            documentResponseString = [NSString stringWithCString:[documentResponseString cStringUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding];
+            
+            
             //        NSLog(@"The documentResponseString %@", documentResponseString);
             
             int order = 1;
