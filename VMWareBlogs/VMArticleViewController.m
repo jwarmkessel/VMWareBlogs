@@ -53,18 +53,19 @@
 //                                   forState:UIControlStateNormal];
 //    
 //    self.navigationItem.leftBarButtonItem = self.backButton;
-    NSLog(@"HELLOW ORLD");
-    UIView *asdf = [[UIView alloc] initWithFrame:CGRectMake(0,0,300,300)];
-    [asdf setBackgroundColor:[UIColor greenColor]];
-    [self.view addSubview:asdf];
-    self.view.alpha = 1;
-    [self.view setBackgroundColor:[UIColor purpleColor]];
-    [self.parentViewController.view sendSubviewToBack:self.view];
-    [self.view setBackgroundColor:[UIColor clearColor]];
-    
-    [self removeFromParentViewController];
-    [self.view removeFromSuperview];
-    [self view].hidden = YES;
+
+//    NSLog(@"HELLOW ORLD");
+//    UIView *asdf = [[UIView alloc] initWithFrame:CGRectMake(0,0,300,300)];
+//    [asdf setBackgroundColor:[UIColor greenColor]];
+//    [self.view addSubview:asdf];
+//    self.view.alpha = 1;
+//    [self.view setBackgroundColor:[UIColor purpleColor]];
+//    [self.parentViewController.view sendSubviewToBack:self.view];
+//    [self.view setBackgroundColor:[UIColor greenColor]];
+//    
+//    [self removeFromParentViewController];
+//    [self.view removeFromSuperview];
+//    [self view].hidden = YES;
 }
 
 - (void)handleBack:(id)sender {

@@ -10,7 +10,8 @@
 
 @interface VMArticleCell : UITableViewCell
 
+@property (strong, nonatomic) IBOutlet UIView *customBackgroundView;
 @property (strong, nonatomic) IBOutlet UITextView *titleTextView;
-@property (strong, nonatomic) IBOutlet UILabel *descriptionLbl;
+@property (strong, nonatomic) IBOutlet UITextView *descriptionTextView;
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @end

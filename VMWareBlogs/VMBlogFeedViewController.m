@@ -792,7 +792,7 @@ finish:
     //Stop the blog update;
     [_updateBlogListTimer invalidate];
     
-    VMArticleViewController *vc = [segue destinationViewController];
+    VMArticleViewController *vc = (VMArticleViewController *)[segue destinationViewController];
 
     Blog *blog = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
     

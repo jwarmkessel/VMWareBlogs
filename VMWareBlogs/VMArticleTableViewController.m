@@ -44,7 +44,8 @@
     //Set the current selection
     currentSelection = -1;
     
-    [self.tableView setBackgroundColor:[self colorWithHexString:@"133AAC"]];
+    [self.tableView setBackgroundColor:[self colorWithHexString:@"4A4E57"]];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;    
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -68,8 +69,8 @@
         abort();
     }
     
-//    VMArticleEntityUpdater *updater = [[VMArticleEntityUpdater alloc] init];
-//    [updater updateList];
+    VMArticleEntityUpdater *updater = [[VMArticleEntityUpdater alloc] init];
+    [updater updateList];
     
     
 //    _backgroundQueue = dispatch_queue_create("com.vmwareblogs.articleupdater.bgqueue", NULL);
@@ -122,42 +123,44 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath row] == currentSelection) {
+        VMMasterViewController *parentVC = (VMMasterViewController *)self.parentViewController;
+        [parentVC transitionViews];
         
-        NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-        Blog *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
-        
-        float xPos = 0;
-        float yPos = 0;
-        
-        NSArray *visibleCells = [self.tableView visibleCells];
-        for (VMArticleCell* cel in visibleCells) {
-            
-            if(cel.titleTextView.text == article.title) {
-                xPos = cel.frame.origin.x;
-                yPos = cel.frame.origin.y;
-                
-                break;
-            }
-            
-            
-            NSLog(@"cell : %@ \n\n",cel.textLabel.text);
-            
-            
-        }
-        
-        UIView *test = [[UIView alloc] initWithFrame:CGRectMake(xPos, yPos, 200, 200)];
-        
-        [test setBackgroundColor:[UIColor whiteColor]];
-        [self.tableView addSubview:test];
-        
-        [UIView animateWithDuration:2 animations:^{
-            test.layer.frame = CGRectMake(0,0,320,568);
-        }];
-        
-        return  568;
+//        NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+//        Blog *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+//        
+//        float xPos = 0;
+//        float yPos = 0;
+//        
+//        NSArray *visibleCells = [self.tableView visibleCells];
+//        for (VMArticleCell* cel in visibleCells) {
+//            
+//            if(cel.titleTextView.text == article.title) {
+//                xPos = cel.frame.origin.x;
+//                yPos = cel.frame.origin.y;
+//                
+//                break;
+//            }
+//            
+//            
+//            NSLog(@"cell : %@ \n\n",cel.textLabel.text);
+//            
+//            
+//        }
+//        
+//        UIView *test = [[UIView alloc] initWithFrame:CGRectMake(xPos, yPos, 200, 200)];
+//        
+//        [test setBackgroundColor:[UIColor whiteColor]];
+//        [self.tableView addSubview:test];
+//        
+//        [UIView animateWithDuration:2 animations:^{
+//            test.layer.frame = CGRectMake(0,0,320,568);
+//        }];
+//        
+//        return  568;
     }
     
-    return 200;
+    return 470;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -180,6 +183,7 @@
 {
     static NSString *CellIdentifier = @"Cell";
     VMArticleCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
     if (!cell)
         cell = [[VMArticleCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
@@ -188,9 +192,16 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"willDisplayCell");
+
+}
+
 // Customize the appearance of table view cells.
 - (void)configureCell:(VMArticleCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     
+    cell.customBackgroundView.backgroundColor = [UIColor whiteColor];
     // Configure the cell to show the book's title
     NSLog(@"Configuring Cell");
     Blog *blog = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -198,13 +209,13 @@
     //Set the title and configure.
     cell.titleTextView.text = blog.title;
     [cell.titleTextView setUserInteractionEnabled:NO];
-    [cell.titleTextView setFont:[UIFont fontWithName:@"Arial" size:15.0f]];
+    [cell.titleTextView setFont:[UIFont fontWithName:@"Arial" size:17.0f]];
     cell.titleTextView.textColor = [self colorWithHexString:@"343A43"];
     
-    cell.descriptionLbl.text = blog.descr;
-    [cell.descriptionLbl setFont:[UIFont fontWithName:@"Arial" size:12.0f]];
+    cell.descriptionTextView.text = blog.descr;
+    [cell.descriptionTextView setFont:[UIFont fontWithName:@"Arial" size:15.0f]];
     
-    cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
+    //cell.imageView.image = [UIImage imageNamed:@"vmWareBlogsTestPlaceholder.jpg"];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

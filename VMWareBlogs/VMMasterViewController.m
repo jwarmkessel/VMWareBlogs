@@ -29,7 +29,6 @@
     return YES;
 }
 
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -42,19 +41,19 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    //Instantiate child view controller.
     self.tVC = (VMTestViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"testView"];
     [self addChildViewController:self.tVC];
-    self.tVC.view.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
+    self.tVC.view.frame = CGRectMake(160.0, 284.0, 0.0, 0.0);
+    self.tVC.view.alpha = 0;
     [self.view addSubview:self.tVC.view];
     [self.tVC didMoveToParentViewController:self];
     
-    //Instantiate the main view controller otherwise known as the home screen.
+    //Instantiate child view controller.
     self.atVC = (VMArticleTableViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"articleTableView"];
     [self addChildViewController:self.atVC];
     self.atVC.tableView.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
-    
     [self.view addSubview:self.atVC.tableView];
-    
     [self.atVC didMoveToParentViewController:self];
     
     //Add the menu
@@ -80,15 +79,11 @@
     NSArray *menus = [NSArray arrayWithObjects:starMenuItem1, starMenuItem2, nil];
     AwesomeMenu *menu = [[AwesomeMenu alloc] initWithFrame:rect menus:menus];
     
-    
-    
     menu.delegate = self;
     
     menu.startPoint = CGPointMake(40.0, 284.0);
     [self.view addSubview:menu];
     [self.view bringSubviewToFront:self.view];
-    
-    
 }
 
 - (void)viewDidLoad
@@ -109,6 +104,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)transitionViews {
+    [self.view bringSubviewToFront:self.tVC.view];
+    [self.tVC openAnimateView];
+}
 /*
 #pragma mark - Navigation
 

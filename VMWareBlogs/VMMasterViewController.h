@@ -13,4 +13,5 @@
 @property (strong, nonatomic) IBOutlet UIView *container;
 
 -(BOOL)helloWorld;
+- (void)transitionViews;
 @end
