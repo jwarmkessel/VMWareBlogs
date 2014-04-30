@@ -38,6 +38,7 @@
         responseString = [[NSString alloc] initWithData:data
                                                        encoding:NSASCIIStringEncoding];
 
+        //character decoding http://stackoverflow.com/questions/4913499/utf8-character-decoding-in-objective-c
         responseString = [NSString stringWithCString:[responseString cStringUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding];
         
     } else {

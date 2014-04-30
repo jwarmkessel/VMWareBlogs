@@ -14,6 +14,14 @@
 
 #define UPDATE_ARTICLES_INTERVAL 60
 
+@interface VMArticleEntityUpdater()
+- (NSString *)stringByDecodingXMLEntities: (NSString *)stringToParse;
+- (NSString *)stringByRemovingNewLinesAndWhitespace:(NSString*)stringToParse;
+- (NSString *)stringByStrippingTags:(NSString *)stringtoParse;
+- (void)contextDidSave:(NSNotification *)notification;
+- (void)updateList;
+@end
+
 @implementation VMArticleEntityUpdater
 @synthesize updateContext;
 @synthesize updateFlag;

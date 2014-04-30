@@ -7,15 +7,20 @@
 //
 
 #import "VMBlogFeedViewController.h"
+
+#import "VMAppDelegate.h"
+#import "VMArticleViewController.h"
+#import "VMArticleEntityUpdater.h"
+
+#import "Blog.h"
+#import "RecentArticle.h"
+
 #import <TBXML+HTTP.h>
 #import <TBXML.h>
 #import <TBXML+Compression.h>
-#import "Blog.h"
-#import "VMAppDelegate.h"
+
 #import <QuartzCore/QuartzCore.h>
 #import <dispatch/dispatch.h>
-#import "VMArticleViewController.h"
-#import "VMArticleEntityUpdater.h"
 
 #define UPDATE_ARTICLES_INTERVAL 60
 
@@ -275,7 +280,89 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    NSManagedObjectContext *tempContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    
+    [tempContext performBlock:^{
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(RecentArticleSaved:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:tempContext];
+        
+        VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        Blog *blog = [_fetchedResultsController objectAtIndexPath:indexPath];
+
+        NSError *temporaryMOCError;
+
+        NSPersistentStoreCoordinator *coordinator = [appDelegate persistentStoreCoordinator];
+        
+        [tempContext setPersistentStoreCoordinator:coordinator];
+        //Retrieve the entity description
+        RecentArticle *recentArticle;
+        
+        //Check if entity already exists.
+        //Retrieve the entity description
+        NSEntityDescription *entityDescription = [NSEntityDescription
+                                                  entityForName:@"RecentArticle" inManagedObjectContext:tempContext];
+        
+        // Create and configure a fetch request with the Book entity.
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSError *fetchRequestError;
+        
+        [fetchRequest setEntity:entityDescription];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"link = %@", blog.link]];
+        [fetchRequest setFetchLimit:1];
+        NSArray *recentlyReadArticle = [tempContext executeFetchRequest:fetchRequest error:&fetchRequestError];
+        
+        if([recentlyReadArticle count] == 0) {
+            //Create an instance of the entity and save.
+            recentArticle = [NSEntityDescription insertNewObjectForEntityForName:@"RecentArticle"
+                                                          inManagedObjectContext:tempContext];
+
+            [recentArticle setValue:blog.link forKey:@"link"];
+            [recentArticle setValue:blog.title forKey:@"title"];
+            [recentArticle setValue:blog.descr forKey:@"descr"];
+            [recentArticle setValue:blog.order forKey:@"order"];
+            
+            NSLog(@"Saving to recently read");
+            if (![tempContext save:&temporaryMOCError]) {
+                NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
+                
+            }
+            
+            // save parent to disk asynchronously
+            [appDelegate.managedObjectContext performBlock:^{
+                NSLog(@"Perform save to the parent context");
+                
+                NSError *error;
+                if (![appDelegate.managedObjectContext save:&error])
+                {
+                    // handle error
+                }
+            }];
+            
+            [tempContext refreshObject:recentArticle mergeChanges:YES];
+        }
+    }];
+    
     [self performSegueWithIdentifier:@"articleSegue" sender:self];
+}
+
+- (void)RecentArticleSaved:(NSNotification *)notification {
+    NSLog(@"Recent Article Saved Notification");
+    // Whatever method you registered as an observer to NSManagedObjectContextDidSave
+
+    VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    NSLog(@"The notification from saved changes %@", notification.name);
+    
+
+    [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
+                                                       withObject:notification
+                                                    waitUntilDone:YES];
+
 }
 
 // Customize the appearance of table view cells.

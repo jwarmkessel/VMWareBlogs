@@ -107,8 +107,23 @@
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"BlogModel.sqlite"];
     
     NSError *error = nil;
+    
+    //I can currently perform a lightweight migration http://stackoverflow.com/questions/8881453/the-model-used-to-open-the-store-is-incompatible-with-the-one-used-to-create-the
+    
+    /*
+     Add or remove a property (attribute or relationship).
+     Make a nonoptional property optional.
+     Make an optional attribute nonoptional, as long as you provide a default value.
+     Add or remove an entity.
+     Rename a property.
+     Rename an entity.
+    */
+    
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:@{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES} error:&error]) {
+        
+        
+
         /*
          Replace this implementation with code to handle the error appropriately.
          
