@@ -56,6 +56,7 @@
 		83FE34ED18D912770080C64C /* VMNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE34EC18D912770080C64C /* VMNavigationViewController.m */; };
 		83FF03D819103D8C003AF06C /* RecentArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FF03D719103D8C003AF06C /* RecentArticle.m */; };
 		83FF03DB19106519003AF06C /* VMRecentlyReadTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FF03DA19106519003AF06C /* VMRecentlyReadTableViewController.m */; };
+		83FF03DE1911A984003AF06C /* VMTestScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FF03DD1911A984003AF06C /* VMTestScrollViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +128,8 @@
 		83FF03D719103D8C003AF06C /* RecentArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentArticle.m; sourceTree = "<group>"; };
 		83FF03D919106519003AF06C /* VMRecentlyReadTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMRecentlyReadTableViewController.h; sourceTree = "<group>"; };
 		83FF03DA19106519003AF06C /* VMRecentlyReadTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMRecentlyReadTableViewController.m; sourceTree = "<group>"; };
+		83FF03DC1911A984003AF06C /* VMTestScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMTestScrollViewController.h; sourceTree = "<group>"; };
+		83FF03DD1911A984003AF06C /* VMTestScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMTestScrollViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +263,8 @@
 			isa = PBXGroup;
 			children = (
 				83FE342618CE6F450080C64C /* Main.storyboard */,
+				83FF03DC1911A984003AF06C /* VMTestScrollViewController.h */,
+				83FF03DD1911A984003AF06C /* VMTestScrollViewController.m */,
 				8360925D19007A8D00C8EA13 /* DataModel */,
 				83609259190072C300C8EA13 /* Tools */,
 				8360925519006E1600C8EA13 /* VMWareBlogsAPI */,
@@ -467,6 +472,7 @@
 				83FE342518CE6F450080C64C /* VMAppDelegate.m in Sources */,
 				83FE344E18CE75670080C64C /* BlogModel.xcdatamodeld in Sources */,
 				83E0742018FEF6FC00ACBD63 /* VMArticleTableViewController.m in Sources */,
+				83FF03DE1911A984003AF06C /* VMTestScrollViewController.m in Sources */,
 				8311E32C18F33F850053B4D6 /* VMArticleViewController.m in Sources */,
 				8360925C19007A7F00C8EA13 /* VMArticleEntityUpdater.m in Sources */,
 				836092601900BCC200C8EA13 /* VMTestViewController.m in Sources */,

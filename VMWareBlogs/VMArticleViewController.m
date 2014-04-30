@@ -29,16 +29,24 @@
     return YES;
 }
 
+- (void)viewDidLayoutSubviews {
+    self.scrollView.contentSize = CGSizeMake(320, 1000);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self.webView setDelegate:self];
+    [self.scrollView setDelegate:self];
+
+//    NSString *fullURL = self.articleURL;
+//    NSURL *url = [NSURL URLWithString:fullURL];
+//    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+//    [self.webView loadRequest:requestObj];
+    
     // Do any additional setup after loading the view.
-    NSString *fullURL = self.articleURL;
-    NSURL *url = [NSURL URLWithString:fullURL];
-    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-    [self.webView loadRequest:requestObj];
+
     
     //Override the back button.
 //    self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"< back"
@@ -77,6 +85,21 @@
 {
     [super viewWillAppear:animated];
     
+    //Set the scrollview size.
+    self.descriptionTextView.text = self.articleDescription;
+
+    
+    float yPoint = 0.0f;
+    
+    
+    yPoint = yPoint + self.descriptionTextView.contentSize.height; // Bingo, we have the new yPoiny now to start the next component.
+    self.scrollView.backgroundColor = [UIColor greenColor];
+    
+//    self.scrollView.frame = CGRectMake(0.0, 0.0, 320.0, yPoint);
+//    self.descriptionTextView.frame = CGRectMake(0.0, 0.0, 320.0, yPoint+1000);
+    
+    
+    //Set the navigation Bar
     UINavigationBar *navBar = [[self navigationController] navigationBar];
     [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     

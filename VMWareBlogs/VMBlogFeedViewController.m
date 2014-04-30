@@ -409,7 +409,11 @@
     Blog *blog = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
     
     NSLog(@"Selecting the link %@", blog.link);
+ 
     vc.articleURL = blog.link;
+    
+    NSLog(@"Selecting the link %@", blog.descr);
+    vc.articleDescription = blog.descr;
 }
 /*
 // Override to support conditional editing of the table view.

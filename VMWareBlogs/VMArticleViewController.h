@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VMArticleViewController : UIViewController <UIWebViewDelegate>
+@interface VMArticleViewController : UIViewController <UIWebViewDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong)NSString *articleURL;
+@property (nonatomic, strong)NSString *articleDescription;
 
 - (IBAction)showToolsHandler:(id)sender;
 - (IBAction)saveForLaterHandler:(id)sender;
@@ -21,5 +22,8 @@
 @property (strong, nonatomic) IBOutlet UIView *toolBarContainerView;
 @property (strong, nonatomic) IBOutlet UIView *toolBarView;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *toolBarButton;
+@property (strong, nonatomic) IBOutlet UITextView *descriptionTextView;
 
+@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @end
