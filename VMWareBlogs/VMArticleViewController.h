@@ -11,7 +11,9 @@
 @interface VMArticleViewController : UIViewController <UIWebViewDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong)NSString *articleURL;
+@property (nonatomic, strong)NSString *articleTitle;
 @property (nonatomic, strong)NSString *articleDescription;
+@property (nonatomic, strong)UITextView *titleTextView;
 
 - (IBAction)showToolsHandler:(id)sender;
 - (IBAction)saveForLaterHandler:(id)sender;

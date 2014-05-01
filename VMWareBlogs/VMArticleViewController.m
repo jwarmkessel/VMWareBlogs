@@ -30,6 +30,7 @@
 }
 
 - (void)viewDidLayoutSubviews {
+
     self.scrollView.contentSize = CGSizeMake(320, 1000);
 }
 
@@ -39,6 +40,57 @@
     
     [self.webView setDelegate:self];
     [self.scrollView setDelegate:self];
+    
+    UIView *imageViewCover = [[UIView alloc] initWithFrame:self.imageView.frame];
+    [imageViewCover setBackgroundColor:[UIColor blackColor]];
+    imageViewCover.alpha = 0.5;
+    [self.imageView addSubview:imageViewCover];
+    
+    self.titleTextView = [[UITextView alloc] initWithFrame:self.imageView.frame];
+    self.titleTextView.text = self.articleTitle;
+    [self.titleTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
+    self.titleTextView.textAlignment = NSTextAlignmentCenter;
+    [self.titleTextView setBackgroundColor:[UIColor clearColor]];
+    self.titleTextView.textColor = [UIColor whiteColor];
+    
+    
+    [imageViewCover addSubview:self.titleTextView];
+    
+    
+    //THIS WILL ONLY WORK FOR iOS 6 and greater.
+    NSString *labelText = self.articleDescription;
+    labelText = [NSString stringWithFormat:@"\t%@", labelText];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:labelText];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:8];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
+
+    
+    
+    
+    self.descriptionTextView.scrollEnabled = NO;
+    //Set the scrollview size.
+    self.descriptionTextView.attributedText = attributedString;
+    self.descriptionTextView.textAlignment = NSTextAlignmentLeft;
+    [self.descriptionTextView setTextColor:[self colorWithHexString:@"5D5B5B"]];
+    [self.descriptionTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
+
+    [self.descriptionTextView setAttributedText:attributedString];
+    CGFloat width = 320.0f;
+    CGSize size = [self.descriptionTextView sizeThatFits:CGSizeMake(width, FLT_MAX)];
+    self.descriptionTextView.frame = CGRectMake(self.descriptionTextView.frame.origin.x, self.descriptionTextView.frame.origin.y, self.descriptionTextView.frame.size.width, size.height);
+    
+    NSLog(@"CHeck the description Text Field Height %f", self.descriptionTextView.contentSize.height);
+    
+    
+    
+    float yPoint = 0.0f;
+    
+    
+//    yPoint = yPoint + self.descriptionTextView.contentSize.height; // Bingo, we have the new yPoiny now to start the next component.
+    
+    self.scrollView.backgroundColor = [UIColor whiteColor];
+
 
 //    NSString *fullURL = self.articleURL;
 //    NSURL *url = [NSURL URLWithString:fullURL];
@@ -84,20 +136,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    //Set the scrollview size.
-    self.descriptionTextView.text = self.articleDescription;
-
-    
-    float yPoint = 0.0f;
-    
-    
-    yPoint = yPoint + self.descriptionTextView.contentSize.height; // Bingo, we have the new yPoiny now to start the next component.
-    self.scrollView.backgroundColor = [UIColor greenColor];
-    
-//    self.scrollView.frame = CGRectMake(0.0, 0.0, 320.0, yPoint);
-//    self.descriptionTextView.frame = CGRectMake(0.0, 0.0, 320.0, yPoint+1000);
-    
     
     //Set the navigation Bar
     UINavigationBar *navBar = [[self navigationController] navigationBar];

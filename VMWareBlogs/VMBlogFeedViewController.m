@@ -414,6 +414,7 @@
     
     NSLog(@"Selecting the link %@", blog.descr);
     vc.articleDescription = blog.descr;
+    vc.articleTitle = blog.title;
 }
 /*
 // Override to support conditional editing of the table view.
