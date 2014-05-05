@@ -16,6 +16,34 @@
 
 @implementation VMArticleViewController
 
+- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
+    NSLog(@"Touches began");
+//    UITouch *touch = [[event allTouches] anyObject];
+//    if ([touch.view isEqual: self.view] || touch.view == nil) {
+//        return;
+//    }
+//    
+//    lastLocation = [touch locationInView: self.view];
+}
+
+- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event {
+    NSLog(@"Touches moved");
+//    UITouch *touch = [[event allTouches] anyObject];
+//    if ([touch.view isEqual: self.view]) {
+//        return;
+//    }
+//    
+//    CGPoint location = [touch locationInView: self.view];
+//    
+//    CGFloat xDisplacement = location.x - lastLocation.x;
+//    CGFloat yDisplacement = location.y - lastLocation.y;
+//    
+//    CGRect frame = touch.view.frame;
+//    frame.origin.x += xDisplacement;
+//    frame.origin.y += yDisplacement;
+//    touch.view.frame = frame;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -31,7 +59,7 @@
 
 - (void)viewDidLayoutSubviews {
 
-    self.scrollView.contentSize = CGSizeMake(320, 1000);
+    self.scrollView.contentSize = CGSizeMake(320, 504);
 }
 
 - (void)viewDidLoad
@@ -40,6 +68,19 @@
     
     [self.webView setDelegate:self];
     [self.scrollView setDelegate:self];
+    
+    self.descriptionTextView.userInteractionEnabled = YES;
+    self.scrollView.userInteractionEnabled = YES;
+    
+//    UIControlEventTouchDragInside
+//    
+//    UITapGestureRecognizer *singleFingerTap =
+//    [[UITapGestureRecognizer alloc] initWithTarget:self
+//                                            action:@selector(handleSingleTap:)];
+//    [self.view addGestureRecognizer:singleFingerTap];
+//    
+//
+//    [self.descriptionTextView addTarget:self action:@selector(imageMoved:withEvent:) forControlEvents:UIControlEventTouchDragInside];
     
     UIView *imageViewCover = [[UIView alloc] initWithFrame:self.imageView.frame];
     [imageViewCover setBackgroundColor:[UIColor blackColor]];
@@ -68,19 +109,14 @@
     
     
     
-    self.descriptionTextView.scrollEnabled = NO;
+    
     //Set the scrollview size.
     self.descriptionTextView.attributedText = attributedString;
     self.descriptionTextView.textAlignment = NSTextAlignmentLeft;
     [self.descriptionTextView setTextColor:[self colorWithHexString:@"5D5B5B"]];
     [self.descriptionTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
-
-    [self.descriptionTextView setAttributedText:attributedString];
-    CGFloat width = 320.0f;
-    CGSize size = [self.descriptionTextView sizeThatFits:CGSizeMake(width, FLT_MAX)];
-    self.descriptionTextView.frame = CGRectMake(self.descriptionTextView.frame.origin.x, self.descriptionTextView.frame.origin.y, self.descriptionTextView.frame.size.width, size.height);
     
-    NSLog(@"CHeck the description Text Field Height %f", self.descriptionTextView.contentSize.height);
+    NSLog(@"CHeck the description Text Field Height %f", self.descriptionTextView.frame.size.height);
     
     
     
@@ -170,6 +206,44 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - UIScrollViewDelegate protocol methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    NSLog(@"scrollViewDidScroll");
+    CGPoint offset = scrollView.contentOffset;
+
+    CGRect buttonFrame = CGRectMake(0,0,320, 568);
+    buttonFrame.origin.x += offset.x;
+    buttonFrame.origin.y += offset.y;
+    NSLog(@"button's frame: %f, %f, %f, %f", buttonFrame.origin.x, buttonFrame.origin.y, buttonFrame.size.width, buttonFrame.size.height);
+    
+    self.scrollView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+    [UIView
+     animateWithDuration:0.2
+     animations:^ {
+
+         CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
+         rotationAndPerspectiveTransform.m34 = 1.0 / -500;
+         rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, -45.0 * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
+         self.scrollView.layer.transform = rotationAndPerspectiveTransform;
+         
+         
+     }];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    NSLog(@"scrollViewWillBeginDragging");
+    
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    NSLog(@"scrollViewWillBeginDecelerating");
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    NSLog(@"scrollViewWillEndDragging");
+}
 
 #pragma mark - UIWebViewDelegate protocol methods
 

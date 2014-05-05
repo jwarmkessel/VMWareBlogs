@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="v10-vr-Tag">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="f3s-WT-C6O">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -271,12 +271,12 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="936"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4eL-UO-WUN">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4eL-UO-WUN">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="720"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="placeholder.png" translatesAutoresizingMaskIntoConstraints="NO" id="Wi2-Az-ujH">
-                                        <rect key="frame" x="0.0" y="0.0" width="334" height="109"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="109"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0hc-xM-tlq">
@@ -336,45 +336,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zy0-ka-hVT">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uff-Xv-QYB" customClass="VMArticlePreviewView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DdC-RP-aaL">
-                                        <rect key="frame" x="0.0" y="0.0" width="78" height="21"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="placeholder.png" translatesAutoresizingMaskIntoConstraints="NO" id="Dba-fu-ubv">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="109"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                    <view userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dtR-PT-Joj">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="109"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="DdC-RP-aaL" firstAttribute="leading" secondItem="zy0-ka-hVT" secondAttribute="leading" id="BA5-e4-IFu"/>
-                                    <constraint firstAttribute="bottom" secondItem="DdC-RP-aaL" secondAttribute="bottom" constant="979" id="dYo-7F-5Tr"/>
-                                    <constraint firstItem="DdC-RP-aaL" firstAttribute="top" secondItem="zy0-ka-hVT" secondAttribute="top" id="nD7-zP-wyu"/>
-                                    <constraint firstAttribute="trailing" secondItem="DdC-RP-aaL" secondAttribute="trailing" id="y0p-2D-E4t"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="delegate" destination="f3s-WT-C6O" id="ZX8-3e-Yst"/>
-                                </connections>
-                            </scrollView>
+                                <color key="backgroundColor" red="0.97254908080000002" green="0.21568629149999999" blue="0.019607843829999999" alpha="1" colorSpace="deviceRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="zy0-ka-hVT" firstAttribute="top" secondItem="6WM-Su-are" secondAttribute="top" id="IAr-kJ-bZX"/>
-                            <constraint firstAttribute="trailing" secondItem="zy0-ka-hVT" secondAttribute="trailing" id="bNz-59-qV9"/>
-                            <constraint firstItem="zy0-ka-hVT" firstAttribute="leading" secondItem="6WM-Su-are" secondAttribute="leading" id="cXy-5y-DYV"/>
-                            <constraint firstAttribute="bottom" secondItem="zy0-ka-hVT" secondAttribute="bottom" id="q4Z-oD-eHW"/>
-                        </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="1000"/>
-                    <connections>
-                        <outlet property="scrollView" destination="zy0-ka-hVT" id="nZ6-9n-2Mb"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fwj-h2-ody" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1800" y="-1211"/>
+            <point key="canvasLocation" x="1794" y="-1194"/>
         </scene>
         <!--Test View Controller-->
         <scene sceneID="VO0-hH-FcI">
