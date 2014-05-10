@@ -16,6 +16,7 @@
 		8327408D190701230015923A /* vmWareBlogsTestPlaceholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8327408C190701230015923A /* vmWareBlogsTestPlaceholder.jpg */; };
 		8327408E190701230015923A /* vmWareBlogsTestPlaceholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8327408C190701230015923A /* vmWareBlogsTestPlaceholder.jpg */; };
 		8327409019070C000015923A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8327408F19070C000015923A /* QuartzCore.framework */; };
+		833253CD191EF2B000A3F5EF /* VMCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 833253CC191EF2B000A3F5EF /* VMCommon.m */; };
 		83585EAA19122ED8001D5275 /* VMArticePreviewScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83585EA919122ED8001D5275 /* VMArticePreviewScrollView.m */; };
 		8359AED31917508C00CAD9B9 /* VMArticlePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8359AED21917508C00CAD9B9 /* VMArticlePreviewView.m */; };
 		8359AFE81919630400CAD9B9 /* VMOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8359AFE71919630400CAD9B9 /* VMOverlayView.m */; };
@@ -87,6 +88,8 @@
 		8311E33018F52FAE0053B4D6 /* markAsReadIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = markAsReadIcon.png; sourceTree = "<group>"; };
 		8327408C190701230015923A /* vmWareBlogsTestPlaceholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = vmWareBlogsTestPlaceholder.jpg; sourceTree = "<group>"; };
 		8327408F19070C000015923A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		833253CB191EF2B000A3F5EF /* VMCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMCommon.h; sourceTree = "<group>"; };
+		833253CC191EF2B000A3F5EF /* VMCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMCommon.m; sourceTree = "<group>"; };
 		83585EA819122ED8001D5275 /* VMArticePreviewScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMArticePreviewScrollView.h; sourceTree = "<group>"; };
 		83585EA919122ED8001D5275 /* VMArticePreviewScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMArticePreviewScrollView.m; sourceTree = "<group>"; };
 		8359AED11917508C00CAD9B9 /* VMArticlePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMArticlePreviewView.h; sourceTree = "<group>"; };
@@ -224,6 +227,8 @@
 		83609259190072C300C8EA13 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				833253CB191EF2B000A3F5EF /* VMCommon.h */,
+				833253CC191EF2B000A3F5EF /* VMCommon.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -528,6 +533,7 @@
 				83FF03DB19106519003AF06C /* VMRecentlyReadTableViewController.m in Sources */,
 				83CF9BAD18FDE31B004DFCC4 /* VMMasterViewController.m in Sources */,
 				8360925819006E3B00C8EA13 /* VMWareBlogsAPI.m in Sources */,
+				833253CD191EF2B000A3F5EF /* VMCommon.m in Sources */,
 				83FE344B18CE6FC90080C64C /* VMBlogFeedViewController.m in Sources */,
 				8359AED31917508C00CAD9B9 /* VMArticlePreviewView.m in Sources */,
 			);

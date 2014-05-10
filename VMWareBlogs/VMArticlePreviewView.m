@@ -7,6 +7,7 @@
 //
 
 #import "VMArticlePreviewView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface VMArticlePreviewView()
 
@@ -39,16 +40,32 @@ BOOL dragging;
 - (void)drawRect:(CGRect)rect
 {
     NSLog(@"IS this DRAW RECT getting called?");
-
+    
     // Drawing code
 }
 
+- (void)setBorderForView:(UIView *)v {
+    
+    // border
+    [v.layer setBorderColor:[UIColor blackColor].CGColor];
+    [v.layer setBorderWidth:1.5f];
+    
+    // drop shadow
+    [v.layer setShadowColor:[UIColor blackColor].CGColor];
+    [v.layer setShadowOpacity:0.5];
+    [v.layer setShadowRadius:5.0];
+    [v.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
+}
+
 - (void)setDescriptionWithAttributedText:(NSString *)text {
+
     
     self.testView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 600.0)];
     [self setAnchorPoint:CGPointMake(1.0, 0.0) forView:self.testView];
     self.testView.userInteractionEnabled = NO;
     [self addSubview:self.testView];
+    
+    [self setBorderForView:self.testView];
     
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 109.0)];
     [self.imageView setImage:[UIImage imageNamed:@"placeholder.png"]];
@@ -120,7 +137,7 @@ BOOL dragging;
         self.testView.layer.transform = rotationAndPerspectiveTransform;
         
         [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.2];
+        [UIView setAnimationDuration:0.8];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         frame.origin.y = 0;
         self.frame = frame;
@@ -135,7 +152,7 @@ BOOL dragging;
         self.testView.layer.transform = rotationAndPerspectiveTransform;
         
         [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.2];
+        [UIView setAnimationDuration:0.8];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         frame.origin.y = 0;
         self.frame = frame;

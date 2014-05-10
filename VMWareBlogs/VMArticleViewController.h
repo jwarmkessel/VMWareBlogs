@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VMArticlePreviewView.h"
 
-@interface VMArticleViewController : UIViewController <UIWebViewDelegate, UIScrollViewDelegate, CustomClassDelegate>
+@interface VMArticleViewController : UIViewController <UIWebViewDelegate, CustomClassDelegate>
 
 @property (nonatomic, strong)NSString *articleURL;
 @property (nonatomic, strong)NSString *articleTitle;
@@ -18,16 +18,9 @@
 @property (strong, nonatomic) IBOutlet VMArticlePreviewView *articlePreviewView;
 
 - (IBAction)showToolsHandler:(id)sender;
-- (IBAction)saveForLaterHandler:(id)sender;
-- (IBAction)markAsReadHandler:(id)sender;
 - (IBAction)toolBarContainerHandler:(id)sender;
 
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
-@property (strong, nonatomic) IBOutlet UIView *toolBarContainerView;
-@property (strong, nonatomic) IBOutlet UIView *toolBarView;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *toolBarButton;
-@property (strong, nonatomic) IBOutlet UITextView *descriptionTextView;
 
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @end

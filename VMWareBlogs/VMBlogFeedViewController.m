@@ -381,9 +381,9 @@
     [titleLbl setFont:[UIFont fontWithName:@"Arial" size:17.0f]];
     titleLbl.textColor = [self colorWithHexString:@"343A43"];
     
-    UILabel *descLbl = (UILabel *)[cell viewWithTag:102];
+    UITextView *descLbl = (UITextView *)[cell viewWithTag:102];
     [descLbl setFont:[UIFont fontWithName:@"Arial" size:15.0f]];
-    descLbl.textColor = [self colorWithHexString:@"8590A1"];
+    descLbl.userInteractionEnabled = NO;
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
     
