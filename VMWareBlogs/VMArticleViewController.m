@@ -7,42 +7,18 @@
 //
 
 #import "VMArticleViewController.h"
+#import "VMOverlayView.h"
+#import "VMArticlePreviewView.h"
 
 @interface VMArticleViewController ()
 @property (nonatomic, strong) UIBarButtonItem *backButton;
 @property (strong, nonatomic) UIActivityIndicatorView *indicator;
 @property (assign, nonatomic) BOOL toolBarIsHidden;
+@property (strong, nonatomic) VMOverlayView *overlay;
 @end
 
 @implementation VMArticleViewController
 
-- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
-    NSLog(@"Touches began");
-//    UITouch *touch = [[event allTouches] anyObject];
-//    if ([touch.view isEqual: self.view] || touch.view == nil) {
-//        return;
-//    }
-//    
-//    lastLocation = [touch locationInView: self.view];
-}
-
-- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event {
-    NSLog(@"Touches moved");
-//    UITouch *touch = [[event allTouches] anyObject];
-//    if ([touch.view isEqual: self.view]) {
-//        return;
-//    }
-//    
-//    CGPoint location = [touch locationInView: self.view];
-//    
-//    CGFloat xDisplacement = location.x - lastLocation.x;
-//    CGFloat yDisplacement = location.y - lastLocation.y;
-//    
-//    CGRect frame = touch.view.frame;
-//    frame.origin.x += xDisplacement;
-//    frame.origin.y += yDisplacement;
-//    touch.view.frame = frame;
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -72,6 +48,12 @@
     self.descriptionTextView.userInteractionEnabled = YES;
     self.scrollView.userInteractionEnabled = YES;
     
+    //Overlay challenge for BSafe
+//    self.overlay = [[VMOverlayView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+//    
+//    [self.view addSubview:self.overlay];
+//    [self.overlay addTransparentView];
+    
 //    UIControlEventTouchDragInside
 //    
 //    UITapGestureRecognizer *singleFingerTap =
@@ -81,43 +63,9 @@
 //    
 //
 //    [self.descriptionTextView addTarget:self action:@selector(imageMoved:withEvent:) forControlEvents:UIControlEventTouchDragInside];
-    
-    UIView *imageViewCover = [[UIView alloc] initWithFrame:self.imageView.frame];
-    [imageViewCover setBackgroundColor:[UIColor blackColor]];
-    imageViewCover.alpha = 0.5;
-    [self.imageView addSubview:imageViewCover];
-    
-    self.titleTextView = [[UITextView alloc] initWithFrame:self.imageView.frame];
-    self.titleTextView.text = self.articleTitle;
-    [self.titleTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
-    self.titleTextView.textAlignment = NSTextAlignmentCenter;
-    [self.titleTextView setBackgroundColor:[UIColor clearColor]];
-    self.titleTextView.textColor = [UIColor whiteColor];
-    
-    
-    [imageViewCover addSubview:self.titleTextView];
-    
-    
-    //THIS WILL ONLY WORK FOR iOS 6 and greater.
-    NSString *labelText = self.articleDescription;
-    labelText = [NSString stringWithFormat:@"\t%@", labelText];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:labelText];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:8];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
+    self.articlePreviewView.titleTextView.text = self.articleTitle;
 
-    
-    
-    
-    
-    //Set the scrollview size.
-    self.descriptionTextView.attributedText = attributedString;
-    self.descriptionTextView.textAlignment = NSTextAlignmentLeft;
-    [self.descriptionTextView setTextColor:[self colorWithHexString:@"5D5B5B"]];
-    [self.descriptionTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
-    
-    NSLog(@"CHeck the description Text Field Height %f", self.descriptionTextView.frame.size.height);
-    
+    [self.articlePreviewView setDescriptionWithAttributedText:self.articleDescription];
     
     
     float yPoint = 0.0f;
@@ -219,17 +167,6 @@
     NSLog(@"button's frame: %f, %f, %f, %f", buttonFrame.origin.x, buttonFrame.origin.y, buttonFrame.size.width, buttonFrame.size.height);
     
     self.scrollView.layer.anchorPoint = CGPointMake(0.5, 0.5);
-    [UIView
-     animateWithDuration:0.2
-     animations:^ {
-
-         CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
-         rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-         rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, -45.0 * M_PI / 180.0f, 0.0f, 1.0f, 0.0f);
-         self.scrollView.layer.transform = rotationAndPerspectiveTransform;
-         
-         
-     }];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {

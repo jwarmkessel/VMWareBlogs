@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class VMArticlePreviewView;
 
 @interface VMArticleViewController : UIViewController <UIWebViewDelegate, UIScrollViewDelegate>
 
@@ -14,6 +15,7 @@
 @property (nonatomic, strong)NSString *articleTitle;
 @property (nonatomic, strong)NSString *articleDescription;
 @property (nonatomic, strong)UITextView *titleTextView;
+@property (strong, nonatomic) IBOutlet VMArticlePreviewView *articlePreviewView;
 
 - (IBAction)showToolsHandler:(id)sender;
 - (IBAction)saveForLaterHandler:(id)sender;

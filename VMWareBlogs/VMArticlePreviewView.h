@@ -9,5 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface VMArticlePreviewView : UIView
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UITextView *titleTextView;
+@property (nonatomic, strong) UITextView *descriptionTextView;
+@property (nonatomic, strong) UIView *testView;
+@property (nonatomic, strong) UIWebView *webView;
 
+
+- (void)setDescriptionWithAttributedText:(NSString *)text;
 @end
