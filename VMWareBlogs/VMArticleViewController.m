@@ -66,9 +66,13 @@
     self.articlePreviewView.titleTextView.text = self.articleTitle;
 
     [self.articlePreviewView setDescriptionWithAttributedText:self.articleDescription];
+    [self.articlePreviewView setDelegate:self];
     
-    
-    float yPoint = 0.0f;
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0,568.0, 320.0, 568)];
+    NSURL *url = [NSURL URLWithString:@"http://www.vmwareblogs.com/article.jsp?id=5787401926475776"];
+    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url];
+    [self.webView loadRequest:urlRequest];
+    [self.view addSubview:self.webView];
     
     
 //    yPoint = yPoint + self.descriptionTextView.contentSize.height; // Bingo, we have the new yPoiny now to start the next component.
@@ -110,6 +114,16 @@
 //    [self removeFromParentViewController];
 //    [self.view removeFromSuperview];
 //    [self view].hidden = YES;
+}
+
+#pragma mark VMArticlePreviewView delegate method
+-(void)articlePreviewMoved:(float)offset {
+    NSLog(@"SOMETHING HAPPENED");
+    [UIView animateWithDuration:0.3 animations:^{
+        self.articlePreviewView.testView.alpha = 0;
+        
+        self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
+    }];
 }
 
 - (void)handleBack:(id)sender {

@@ -87,7 +87,6 @@ BOOL dragging;
     [self.descriptionTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
     
     NSLog(@"CHeck the description Text Field Height %f", self.descriptionTextView.frame.size.height);
-    
 }
 /*
  To get the offset. Get touch began location and touch end location.
@@ -171,9 +170,17 @@ BOOL dragging;
         self.testView.layer.transform = rotationAndPerspectiveTransform;
         [UIView commitAnimations];
         
+        NSLog(@"The test %f", test);
+        if(test < -73) {
+            // send message the message to the delegate!
+            [self.delegate articlePreviewMoved:test];
+        }
+        
         label.frame = frame;
     }
 }
+
+
 
 -(void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
 {

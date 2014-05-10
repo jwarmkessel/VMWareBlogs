@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-@class VMArticlePreviewView;
+#import "VMArticlePreviewView.h"
 
-@interface VMArticleViewController : UIViewController <UIWebViewDelegate, UIScrollViewDelegate>
+@interface VMArticleViewController : UIViewController <UIWebViewDelegate, UIScrollViewDelegate, CustomClassDelegate>
 
 @property (nonatomic, strong)NSString *articleURL;
 @property (nonatomic, strong)NSString *articleTitle;

@@ -15,6 +15,16 @@
 @property (nonatomic, strong) UIView *testView;
 @property (nonatomic, strong) UIWebView *webView;
 
+// define delegate property
+@property (nonatomic, assign) id  delegate;
 
 - (void)setDescriptionWithAttributedText:(NSString *)text;
+@end
+
+// define the protocol for the delegate
+@protocol CustomClassDelegate
+
+// define protocol functions that can be used in any class using this delegate
+-(void)articlePreviewMoved:(float)offset;
+
 @end
