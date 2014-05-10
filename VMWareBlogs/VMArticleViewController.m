@@ -68,7 +68,7 @@
     [self.articlePreviewView setDescriptionWithAttributedText:self.articleDescription];
     [self.articlePreviewView setDelegate:self];
     
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0,568.0, 320.0, 568)];
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0,475.0, 320.0, 568)];
     NSURL *url = [NSURL URLWithString:@"http://www.vmwareblogs.com/article.jsp?id=5787401926475776"];
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url];
     [self.webView loadRequest:urlRequest];
@@ -118,12 +118,42 @@
 
 #pragma mark VMArticlePreviewView delegate method
 -(void)articlePreviewMoved:(float)offset {
-    NSLog(@"SOMETHING HAPPENED");
-    [UIView animateWithDuration:0.3 animations:^{
-        self.articlePreviewView.testView.alpha = 0;
+    
+    float asdf = 475 - fabsf(offset);
+    NSLog(@"Move %f", asdf);
+    
+    if(asdf < 220) {
+        [UIView animateWithDuration:0.01 animations:^{
+            
+            
+            self.articlePreviewView.alpha = 0;
+        }];
+    }
+    
+    [UIView animateWithDuration:0.01 animations:^{
+
         
-        self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
+        self.webView.layer.frame = CGRectMake(0.0, asdf, 320.0, 568.0);
     }];
+    
+
+}
+
+-(void)articlePreviewFinishedMoving:(float)offset {
+
+    if(offset < -200) {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.articlePreviewView.testView.alpha = 0;
+            
+            self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
+        }];
+    } else if(offset > -200) {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.articlePreviewView.testView.alpha = 1;
+            
+            self.webView.layer.frame = CGRectMake(0.0, 475.0, 320.0, 568.0);
+        }];
+    }
 }
 
 - (void)handleBack:(id)sender {

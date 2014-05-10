@@ -108,6 +108,8 @@ BOOL dragging;
     dragging = NO;
     
     CGRect frame = self.frame;
+    
+    [self.delegate articlePreviewFinishedMoving:test];
 
 
     if (frame.origin.y < 0) { //frame exceeds the horizontal boundary
@@ -159,10 +161,11 @@ BOOL dragging;
         }
         
         test += touchLocation.y - oldY;
-        NSLog(@"Degrees to move %f", -1 * test * M_PI );
+//        NSLog(@"Degrees to move %f", -1 * test * M_PI );
         //frame.origin.x = label.frame.origin.x + touchLocation.x - oldX;
         frame.origin.y = self.frame.origin.y + touchLocation.y - oldY;
         
+        //3D transform code.
         [UIView beginAnimations:nil context:nil];
         CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
         rotationAndPerspectiveTransform.m34 = 1.0 / -500;
@@ -170,11 +173,7 @@ BOOL dragging;
         self.testView.layer.transform = rotationAndPerspectiveTransform;
         [UIView commitAnimations];
         
-        NSLog(@"The test %f", test);
-        if(test < -73) {
-            // send message the message to the delegate!
-            [self.delegate articlePreviewMoved:test];
-        }
+        [self.delegate articlePreviewMoved:test];
         
         label.frame = frame;
     }
