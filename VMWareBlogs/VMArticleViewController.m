@@ -60,7 +60,7 @@
     
     //Setup the optional tools view.
     CGRect rect = CGRectMake(0.0, 0.0, 320.0, 568.0);
-    self.articleOptionsView = [[VMArticleOptions alloc] initWithFrame:rect height:150.0f];
+    self.articleOptionsView = [[VMArticleOptions alloc] initWithFrame:rect height:100.0f];
     [self.view addSubview:self.articleOptionsView];
     
     //Override the back button.

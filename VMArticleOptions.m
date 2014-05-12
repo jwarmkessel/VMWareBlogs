@@ -30,9 +30,16 @@
         _common = [[VMCommon alloc] init];
         [_dropDownView setBackgroundColor:[_common colorWithHexString:@"8A8D91"]];
         [self addSubview:_dropDownView];
-
+        
         //set default to hidden.
         self.isHidden = YES;
+        self.userInteractionEnabled = NO;
+        
+        //The setup code (in viewDidLoad in your view controller)
+        UITapGestureRecognizer *singleFingerTap =
+        [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                action:@selector(handleSingleTap:)];
+        [self addGestureRecognizer:singleFingerTap];
         
         [self configureDropDownButtons];
     }
@@ -41,8 +48,17 @@
 
 - (void)configureDropDownButtons {
     
-    UIButton *facebookBtn = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 58.0, 58.0)];
-    [self addSubview:facebookBtn];
+    UIButton *facebookBtn = [[UIButton alloc] initWithFrame:CGRectMake(87.0, 21.0, 58.0, 58.0)];
+    [facebookBtn setImage:[UIImage imageNamed:@"facebook.png"] forState:UIControlStateNormal];
+    [facebookBtn setImage:[UIImage imageNamed:@"facebook.png"] forState:UIControlStateSelected];
+    
+    [_dropDownView addSubview:facebookBtn];
+    
+    UIButton *twitterBtn = [[UIButton alloc] initWithFrame:CGRectMake(175.0, 21.0, 58.0, 58.0)];
+    [twitterBtn setImage:[UIImage imageNamed:@"twitter.png"] forState:UIControlStateNormal];
+    [twitterBtn setImage:[UIImage imageNamed:@"twitter.png"] forState:UIControlStateSelected];
+    
+    [_dropDownView addSubview:twitterBtn];
 }
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -61,6 +77,7 @@
             rect.origin.y = 0;
             _dropDownView.layer.frame = rect;
             isHidden = NO;
+            self.userInteractionEnabled = YES;
         } else {
             rect.origin.y = -1 * _dropDownView.layer.frame.size.height;
             _dropDownView.layer.frame = rect;
@@ -71,6 +88,20 @@
     }];
 }
 
+//The event handling method
+- (void)handleSingleTap:(UITapGestureRecognizer *)recognizer {
+    //CGPoint location = [recognizer locationInView:[recognizer.view superview]];
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect rect = _dropDownView.layer.frame;
+        rect.origin.y = -1 * _dropDownView.layer.frame.size.height;
+        _dropDownView.layer.frame = rect;
+        isHidden = YES;
+        
+    } completion:^(BOOL finished) {
+        NSLog(@"Animation completed");
+        self.userInteractionEnabled = NO;
+    }];
+}
 
 
 @end
