@@ -20,7 +20,7 @@
 - (IBAction)showToolsHandler:(id)sender;
 - (IBAction)toolBarContainerHandler:(id)sender;
 
-@property (strong, nonatomic) IBOutlet UIWebView *webView;
+
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *toolBarButton;
 
 @end

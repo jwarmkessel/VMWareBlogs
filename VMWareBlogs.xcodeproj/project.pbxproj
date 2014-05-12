@@ -17,6 +17,12 @@
 		8327408E190701230015923A /* vmWareBlogsTestPlaceholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8327408C190701230015923A /* vmWareBlogsTestPlaceholder.jpg */; };
 		8327409019070C000015923A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8327408F19070C000015923A /* QuartzCore.framework */; };
 		833253CD191EF2B000A3F5EF /* VMCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 833253CC191EF2B000A3F5EF /* VMCommon.m */; };
+		833253D0191F50B800A3F5EF /* VMArticleOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 833253CF191F50B800A3F5EF /* VMArticleOptionsViewController.m */; };
+		833253D8191F56F400A3F5EF /* VMArticleOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 833253D7191F56F400A3F5EF /* VMArticleOptions.m */; };
+		833253DE19205F1700A3F5EF /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 833253DA19205F1700A3F5EF /* facebook.png */; };
+		833253DF19205F1700A3F5EF /* facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 833253DB19205F1700A3F5EF /* facebook@2x.png */; };
+		833253E019205F1700A3F5EF /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 833253DC19205F1700A3F5EF /* twitter.png */; };
+		833253E119205F1700A3F5EF /* twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 833253DD19205F1700A3F5EF /* twitter@2x.png */; };
 		83585EAA19122ED8001D5275 /* VMArticePreviewScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83585EA919122ED8001D5275 /* VMArticePreviewScrollView.m */; };
 		8359AED31917508C00CAD9B9 /* VMArticlePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8359AED21917508C00CAD9B9 /* VMArticlePreviewView.m */; };
 		8359AFE81919630400CAD9B9 /* VMOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8359AFE71919630400CAD9B9 /* VMOverlayView.m */; };
@@ -82,20 +88,28 @@
 /* Begin PBXFileReference section */
 		2510EC6ACFD44C4787D61132 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		6853D35B6BC3472F91A23ABD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		8311E32A18F33F850053B4D6 /* VMArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMArticleViewController.h; sourceTree = "<group>"; };
-		8311E32B18F33F850053B4D6 /* VMArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMArticleViewController.m; sourceTree = "<group>"; };
+		8311E32A18F33F850053B4D6 /* VMArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMArticleViewController.h; path = VMWareBlogs/VMArticleViewController.h; sourceTree = "<group>"; };
+		8311E32B18F33F850053B4D6 /* VMArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMArticleViewController.m; path = VMWareBlogs/VMArticleViewController.m; sourceTree = "<group>"; };
 		8311E32D18F52CC40053B4D6 /* folderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folderIcon.png; sourceTree = "<group>"; };
 		8311E33018F52FAE0053B4D6 /* markAsReadIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = markAsReadIcon.png; sourceTree = "<group>"; };
 		8327408C190701230015923A /* vmWareBlogsTestPlaceholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = vmWareBlogsTestPlaceholder.jpg; sourceTree = "<group>"; };
 		8327408F19070C000015923A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		833253CB191EF2B000A3F5EF /* VMCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMCommon.h; sourceTree = "<group>"; };
 		833253CC191EF2B000A3F5EF /* VMCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMCommon.m; sourceTree = "<group>"; };
-		83585EA819122ED8001D5275 /* VMArticePreviewScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMArticePreviewScrollView.h; sourceTree = "<group>"; };
-		83585EA919122ED8001D5275 /* VMArticePreviewScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMArticePreviewScrollView.m; sourceTree = "<group>"; };
-		8359AED11917508C00CAD9B9 /* VMArticlePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMArticlePreviewView.h; sourceTree = "<group>"; };
-		8359AED21917508C00CAD9B9 /* VMArticlePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMArticlePreviewView.m; sourceTree = "<group>"; };
-		8359AFE61919630400CAD9B9 /* VMOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMOverlayView.h; sourceTree = "<group>"; };
-		8359AFE71919630400CAD9B9 /* VMOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMOverlayView.m; sourceTree = "<group>"; };
+		833253CE191F50B800A3F5EF /* VMArticleOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMArticleOptionsViewController.h; sourceTree = "<group>"; };
+		833253CF191F50B800A3F5EF /* VMArticleOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMArticleOptionsViewController.m; sourceTree = "<group>"; };
+		833253D6191F56F400A3F5EF /* VMArticleOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMArticleOptions.h; sourceTree = "<group>"; };
+		833253D7191F56F400A3F5EF /* VMArticleOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMArticleOptions.m; sourceTree = "<group>"; };
+		833253DA19205F1700A3F5EF /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook.png; sourceTree = "<group>"; };
+		833253DB19205F1700A3F5EF /* facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook@2x.png"; sourceTree = "<group>"; };
+		833253DC19205F1700A3F5EF /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
+		833253DD19205F1700A3F5EF /* twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter@2x.png"; sourceTree = "<group>"; };
+		83585EA819122ED8001D5275 /* VMArticePreviewScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMArticePreviewScrollView.h; path = VMWareBlogs/VMArticePreviewScrollView.h; sourceTree = "<group>"; };
+		83585EA919122ED8001D5275 /* VMArticePreviewScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMArticePreviewScrollView.m; path = VMWareBlogs/VMArticePreviewScrollView.m; sourceTree = "<group>"; };
+		8359AED11917508C00CAD9B9 /* VMArticlePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMArticlePreviewView.h; path = VMWareBlogs/VMArticlePreviewView.h; sourceTree = "<group>"; };
+		8359AED21917508C00CAD9B9 /* VMArticlePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMArticlePreviewView.m; path = VMWareBlogs/VMArticlePreviewView.m; sourceTree = "<group>"; };
+		8359AFE61919630400CAD9B9 /* VMOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMOverlayView.h; path = VMWareBlogs/VMOverlayView.h; sourceTree = "<group>"; };
+		8359AFE71919630400CAD9B9 /* VMOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMOverlayView.m; path = VMWareBlogs/VMOverlayView.m; sourceTree = "<group>"; };
 		8359AFF71919676200CAD9B9 /* blue-arrow-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-arrow-left.png"; sourceTree = "<group>"; };
 		8359AFF81919676200CAD9B9 /* blue-arrow-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-arrow-right.png"; sourceTree = "<group>"; };
 		8359AFF91919676200CAD9B9 /* blue-arrow2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-arrow2.png"; sourceTree = "<group>"; };
@@ -138,8 +152,8 @@
 		83FE343B18CE6F460080C64C /* VMWareBlogsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VMWareBlogsTests-Info.plist"; sourceTree = "<group>"; };
 		83FE343D18CE6F460080C64C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		83FE343F18CE6F460080C64C /* VMWareBlogsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMWareBlogsTests.m; sourceTree = "<group>"; };
-		83FE344918CE6FC90080C64C /* VMBlogFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMBlogFeedViewController.h; sourceTree = "<group>"; };
-		83FE344A18CE6FC90080C64C /* VMBlogFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMBlogFeedViewController.m; sourceTree = "<group>"; };
+		83FE344918CE6FC90080C64C /* VMBlogFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMBlogFeedViewController.h; path = VMWareBlogs/VMBlogFeedViewController.h; sourceTree = "<group>"; };
+		83FE344A18CE6FC90080C64C /* VMBlogFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMBlogFeedViewController.m; path = VMWareBlogs/VMBlogFeedViewController.m; sourceTree = "<group>"; };
 		83FE344D18CE75670080C64C /* BlogModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BlogModel.xcdatamodel; sourceTree = "<group>"; };
 		83FE34DD18CFCCA10080C64C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		83FE34E518D0199A0080C64C /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
@@ -150,10 +164,10 @@
 		83FF03D519103C92003AF06C /* BlogModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		83FF03D619103D8C003AF06C /* RecentArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentArticle.h; sourceTree = "<group>"; };
 		83FF03D719103D8C003AF06C /* RecentArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentArticle.m; sourceTree = "<group>"; };
-		83FF03D919106519003AF06C /* VMRecentlyReadTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMRecentlyReadTableViewController.h; sourceTree = "<group>"; };
-		83FF03DA19106519003AF06C /* VMRecentlyReadTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMRecentlyReadTableViewController.m; sourceTree = "<group>"; };
-		83FF03DC1911A984003AF06C /* VMTestScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMTestScrollViewController.h; sourceTree = "<group>"; };
-		83FF03DD1911A984003AF06C /* VMTestScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMTestScrollViewController.m; sourceTree = "<group>"; };
+		83FF03D919106519003AF06C /* VMRecentlyReadTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMRecentlyReadTableViewController.h; path = VMWareBlogs/VMRecentlyReadTableViewController.h; sourceTree = "<group>"; };
+		83FF03DA19106519003AF06C /* VMRecentlyReadTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMRecentlyReadTableViewController.m; path = VMWareBlogs/VMRecentlyReadTableViewController.m; sourceTree = "<group>"; };
+		83FF03DC1911A984003AF06C /* VMTestScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMTestScrollViewController.h; path = VMWareBlogs/VMTestScrollViewController.h; sourceTree = "<group>"; };
+		83FF03DD1911A984003AF06C /* VMTestScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMTestScrollViewController.m; path = VMWareBlogs/VMTestScrollViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +197,76 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		833253D1191F50D300A3F5EF /* MainClasses */ = {
+			isa = PBXGroup;
+			children = (
+				83FE344918CE6FC90080C64C /* VMBlogFeedViewController.h */,
+				83FE344A18CE6FC90080C64C /* VMBlogFeedViewController.m */,
+				833253D4191F52B800A3F5EF /* Recently Read */,
+				833253D3191F52A200A3F5EF /* Features */,
+				83609259190072C300C8EA13 /* Tools */,
+				833253D2191F51A300A3F5EF /* Article Preview */,
+				8360925519006E1600C8EA13 /* VMWareBlogsAPI */,
+				8360925D19007A8D00C8EA13 /* DataModel */,
+			);
+			name = MainClasses;
+			sourceTree = "<group>";
+		};
+		833253D2191F51A300A3F5EF /* Article Preview */ = {
+			isa = PBXGroup;
+			children = (
+				8311E32A18F33F850053B4D6 /* VMArticleViewController.h */,
+				8311E32B18F33F850053B4D6 /* VMArticleViewController.m */,
+				833253D6191F56F400A3F5EF /* VMArticleOptions.h */,
+				833253D7191F56F400A3F5EF /* VMArticleOptions.m */,
+				8359AED11917508C00CAD9B9 /* VMArticlePreviewView.h */,
+				8359AED21917508C00CAD9B9 /* VMArticlePreviewView.m */,
+				833253CE191F50B800A3F5EF /* VMArticleOptionsViewController.h */,
+				833253CF191F50B800A3F5EF /* VMArticleOptionsViewController.m */,
+			);
+			name = "Article Preview";
+			sourceTree = "<group>";
+		};
+		833253D3191F52A200A3F5EF /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				8359AFE61919630400CAD9B9 /* VMOverlayView.h */,
+				8359AFE71919630400CAD9B9 /* VMOverlayView.m */,
+			);
+			name = Features;
+			sourceTree = "<group>";
+		};
+		833253D4191F52B800A3F5EF /* Recently Read */ = {
+			isa = PBXGroup;
+			children = (
+				83FF03D919106519003AF06C /* VMRecentlyReadTableViewController.h */,
+				83FF03DA19106519003AF06C /* VMRecentlyReadTableViewController.m */,
+			);
+			name = "Recently Read";
+			sourceTree = "<group>";
+		};
+		833253D5191F53C300A3F5EF /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				83FF03DC1911A984003AF06C /* VMTestScrollViewController.h */,
+				83FF03DD1911A984003AF06C /* VMTestScrollViewController.m */,
+				83585EA819122ED8001D5275 /* VMArticePreviewScrollView.h */,
+				83585EA919122ED8001D5275 /* VMArticePreviewScrollView.m */,
+			);
+			name = Testing;
+			sourceTree = "<group>";
+		};
+		833253D919205F1700A3F5EF /* socialImages */ = {
+			isa = PBXGroup;
+			children = (
+				833253DA19205F1700A3F5EF /* facebook.png */,
+				833253DB19205F1700A3F5EF /* facebook@2x.png */,
+				833253DC19205F1700A3F5EF /* twitter.png */,
+				833253DD19205F1700A3F5EF /* twitter@2x.png */,
+			);
+			path = socialImages;
+			sourceTree = "<group>";
+		};
 		8359AFF6191966FB00CAD9B9 /* Wizard */ = {
 			isa = PBXGroup;
 			children = (
@@ -222,6 +306,7 @@
 				8360925719006E3B00C8EA13 /* VMWareBlogsAPI.m */,
 			);
 			name = VMWareBlogsAPI;
+			path = VMWareBlogs;
 			sourceTree = "<group>";
 		};
 		83609259190072C300C8EA13 /* Tools */ = {
@@ -231,6 +316,7 @@
 				833253CC191EF2B000A3F5EF /* VMCommon.m */,
 			);
 			name = Tools;
+			path = VMWareBlogs;
 			sourceTree = "<group>";
 		};
 		8360925D19007A8D00C8EA13 /* DataModel */ = {
@@ -245,11 +331,13 @@
 				83FF03D719103D8C003AF06C /* RecentArticle.m */,
 			);
 			name = DataModel;
+			path = VMWareBlogs;
 			sourceTree = "<group>";
 		};
 		8399297C18E3AEF800F3D713 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				833253D919205F1700A3F5EF /* socialImages */,
 				8359AFF6191966FB00CAD9B9 /* Wizard */,
 				8327408C190701230015923A /* vmWareBlogsTestPlaceholder.jpg */,
 				8311E33018F52FAE0053B4D6 /* markAsReadIcon.png */,
@@ -268,6 +356,9 @@
 		83FE340818CE6F450080C64C = {
 			isa = PBXGroup;
 			children = (
+				833253D5191F53C300A3F5EF /* Testing */,
+				83FE342618CE6F450080C64C /* Main.storyboard */,
+				833253D1191F50D300A3F5EF /* MainClasses */,
 				83FE341A18CE6F450080C64C /* VMWareBlogs */,
 				83FE343918CE6F460080C64C /* VMWareBlogsTests */,
 				83FE341318CE6F450080C64C /* Frameworks */,
@@ -302,26 +393,8 @@
 		83FE341A18CE6F450080C64C /* VMWareBlogs */ = {
 			isa = PBXGroup;
 			children = (
-				83FE342618CE6F450080C64C /* Main.storyboard */,
-				83FF03DC1911A984003AF06C /* VMTestScrollViewController.h */,
-				83FF03DD1911A984003AF06C /* VMTestScrollViewController.m */,
-				83585EA819122ED8001D5275 /* VMArticePreviewScrollView.h */,
-				83585EA919122ED8001D5275 /* VMArticePreviewScrollView.m */,
-				8360925D19007A8D00C8EA13 /* DataModel */,
-				83609259190072C300C8EA13 /* Tools */,
-				8360925519006E1600C8EA13 /* VMWareBlogsAPI */,
 				8360925419006A4B00C8EA13 /* CoreClasses */,
 				83FE342C18CE6F450080C64C /* Images.xcassets */,
-				83FE344918CE6FC90080C64C /* VMBlogFeedViewController.h */,
-				83FE344A18CE6FC90080C64C /* VMBlogFeedViewController.m */,
-				8311E32A18F33F850053B4D6 /* VMArticleViewController.h */,
-				8311E32B18F33F850053B4D6 /* VMArticleViewController.m */,
-				8359AED11917508C00CAD9B9 /* VMArticlePreviewView.h */,
-				8359AED21917508C00CAD9B9 /* VMArticlePreviewView.m */,
-				8359AFE61919630400CAD9B9 /* VMOverlayView.h */,
-				8359AFE71919630400CAD9B9 /* VMOverlayView.m */,
-				83FF03D919106519003AF06C /* VMRecentlyReadTableViewController.h */,
-				83FF03DA19106519003AF06C /* VMRecentlyReadTableViewController.m */,
 				83FE341B18CE6F450080C64C /* Supporting Files */,
 			);
 			path = VMWareBlogs;
@@ -436,6 +509,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				833253E119205F1700A3F5EF /* twitter@2x.png in Resources */,
 				8359B0001919676200CAD9B9 /* CloseX.png in Resources */,
 				8399299118EA04B800F3D713 /* VmWareNavBarImg@2x.png in Resources */,
 				8359B0021919676200CAD9B9 /* Damion-Regular.ttf in Resources */,
@@ -452,7 +526,10 @@
 				8399298F18EA04B800F3D713 /* VmWareNavBarImg.png in Resources */,
 				8311E32E18F52CC40053B4D6 /* folderIcon.png in Resources */,
 				8359AFFD1919676200CAD9B9 /* blue-arrow-left.png in Resources */,
+				833253DF19205F1700A3F5EF /* facebook@2x.png in Resources */,
+				833253E019205F1700A3F5EF /* twitter.png in Resources */,
 				839929AB18EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png in Resources */,
+				833253DE19205F1700A3F5EF /* facebook.png in Resources */,
 				83FE341F18CE6F450080C64C /* InfoPlist.strings in Resources */,
 				83FE342818CE6F450080C64C /* Main.storyboard in Resources */,
 			);
@@ -525,12 +602,14 @@
 				83FE342518CE6F450080C64C /* VMAppDelegate.m in Sources */,
 				83FE344E18CE75670080C64C /* BlogModel.xcdatamodeld in Sources */,
 				83585EAA19122ED8001D5275 /* VMArticePreviewScrollView.m in Sources */,
+				833253D0191F50B800A3F5EF /* VMArticleOptionsViewController.m in Sources */,
 				83E0742018FEF6FC00ACBD63 /* VMArticleTableViewController.m in Sources */,
 				83FF03DE1911A984003AF06C /* VMTestScrollViewController.m in Sources */,
 				8311E32C18F33F850053B4D6 /* VMArticleViewController.m in Sources */,
 				8360925C19007A7F00C8EA13 /* VMArticleEntityUpdater.m in Sources */,
 				836092601900BCC200C8EA13 /* VMTestViewController.m in Sources */,
 				83FF03DB19106519003AF06C /* VMRecentlyReadTableViewController.m in Sources */,
+				833253D8191F56F400A3F5EF /* VMArticleOptions.m in Sources */,
 				83CF9BAD18FDE31B004DFCC4 /* VMMasterViewController.m in Sources */,
 				8360925819006E3B00C8EA13 /* VMWareBlogsAPI.m in Sources */,
 				833253CD191EF2B000A3F5EF /* VMCommon.m in Sources */,
@@ -572,6 +651,7 @@
 				83FE342718CE6F450080C64C /* Base */,
 			);
 			name = Main.storyboard;
+			path = VMWareBlogs;
 			sourceTree = "<group>";
 		};
 		83FE343C18CE6F460080C64C /* InfoPlist.strings */ = {

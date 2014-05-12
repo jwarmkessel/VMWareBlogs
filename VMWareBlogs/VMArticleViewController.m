@@ -7,14 +7,15 @@
 //
 
 #import "VMArticleViewController.h"
-#import "VMOverlayView.h"
 #import "VMArticlePreviewView.h"
+#import "VMArticleOptions.h"
 
 @interface VMArticleViewController ()
+@property (strong, nonatomic) UIWebView *webView;
 @property (nonatomic, strong) UIBarButtonItem *backButton;
 @property (strong, nonatomic) UIActivityIndicatorView *indicator;
-@property (assign, nonatomic) BOOL toolBarIsHidden;
-@property (strong, nonatomic) VMOverlayView *overlay;
+@property (strong, nonatomic) VMArticleOptions *articleOptionsView;
+
 @end
 
 @implementation VMArticleViewController
@@ -41,33 +42,26 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self.webView setDelegate:self];
-    
-    self.articlePreviewView.titleTextView.text = self.articleTitle;
 
+    // Do any additional setup after loading the view.
+        
+    //Setup Article Preview and segue animations.
     [self.articlePreviewView setDescriptionWithAttributedText:self.articleDescription];
     [self.articlePreviewView setDelegate:self];
+    self.articlePreviewView.titleTextView.text = self.articleTitle;
     
+    //Load the blog article into a webview.
     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0,475.0, 320.0, 568)];
-    NSURL *url = [NSURL URLWithString:@"http://www.vmwareblogs.com/article.jsp?id=5787401926475776"];
+    [self.webView setDelegate:self];
+    NSURL *url = [NSURL URLWithString:self.articleURL];
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url];
     [self.webView loadRequest:urlRequest];
     [self.view addSubview:self.webView];
     
-    
-//    yPoint = yPoint + self.descriptionTextView.contentSize.height; // Bingo, we have the new yPoiny now to start the next component.
-    
-
-
-
-//    NSString *fullURL = self.articleURL;
-//    NSURL *url = [NSURL URLWithString:fullURL];
-//    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-//    [self.webView loadRequest:requestObj];
-    
-    // Do any additional setup after loading the view.
-
+    //Setup the optional tools view.
+    CGRect rect = CGRectMake(0.0, 0.0, 320.0, 568.0);
+    self.articleOptionsView = [[VMArticleOptions alloc] initWithFrame:rect height:150.0f];
+    [self.view addSubview:self.articleOptionsView];
     
     //Override the back button.
 //    self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"< back"
@@ -97,11 +91,14 @@
 //    [self view].hidden = YES;
 }
 
+- (IBAction)showToolsHandler:(id)sender {
+    [self.articleOptionsView toggleDropDown];
+}
+
 #pragma mark VMArticlePreviewView delegate method
 -(void)articlePreviewMoved:(float)offset {
     
     float asdf = 475 - fabsf(offset);
-    NSLog(@"Move %f", asdf);
     
     if(asdf < 220) {
         [UIView animateWithDuration:0.01 animations:^{
@@ -120,9 +117,21 @@
 
 -(void)articlePreviewFinishedMoving:(float)offset {
 
+    [UIView beginAnimations:nil context:nil];
+    CATransform3D transform = CATransform3DIdentity;
+    transform.m34 = 1.0 / -2000;
+    
+    CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
+    rotationAndPerspectiveTransform.m34 = 1.0 / -500;
+    rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, 20.0f * M_PI / 180.0f, 1.0f, 0.0f, 0.0f);
+
+    
+    self.articlePreviewView.testView.layer.transform = rotationAndPerspectiveTransform;
+    [UIView commitAnimations];
+    
     if(offset < -200) {
         [UIView animateWithDuration:0.3 animations:^{
-            self.articlePreviewView.testView.alpha = 0;
+//            self.articlePreviewView.testView.alpha = 0;
             
             self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
         }];
@@ -177,10 +186,6 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    
-}
-
-- (IBAction)showToolsHandler:(id)sender {
     
 }
 

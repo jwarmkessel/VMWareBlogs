@@ -11,7 +11,6 @@
 
 @interface VMArticlePreviewView()
 
-
 @end
 
 @implementation VMArticlePreviewView
@@ -23,9 +22,8 @@ float test;
 BOOL dragging;
 
 
-- (id)initWithFrame:(CGRect)frame
-{
-    NSLog(@"IS this getting called?");
+- (id)initWithFrame:(CGRect)frame {
+ 
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
@@ -34,13 +32,9 @@ BOOL dragging;
     return self;
 }
 
-
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    NSLog(@"IS this DRAW RECT getting called?");
-    
+- (void)drawRect:(CGRect)rect {
     // Drawing code
 }
 
@@ -59,9 +53,8 @@ BOOL dragging;
 
 - (void)setDescriptionWithAttributedText:(NSString *)text {
 
-    
     self.testView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 600.0)];
-    [self setAnchorPoint:CGPointMake(1.0, 0.0) forView:self.testView];
+//    [self setAnchorPoint:CGPointMake(1.0, 0.0) forView:self.testView];
     self.testView.userInteractionEnabled = NO;
     [self addSubview:self.testView];
     
@@ -95,7 +88,6 @@ BOOL dragging;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineSpacing:8];
     [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
-    
     
     //Set the scrollview size.
     self.descriptionTextView.attributedText = attributedString;
@@ -178,7 +170,10 @@ BOOL dragging;
         }
         
         test += touchLocation.y - oldY;
-//        NSLog(@"Degrees to move %f", -1 * test * M_PI );
+        //TODO
+        if(test < 0) return;
+        
+        NSLog(@"Degrees to move %f", -1 * test * M_PI );
         //frame.origin.x = label.frame.origin.x + touchLocation.x - oldX;
         frame.origin.y = self.frame.origin.y + touchLocation.y - oldY;
         
@@ -196,9 +191,7 @@ BOOL dragging;
     }
 }
 
-
-
--(void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
+- (void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view
 {
     CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x,
                                    view.bounds.size.height * anchorPoint.y);
