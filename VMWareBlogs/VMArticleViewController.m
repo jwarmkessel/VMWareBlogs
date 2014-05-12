@@ -9,13 +9,18 @@
 #import "VMArticleViewController.h"
 #import "VMArticlePreviewView.h"
 #import "VMArticleOptions.h"
+#import <Accounts/Accounts.h>
+#import <Social/Social.h>
 
-@interface VMArticleViewController ()
+@interface VMArticleViewController (){
+    UITextView *sharingTextView;
+}
 @property (strong, nonatomic) UIWebView *webView;
 @property (nonatomic, strong) UIBarButtonItem *backButton;
 @property (strong, nonatomic) UIActivityIndicatorView *indicator;
 @property (strong, nonatomic) VMArticleOptions *articleOptionsView;
-
+@property (strong, nonatomic) ACAccountStore *accountStore;
+@property (strong, nonatomic) ACAccount *fbAccount;
 @end
 
 @implementation VMArticleViewController
@@ -60,7 +65,8 @@
     
     //Setup the optional tools view.
     CGRect rect = CGRectMake(0.0, 0.0, 320.0, 568.0);
-    self.articleOptionsView = [[VMArticleOptions alloc] initWithFrame:rect height:100.0f];
+    self.articleOptionsView = [[VMArticleOptions alloc] initWithFrame:rect viewController:self height:100.0f];
+    [self.articleOptionsView setDelegate:self];
     [self.view addSubview:self.articleOptionsView];
     
     //Override the back button.
@@ -94,6 +100,120 @@
 - (IBAction)showToolsHandler:(id)sender {
     [self.articleOptionsView toggleDropDown];
 }
+
+#pragma mark VMArticleOptions delegate methods
+-(void)twitterButtonTapped {
+    NSLog(@"Twitter button is clicked");
+    
+    SLComposeViewController *sharingComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+    
+    SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled) {
+            
+            NSLog(@"Cancelled");
+            
+        } else {
+            NSLog(@"Posting to twitter.");
+            
+            //request update user participation
+            NSLog(@"The result %d", result);
+        }
+        
+        [sharingComposer dismissViewControllerAnimated:YES completion:nil];
+    };
+    [sharingComposer setCompletionHandler:completionHandler];
+    //[sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
+    
+    [sharingComposer addURL:[NSURL URLWithString:self.articleURL]];
+    
+    [self presentViewController:sharingComposer animated:YES completion:^{
+        for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
+            for (UIView *viewLayer2 in [viewLayer1 subviews]) {
+                if ([viewLayer2 isKindOfClass:[UIView class]]) {
+                    for (UIView *viewLayer3 in [viewLayer2 subviews]) {
+                        if ([viewLayer3 isKindOfClass:[UITextView class]]) {
+                            [(UITextView *)viewLayer3 setDelegate:self];
+                            sharingTextView = (UITextView *)viewLayer3;
+                        }
+                    }
+                }
+            }
+        }
+    }];
+    
+}
+
+-(void)facebookButtonTapped {
+    // Initialize the account store
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    
+    if (accountStore == nil) {
+        accountStore = [[ACAccountStore alloc] init];
+    }
+    
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+        NSLog(@"I'm totally logged in");
+        //App id: 474606345992201
+        //Secret key: 6cf03ae9cb0976ec0736557edbe14544
+        
+        ACAccountType * facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+        
+        NSDictionary *options = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                 @"474606345992201", ACFacebookAppIdKey,
+                                 [NSArray arrayWithObject:@"email"], ACFacebookPermissionsKey,
+                                 ACFacebookAudienceKey, ACFacebookAudienceEveryone,
+                                 nil];
+        
+        [accountStore requestAccessToAccountsWithType:facebookAccountType options:options completion:^(BOOL granted, NSError *error) {
+            if (granted) {
+                NSLog(@"Success");
+                NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
+                
+                ACAccount *fbAccount = [accounts lastObject];
+                
+                NSLog(@"===== username %@", fbAccount.userFullName);
+            }
+        }];
+    }else {
+        NSLog(@"Access not granted");
+    }
+    
+    
+    SLComposeViewController *sharingComposer = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    
+    SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
+        if (result == SLComposeViewControllerResultCancelled) {
+            
+            NSLog(@"Cancelled");
+            
+        } else {
+            NSLog(@"Posting to facebook.");
+        }
+        
+        [sharingComposer dismissViewControllerAnimated:YES completion:nil];
+    };
+    [sharingComposer setCompletionHandler:completionHandler];
+    //[sharingComposer setInitialText:[NSString stringWithFormat:@"%@ %@",[self editableText],[self permanentText]]];
+    
+    [sharingComposer addURL:[NSURL URLWithString:self.articleURL]];
+    
+    [self presentViewController:sharingComposer animated:YES completion:^{
+        for (UIView *viewLayer1 in [[sharingComposer view] subviews]) {
+            for (UIView *viewLayer2 in [viewLayer1 subviews]) {
+                if ([viewLayer2 isKindOfClass:[UIView class]]) {
+                    for (UIView *viewLayer3 in [viewLayer2 subviews]) {
+                        if ([viewLayer3 isKindOfClass:[UITextView class]]) {
+                            [(UITextView *)viewLayer3 setDelegate:self];
+                            sharingTextView = (UITextView *)viewLayer3;
+                        }
+                    }
+                }
+            }
+        }
+    }];
+    
+}
+
 
 #pragma mark VMArticlePreviewView delegate method
 -(void)articlePreviewMoved:(float)offset {

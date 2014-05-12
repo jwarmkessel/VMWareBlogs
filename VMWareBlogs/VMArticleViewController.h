@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "VMArticlePreviewView.h"
+#import "VMArticleOptions.h"
 
-@interface VMArticleViewController : UIViewController <UIWebViewDelegate, CustomClassDelegate>
+@interface VMArticleViewController : UIViewController <UIWebViewDelegate, CustomClassDelegate, VMArticleOptionsDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong)NSString *articleURL;
 @property (nonatomic, strong)NSString *articleTitle;

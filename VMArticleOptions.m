@@ -8,16 +8,22 @@
 
 #import "VMArticleOptions.h"
 #import "VMCommon.h"
+#import <Social/Social.h>
 
-@interface VMArticleOptions ()
+@interface VMArticleOptions (){
+    UITextView *sharingTextView;
+}
+
 @property (strong, nonatomic) VMCommon *common;
 @property (strong, nonatomic) UIView *dropDownView;
+@property (strong, nonatomic) id viewController;
 @end
 
 @implementation VMArticleOptions
 @synthesize isHidden;
+@synthesize viewController;
 
-- (id)initWithFrame:(CGRect)frame height:(float)height {
+- (id)initWithFrame:(CGRect)frame viewController:(id)vc height:(float)height {
     self = [super initWithFrame:frame];
     if (self) {
         [self setBackgroundColor:[UIColor clearColor]];
@@ -52,11 +58,20 @@
     [facebookBtn setImage:[UIImage imageNamed:@"facebook.png"] forState:UIControlStateNormal];
     [facebookBtn setImage:[UIImage imageNamed:@"facebook.png"] forState:UIControlStateSelected];
     
+    [facebookBtn addTarget:self
+                    action:@selector(fbParticipationBtnHandler)
+          forControlEvents:UIControlEventTouchUpInside];
+
+    
     [_dropDownView addSubview:facebookBtn];
     
     UIButton *twitterBtn = [[UIButton alloc] initWithFrame:CGRectMake(175.0, 21.0, 58.0, 58.0)];
     [twitterBtn setImage:[UIImage imageNamed:@"twitter.png"] forState:UIControlStateNormal];
     [twitterBtn setImage:[UIImage imageNamed:@"twitter.png"] forState:UIControlStateSelected];
+    
+    [twitterBtn addTarget:self
+                   action:@selector(twitterParticipationBtnHandler)
+         forControlEvents:UIControlEventTouchUpInside];
     
     [_dropDownView addSubview:twitterBtn];
 }
@@ -102,6 +117,15 @@
         self.userInteractionEnabled = NO;
     }];
 }
+
+- (void)fbParticipationBtnHandler {
+    [self.delegate facebookButtonTapped];
+}
+
+- (void)twitterParticipationBtnHandler {    
+    [self.delegate twitterButtonTapped];
+}
+
 
 
 @end

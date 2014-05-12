@@ -12,6 +12,18 @@
 
 @property (nonatomic, assign, getter=isHidden) BOOL isHidden;
 
-- (id)initWithFrame:(CGRect)frame height:(float)height;
+// define delegate property
+@property (nonatomic, assign) id  delegate;
+
+- (id)initWithFrame:(CGRect)frame viewController:(id)vc height:(float)height;
 - (void)toggleDropDown;
+@end
+
+// define the protocol for the delegate
+@protocol VMArticleOptionsDelegate
+
+// define protocol functions that can be used in any class using this delegate
+-(void)twitterButtonTapped;
+-(void)facebookButtonTapped;
+
 @end

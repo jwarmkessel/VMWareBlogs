@@ -23,6 +23,7 @@
 		833253DF19205F1700A3F5EF /* facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 833253DB19205F1700A3F5EF /* facebook@2x.png */; };
 		833253E019205F1700A3F5EF /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 833253DC19205F1700A3F5EF /* twitter.png */; };
 		833253E119205F1700A3F5EF /* twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 833253DD19205F1700A3F5EF /* twitter@2x.png */; };
+		833253E3192064B100A3F5EF /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 833253E2192064B100A3F5EF /* Social.framework */; };
 		83585EAA19122ED8001D5275 /* VMArticePreviewScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83585EA919122ED8001D5275 /* VMArticePreviewScrollView.m */; };
 		8359AED31917508C00CAD9B9 /* VMArticlePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8359AED21917508C00CAD9B9 /* VMArticlePreviewView.m */; };
 		8359AFE81919630400CAD9B9 /* VMOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8359AFE71919630400CAD9B9 /* VMOverlayView.m */; };
@@ -104,6 +105,7 @@
 		833253DB19205F1700A3F5EF /* facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook@2x.png"; sourceTree = "<group>"; };
 		833253DC19205F1700A3F5EF /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
 		833253DD19205F1700A3F5EF /* twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter@2x.png"; sourceTree = "<group>"; };
+		833253E2192064B100A3F5EF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		83585EA819122ED8001D5275 /* VMArticePreviewScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMArticePreviewScrollView.h; path = VMWareBlogs/VMArticePreviewScrollView.h; sourceTree = "<group>"; };
 		83585EA919122ED8001D5275 /* VMArticePreviewScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMArticePreviewScrollView.m; path = VMWareBlogs/VMArticePreviewScrollView.m; sourceTree = "<group>"; };
 		8359AED11917508C00CAD9B9 /* VMArticlePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMArticlePreviewView.h; path = VMWareBlogs/VMArticlePreviewView.h; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				833253E3192064B100A3F5EF /* Social.framework in Frameworks */,
 				8327409019070C000015923A /* QuartzCore.framework in Frameworks */,
 				83FE34DE18CFCCA10080C64C /* CoreData.framework in Frameworks */,
 				83FE341718CE6F450080C64C /* CoreGraphics.framework in Frameworks */,
@@ -379,6 +382,7 @@
 		83FE341318CE6F450080C64C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				833253E2192064B100A3F5EF /* Social.framework */,
 				8327408F19070C000015923A /* QuartzCore.framework */,
 				83FE34DD18CFCCA10080C64C /* CoreData.framework */,
 				83FE341418CE6F450080C64C /* Foundation.framework */,
