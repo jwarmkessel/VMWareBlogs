@@ -78,24 +78,57 @@ BOOL dragging;
     
     [self.testView addSubview:self.titleTextView];
     
+    //Define the range you're interested in
+    NSRange stringRange = {0, MIN([text length], 550)};
+    
+    //Adjust the range to include dependent chars
+    stringRange = [text rangeOfComposedCharacterSequencesForRange:stringRange];
+    
+    //Now you can create the short string
+    NSString *shortString = [text substringWithRange:stringRange];
+    
     self.descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(0.0, 110.0, 320.0, 600.0)];
     [self.testView addSubview:self.descriptionTextView];
 
     //THIS WILL ONLY WORK FOR iOS 6 and greater.
-    NSString *labelText = text;
+    NSString *labelText = shortString;
     labelText = [NSString stringWithFormat:@"\t%@", labelText];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:labelText];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineSpacing:8];
     [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[self colorWithHexString:@"5D5B5B"] range:NSMakeRange(0, [attributedString length])];
+    
+    NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:@"...swipe up for full article"];
+    NSLog(@"Length of attrStr %lu", (unsigned long)attrStr.length);
+    NSMutableAttributedString *coloredText = [[NSMutableAttributedString alloc] initWithAttributedString:attrStr];
+    [coloredText addAttribute:NSForegroundColorAttributeName value:[self colorWithHexString:@"641100"] range:NSMakeRange(0, [attrStr length])];
+    
+    [attributedString appendAttributedString:coloredText];
     
     //Set the scrollview size.
     self.descriptionTextView.attributedText = attributedString;
     self.descriptionTextView.textAlignment = NSTextAlignmentLeft;
-    [self.descriptionTextView setTextColor:[self colorWithHexString:@"5D5B5B"]];
+    //[self.descriptionTextView setTextColor:[self colorWithHexString:@"5D5B5B"]];
     [self.descriptionTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
     
-    NSLog(@"CHeck the description Text Field Height %f", self.descriptionTextView.frame.size.height);
+    NSLog(@"Text Length %lu, Attributed Text Length %lu", (unsigned long)self.descriptionTextView.text.length, (unsigned long)self.descriptionTextView.attributedText.length);
+    
+    CGSize size = [text sizeWithAttributes:
+                   @{NSFontAttributeName:
+                         [UIFont fontWithName:@"HelveticaNeue" size:15.0f]}];
+
+    NSLog(@"Size Check %f", size.height);
+    
+    UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:15.0f];
+//    CGSize size = [string sizeWithFont:font
+//                     constrainedToSize:myUITextView.frame.size
+//                         lineBreakMode:UILineBreakModeWordWrap]; // default mode
+    
+    float numberOfLines = size.height / font.lineHeight;
+
+    NSLog(@"Number of lines %f", numberOfLines);
+//    NSLog(@"CHeck the description Text Field Height %f", self.descriptionTextView.frame.size.height);
 }
 /*
  To get the offset. Get touch began location and touch end location.
@@ -171,9 +204,9 @@ BOOL dragging;
         
         test += touchLocation.y - oldY;
         //TODO
-        if(test < 0) return;
+        //if(test < 0) return;
         
-        NSLog(@"Degrees to move %f", -1 * test * M_PI );
+        //NSLog(@"Degrees to move %f", -1 * test * M_PI );
         //frame.origin.x = label.frame.origin.x + touchLocation.x - oldX;
         frame.origin.y = self.frame.origin.y + touchLocation.y - oldY;
         
@@ -185,7 +218,7 @@ BOOL dragging;
         self.testView.layer.transform = rotationAndPerspectiveTransform;
         [UIView commitAnimations];
         
-        [self.delegate articlePreviewMoved:test];
+        //[self.delegate articlePreviewMoved:test];
         
         label.frame = frame;
     }
