@@ -45,6 +45,7 @@
         NSLog(@"NSURLConnection Error");
     }
 
+    NSLog(@"Returning response");
     return responseString;
 }
 

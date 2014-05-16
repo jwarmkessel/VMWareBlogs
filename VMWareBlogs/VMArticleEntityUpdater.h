@@ -10,9 +10,17 @@
 
 @interface VMArticleEntityUpdater : NSObject
 @property (atomic, strong) NSManagedObjectContext *updateContext;
-@property (nonatomic, assign) BOOL updateFlag;
+@property (nonatomic, getter = isUpdating) BOOL updating;
 @property (nonatomic, strong) NSTimer *updateBlogListTimer;
-
+@property (nonatomic, assign) id delegate;
 - (void)updateList;
+
+@end
+
+@protocol VMArticleEntityUpdaterDelegate
+
+@optional
+-(void)articleEntityUpdaterDidFinishUpdating;
+-(void)articleEntityUpdaterDidError;
 
 @end

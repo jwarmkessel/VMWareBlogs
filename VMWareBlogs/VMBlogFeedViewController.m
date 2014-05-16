@@ -194,17 +194,19 @@
 
 - (void)updateList:(id)sender {
     NSLog(@"Update Core Manager");
-
-    if(self.updateFlag) {
-        NSLog(@"No update this time");
-        return;
-    }
-
-    NSLog(@"Setting flag to YES");
-    self.updateFlag = YES;
     
     VMArticleEntityUpdater *updater = [[VMArticleEntityUpdater alloc] init];
+    [updater setDelegate:self];
     [updater updateList];
+}
+
+#pragma mark - VMarticleEntityUpdater delegates
+
+-(void)articleEntityUpdaterDidFinishUpdating {
+    NSLog(@"articleEntityUpdaterDidFinishUpdating");
+}
+-(void)articleEntityUpdaterDidError {
+    NSLog(@"articleEntityUpdaterDidError");
 }
 
 #pragma mark - Table view data source
@@ -255,7 +257,7 @@
         [headerView setBackgroundColor:[self colorWithHexString:@"2F3485"]];
         UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(5.0f, 0, self.tableView.bounds.size.width, 21.5)];
         [sectionTitle setFont:[UIFont fontWithName:@"ArialMT" size:13]];
-        sectionTitle.text = @"Trending now...";
+        sectionTitle.text = @"The Latest Posts From All VMware Blogs";
         sectionTitle.textColor = [UIColor whiteColor];
         [headerView addSubview: sectionTitle];
     }
@@ -585,6 +587,8 @@
     [self.tableView endUpdates];
 
 }
+
+#pragma mark - common functions.
 
 -(UIColor*)colorWithHexString:(NSString*)hex {
     NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];

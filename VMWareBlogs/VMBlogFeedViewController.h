@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <AwesomeMenu.h>
+#import "VMArticleEntityUpdater.h"
 
-@interface VMBlogFeedViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface VMBlogFeedViewController : UITableViewController <NSFetchedResultsControllerDelegate, VMArticleEntityUpdaterDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic, strong) NSMutableArray *blogArray;

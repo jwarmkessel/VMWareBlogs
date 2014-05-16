@@ -140,7 +140,6 @@
             }
         }
     }];
-    
 }
 
 -(void)facebookButtonTapped {
