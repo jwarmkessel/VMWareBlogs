@@ -204,7 +204,7 @@ BOOL dragging;
         
         test += touchLocation.y - oldY;
         //TODO
-        //if(test < 0) return;
+//        if(test < 0) return;
         
         //NSLog(@"Degrees to move %f", -1 * test * M_PI );
         //frame.origin.x = label.frame.origin.x + touchLocation.x - oldX;

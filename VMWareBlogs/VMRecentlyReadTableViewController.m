@@ -9,6 +9,7 @@
 #import "VMRecentlyReadTableViewController.h"
 #import "VMAppDelegate.h"
 #import "RecentArticle.h"
+#import "VMArticleViewController.h"
 
 @interface VMRecentlyReadTableViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -67,6 +68,10 @@
 
 #pragma mark - Table view data source
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 80;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 
@@ -79,7 +84,7 @@
 
     // Return the number of rows in the section.
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    NSLog(@"------------------- >NUMBER OF ROWS %d", [sectionInfo numberOfObjects]);
+    NSLog(@"%d", [sectionInfo numberOfObjects]);
     return [sectionInfo numberOfObjects];
 }
 
@@ -90,7 +95,11 @@
     NSLog(@"Configuring Cell");
     RecentArticle *recentArticle = [_fetchedResultsController objectAtIndexPath:indexPath];
     
-    cell.textLabel.text = recentArticle.title;
+    UITextView *titleTextView = (UITextView *)[cell viewWithTag:101];
+
+    [titleTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
+    NSLog(@"Cell title %@", recentArticle.title);
+    titleTextView.text = recentArticle.title;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -109,21 +118,12 @@
 
 }
 
-
-
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-
-
-
-
-
-
-
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -147,7 +147,10 @@
     [super setEditing:editing animated:animated];
 }
 
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"articleSegue" sender:self];
+}
 
 
 
@@ -207,7 +210,7 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -215,8 +218,20 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    VMArticleViewController *vc = (VMArticleViewController *)[segue destinationViewController];
+    
+    RecentArticle *recentArticle = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    
+    NSLog(@"Selecting the link %@", recentArticle.link);
+    
+    vc.articleURL = recentArticle.link;
+    
+    NSLog(@"Selecting the link %@", recentArticle.descr);
+    vc.articleDescription = recentArticle.descr;
+    vc.articleTitle = recentArticle.title;
+
 }
-*/
+
 
 #pragma mark - Fetched results controller
 
