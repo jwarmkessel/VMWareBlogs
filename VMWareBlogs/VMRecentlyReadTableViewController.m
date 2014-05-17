@@ -11,6 +11,8 @@
 #import "RecentArticle.h"
 #import "VMArticleViewController.h"
 
+#import "VMJunkArticleViewController.h"
+
 @interface VMRecentlyReadTableViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @end
@@ -32,6 +34,7 @@
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
+
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -66,6 +69,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
 #pragma mark - Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -84,7 +91,7 @@
 
     // Return the number of rows in the section.
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    NSLog(@"%d", [sectionInfo numberOfObjects]);
+    NSLog(@"%lu", (unsigned long)[sectionInfo numberOfObjects]);
     return [sectionInfo numberOfObjects];
 }
 
@@ -96,6 +103,9 @@
     RecentArticle *recentArticle = [_fetchedResultsController objectAtIndexPath:indexPath];
     
     UITextView *titleTextView = (UITextView *)[cell viewWithTag:101];
+    titleTextView.editable = NO;
+    titleTextView.selectable = NO;
+    titleTextView.userInteractionEnabled = NO;
 
     [titleTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
     NSLog(@"Cell title %@", recentArticle.title);
@@ -149,11 +159,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"articleSegue" sender:self];
+    [self performSegueWithIdentifier:@"recentlyReadArticleSeque" sender:self];
 }
-
-
-
 
 
 // Override to support editing the table view.
@@ -218,17 +225,17 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    VMArticleViewController *vc = (VMArticleViewController *)[segue destinationViewController];
+    VMArticlePreviewView *vc = (VMArticlePreviewView *)[segue destinationViewController];
     
-    RecentArticle *recentArticle = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
-    
-    NSLog(@"Selecting the link %@", recentArticle.link);
-    
-    vc.articleURL = recentArticle.link;
-    
-    NSLog(@"Selecting the link %@", recentArticle.descr);
-    vc.articleDescription = recentArticle.descr;
-    vc.articleTitle = recentArticle.title;
+//    RecentArticle *recentArticle = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+//    
+//    NSLog(@"Selecting the link %@", recentArticle.link);
+//    
+//    vc.articleURL = recentArticle.link;
+//    
+//    NSLog(@"Selecting the link %@", recentArticle.descr);
+//    vc.articleDescription = recentArticle.descr;
+//    vc.articleTitle = recentArticle.title;
 
 }
 

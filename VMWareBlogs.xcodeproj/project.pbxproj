@@ -13,6 +13,7 @@
 		8311E32F18F52CC40053B4D6 /* folderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8311E32D18F52CC40053B4D6 /* folderIcon.png */; };
 		8311E33118F52FAE0053B4D6 /* markAsReadIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8311E33018F52FAE0053B4D6 /* markAsReadIcon.png */; };
 		8311E33218F52FAE0053B4D6 /* markAsReadIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8311E33018F52FAE0053B4D6 /* markAsReadIcon.png */; };
+		8318DFCE19270CCC00463784 /* VMJunkArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8318DFCD19270CCC00463784 /* VMJunkArticleViewController.m */; };
 		8327408D190701230015923A /* vmWareBlogsTestPlaceholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8327408C190701230015923A /* vmWareBlogsTestPlaceholder.jpg */; };
 		8327408E190701230015923A /* vmWareBlogsTestPlaceholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8327408C190701230015923A /* vmWareBlogsTestPlaceholder.jpg */; };
 		8327409019070C000015923A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8327408F19070C000015923A /* QuartzCore.framework */; };
@@ -93,6 +94,8 @@
 		8311E32B18F33F850053B4D6 /* VMArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMArticleViewController.m; path = VMWareBlogs/VMArticleViewController.m; sourceTree = "<group>"; };
 		8311E32D18F52CC40053B4D6 /* folderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folderIcon.png; sourceTree = "<group>"; };
 		8311E33018F52FAE0053B4D6 /* markAsReadIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = markAsReadIcon.png; sourceTree = "<group>"; };
+		8318DFCC19270CCC00463784 /* VMJunkArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMJunkArticleViewController.h; sourceTree = "<group>"; };
+		8318DFCD19270CCC00463784 /* VMJunkArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMJunkArticleViewController.m; sourceTree = "<group>"; };
 		8327408C190701230015923A /* vmWareBlogsTestPlaceholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = vmWareBlogsTestPlaceholder.jpg; sourceTree = "<group>"; };
 		8327408F19070C000015923A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		833253CB191EF2B000A3F5EF /* VMCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMCommon.h; sourceTree = "<group>"; };
@@ -226,6 +229,8 @@
 				8359AED21917508C00CAD9B9 /* VMArticlePreviewView.m */,
 				833253CE191F50B800A3F5EF /* VMArticleOptionsViewController.h */,
 				833253CF191F50B800A3F5EF /* VMArticleOptionsViewController.m */,
+				8318DFCC19270CCC00463784 /* VMJunkArticleViewController.h */,
+				8318DFCD19270CCC00463784 /* VMJunkArticleViewController.m */,
 			);
 			name = "Article Preview";
 			sourceTree = "<group>";
@@ -602,6 +607,7 @@
 				8359AFE81919630400CAD9B9 /* VMOverlayView.m in Sources */,
 				83E0742318FEFF0B00ACBD63 /* VMArticleCell.m in Sources */,
 				83FE342118CE6F450080C64C /* main.m in Sources */,
+				8318DFCE19270CCC00463784 /* VMJunkArticleViewController.m in Sources */,
 				83FE34ED18D912770080C64C /* VMNavigationViewController.m in Sources */,
 				83FE342518CE6F450080C64C /* VMAppDelegate.m in Sources */,
 				83FE344E18CE75670080C64C /* BlogModel.xcdatamodeld in Sources */,

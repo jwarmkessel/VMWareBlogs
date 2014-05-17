@@ -49,6 +49,11 @@
     [super viewDidLoad];
 
     // Do any additional setup after loading the view.
+    self.navigationController.navigationBarHidden = NO;
+
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) { // if iOS 7
+        self.edgesForExtendedLayout = UIRectEdgeNone; //layout adjustements
+    }
         
     //Setup Article Preview and segue animations.
     [self.articlePreviewView setDescriptionWithAttributedText:self.articleDescription];

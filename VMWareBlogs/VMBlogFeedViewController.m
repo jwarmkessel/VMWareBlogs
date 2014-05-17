@@ -57,6 +57,8 @@
     [self.tableView setDataSource:self];
     
     [self.tableView setBackgroundColor:[self colorWithHexString:@"24232F"]];
+    
+    //TODO status bar: https://developer.apple.com/library/ios/qa/qa1797/_index.html
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -227,7 +229,7 @@
 //    NSLog(@"Number of rows in tableView %lu", (unsigned long)[self.blogArray count]);
 
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    NSLog(@"------------------- >NUMBER OF ROWS %d", [sectionInfo numberOfObjects]);
+    NSLog(@"%lu", (unsigned long)[sectionInfo numberOfObjects]);
     return [sectionInfo numberOfObjects];
 }
 
@@ -364,7 +366,6 @@
     [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
                                                        withObject:notification
                                                     waitUntilDone:YES];
-
 }
 
 // Customize the appearance of table view cells.

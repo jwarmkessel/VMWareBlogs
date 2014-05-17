@@ -87,11 +87,11 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="101" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZK6-3i-lmL">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="101" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZK6-3i-lmL">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
@@ -107,7 +107,7 @@
                     <tabBarItem key="tabBarItem" title="Item" id="Qbv-07-fp5"/>
                     <navigationItem key="navigationItem" title="Recently Read" id="0nO-to-r7l"/>
                     <connections>
-                        <segue destination="rV9-Ve-Kre" kind="modal" identifier="articleSegue" id="VXo-a7-rPB"/>
+                        <segue destination="z6N-nh-OuJ" kind="push" identifier="recentlyReadArticleSeque" id="4Kk-ck-90F"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aTX-Mt-zOJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -264,6 +264,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="view" destination="FXG-Lu-cou" id="cUA-ay-vXc"/>
                         <segue destination="rV9-Ve-Kre" kind="push" identifier="articleSegue" id="UzI-rs-gnM"/>
@@ -282,7 +283,7 @@
                         <viewControllerLayoutGuide type="bottom" id="SR3-ns-45v"/>
                     </layoutGuides>
                     <view key="view" tag="100" contentMode="scaleToFill" id="78U-ev-ggP">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="936"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUB-D7-ydx" customClass="VMArticlePreviewView">
@@ -314,7 +315,49 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1209" y="-514"/>
+            <point key="canvasLocation" x="991" y="-354"/>
+        </scene>
+        <!--Article View Controller-->
+        <scene sceneID="wmU-sx-gvs">
+            <objects>
+                <viewController id="z6N-nh-OuJ" customClass="VMArticleViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UqN-uF-jpT"/>
+                        <viewControllerLayoutGuide type="bottom" id="AAf-Fc-WMi"/>
+                    </layoutGuides>
+                    <view key="view" tag="100" contentMode="scaleToFill" id="hU7-lR-maf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dK8-49-WZv" customClass="VMArticlePreviewView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="jh8-rP-FzN">
+                        <barButtonItem key="rightBarButtonItem" tag="101" style="plain" systemItem="action" id="56F-7O-kmE">
+                            <connections>
+                                <action selector="showToolsHandler:" destination="z6N-nh-OuJ" id="HWR-y1-kiE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <size key="freeformSize" width="320" height="1000"/>
+                    <connections>
+                        <outlet property="articlePreviewView" destination="dK8-49-WZv" id="S9g-NV-BMe"/>
+                        <outlet property="toolBarButton" destination="56F-7O-kmE" id="tgO-JB-kM1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="02e-os-3pO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer delaysTouchesEnded="NO" id="Lvd-CT-QGt">
+                    <connections>
+                        <action selector="toolBarContainerHandler:" destination="z6N-nh-OuJ" id="3Z9-WX-AYs"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="991" y="-1117"/>
         </scene>
         <!--Test Scroll View Controller-->
         <scene sceneID="yKn-OX-rxl">
@@ -352,7 +395,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fwj-h2-ody" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1794" y="-1194"/>
+            <point key="canvasLocation" x="2000" y="-1218"/>
         </scene>
         <!--Test View Controller-->
         <scene sceneID="VO0-hH-FcI">
@@ -391,7 +434,4 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="VXo-a7-rPB"/>
-    </inferredMetricsTieBreakers>
 </document>
