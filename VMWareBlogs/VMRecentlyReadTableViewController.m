@@ -225,17 +225,17 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    VMArticlePreviewView *vc = (VMArticlePreviewView *)[segue destinationViewController];
+    VMArticleViewController *vc = (VMArticleViewController *)[segue destinationViewController];
     
-//    RecentArticle *recentArticle = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
-//    
-//    NSLog(@"Selecting the link %@", recentArticle.link);
-//    
-//    vc.articleURL = recentArticle.link;
-//    
-//    NSLog(@"Selecting the link %@", recentArticle.descr);
-//    vc.articleDescription = recentArticle.descr;
-//    vc.articleTitle = recentArticle.title;
+    RecentArticle *recentArticle = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    
+    NSLog(@"Selecting the link %@", recentArticle.link);
+    
+    vc.articleURL = recentArticle.link;
+    
+    NSLog(@"Selecting the link %@", recentArticle.descr);
+    vc.articleDescription = recentArticle.descr;
+    vc.articleTitle = recentArticle.title;
 
 }
 

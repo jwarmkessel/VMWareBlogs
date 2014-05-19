@@ -49,12 +49,12 @@
     [super viewDidLoad];
 
     // Do any additional setup after loading the view.
-    self.navigationController.navigationBarHidden = NO;
+//    self.navigationController.navigationBarHidden = NO;
 
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) { // if iOS 7
         self.edgesForExtendedLayout = UIRectEdgeNone; //layout adjustements
     }
-        
+    
     //Setup Article Preview and segue animations.
     [self.articlePreviewView setDescriptionWithAttributedText:self.articleDescription];
     [self.articlePreviewView setDelegate:self];
@@ -240,7 +240,7 @@
 }
 
 -(void)articlePreviewFinishedMoving:(float)offset {
-
+    NSLog(@"articlePreviewFinishedMoving");
     [UIView beginAnimations:nil context:nil];
     CATransform3D transform = CATransform3DIdentity;
     transform.m34 = 1.0 / -2000;
@@ -252,20 +252,25 @@
     
     self.articlePreviewView.testView.layer.transform = rotationAndPerspectiveTransform;
     [UIView commitAnimations];
+
+    [UIView animateWithDuration:0.3 animations:^{
+        self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
+        self.articlePreviewView.testView.alpha = 0;
+    }];
     
-    if(offset < -200) {
-        [UIView animateWithDuration:0.3 animations:^{
+//    if(offset < -200) {
+//        [UIView animateWithDuration:0.3 animations:^{
 //            self.articlePreviewView.testView.alpha = 0;
-            
-            self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
-        }];
-    } else if(offset > -200) {
-        [UIView animateWithDuration:0.1 animations:^{
-            self.articlePreviewView.testView.alpha = 1;
-            
-            self.webView.layer.frame = CGRectMake(0.0, 475.0, 320.0, 568.0);
-        }];
-    }
+//            
+//            self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
+//        }];
+//    } else if(offset > -200) {
+//        [UIView animateWithDuration:0.1 animations:^{
+//            self.articlePreviewView.testView.alpha = 1;
+//            
+//            self.webView.layer.frame = CGRectMake(0.0, 475.0, 320.0, 568.0);
+//        }];
+//    }
 }
 
 - (void)handleBack:(id)sender {
@@ -305,7 +310,23 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"webViewDidFinishLoad");
+    NSLog(@"webViewDidFinishLoad %hhd", webView.loading);
+    if(webView.loading < 1) {
+        NSLog(@"FINISHED LOADING");
+        CGRect rect = CGRectMake(0.0, 0.0, 320.0, 58.0);
+        rect.origin.y = self.articlePreviewView.frame.size.height - rect.size.height - (rect.size.height/2);
+        UILabel *arrowLabel = [[UILabel alloc] initWithFrame:rect];
+        arrowLabel.text = @"^";
+        arrowLabel.textAlignment = NSTextAlignmentCenter;
+        [arrowLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:40.0f]];
+        arrowLabel.alpha = 0;
+        [self.articlePreviewView addSubview:arrowLabel];
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            [arrowLabel setAlpha:0.8];
+        }];
+    }
+    
     [_indicator stopAnimating];
 }
 
