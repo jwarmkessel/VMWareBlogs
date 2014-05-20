@@ -31,8 +31,9 @@
     @property (nonatomic, strong) dispatch_queue_t backgroundQueue;
     @property (atomic, strong) NSManagedObjectContext *moc;
     @property (nonatomic, assign) BOOL updateFlag;
-
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
+    @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+    @property (nonatomic, strong) UIBarButtonItem *activityIndicatorBarButton;
+    @property (strong, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
     - (IBAction)refreshListHandler:(id)sender;
 @end
 
@@ -57,18 +58,6 @@
     
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
-    
-
-    
-    NSMutableArray *toolbarButtons = [self.toolbarItems mutableCopy];
-    
-    // This is how you remove the button from the toolbar and animate it
-//    for (UIBarButtonItem *barButton in toolbarButtons) {
-//            barButton.
-//    }
-    
-    [toolbarButtons removeObject:self.refreshButton];
-    [self setToolbarItems:toolbarButtons animated:YES];
     
     [self.tableView setBackgroundColor:[self colorWithHexString:@"24232F"]];
     
@@ -219,10 +208,20 @@
 #pragma mark - VMarticleEntityUpdater delegates
 
 -(void)articleEntityUpdaterDidFinishUpdating {
-    NSLog(@"articleEntityUpdaterDidFinishUpdating");
+    NSLog(@"articleEntityUpdaterDidFinishUpdating Stop animation");
+    [self.activityIndicator stopAnimating];
+
+    self.navigationItem.rightBarButtonItem = nil;
+    
+    self.navigationItem.rightBarButtonItem = self.refreshButton;
 }
 -(void)articleEntityUpdaterDidError {
     NSLog(@"articleEntityUpdaterDidError");
+    [self.activityIndicator stopAnimating];
+    
+    self.navigationItem.rightBarButtonItem = nil;
+    
+    self.navigationItem.rightBarButtonItem = self.refreshButton;
 }
 
 #pragma mark - Table view data source
@@ -643,16 +642,23 @@
 
 - (IBAction)refreshListHandler:(id)sender {
     
-    if(!self.updateFlag) {
-        
-        NSLog(@"Invalidate timer");
-        //Invalidate the previous timer.
-        [_updateBlogListTimer invalidate];
-        _updateBlogListTimer = nil;
-        
-        [self performSelectorInBackground:@selector(updateList:) withObject:self];
-    } else {
-        NSLog(@"No update this time");
+    
+    self.navigationItem.rightBarButtonItem = nil;
+    
+    //self.navigationItem.rightBarButtonItem = self.refreshButton;
+    
+    if(!self.activityIndicatorBarButton) {
+        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.activityIndicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
     }
+    
+    [self navigationItem].rightBarButtonItem = self.activityIndicatorBarButton;
+    [self.activityIndicator startAnimating];
+    self.activityIndicator.hidesWhenStopped = YES;
+    //Invalidate the previous timer.
+    [_updateBlogListTimer invalidate];
+    _updateBlogListTimer = nil;
+    
+    [self performSelectorInBackground:@selector(updateList:) withObject:self];
 }
 @end
