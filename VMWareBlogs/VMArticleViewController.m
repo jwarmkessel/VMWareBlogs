@@ -71,12 +71,24 @@
     [self.webView loadRequest:urlRequest];
     [self.view addSubview:self.webView];
     
+    CALayer *upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[UIColor grayColor] CGColor];
+    upperBorder.frame = CGRectMake(0, 0, CGRectGetWidth(self.webView.frame), 1.0f);
+    [self.webView.layer addSublayer:upperBorder];
+    
     CGRect indicatorView = self.webView.frame;
     indicatorView.size.width = 58.0f;
     indicatorView.size.height = 58.0f;
-    self.indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:indicatorView];
+    indicatorView.origin.x = 160.0f;
+    indicatorView.origin.y = 300.0f;
+    self.indicatorView = [[UIActivityIndicatorView alloc]
+                          initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [self.indicatorView setCenter:self.webView.center];
-    [self.webView addSubview:self.indicatorView];
+    
+    [self.indicatorView startAnimating];
+    //[self.view addSubview:self.indicatorView];
+    
+    [self.view addSubview:self.indicatorView];
     
     //Setup the optional tools view.
     CGRect rect = CGRectMake(0.0, 0.0, 320.0, 568.0);
@@ -266,6 +278,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
         self.articlePreviewView.testView.alpha = 0;
+        [self.indicatorView setCenter:self.view.center];
     }];
     
 //    if(offset < -200) {
@@ -316,11 +329,12 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    
+    NSLog(@"webViewDidStartLoad");
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"webViewDidFinishLoad %hhd", webView.loading);
+    [self.indicatorView stopAnimating];
     if(webView.loading < 1) {
         NSLog(@"FINISHED LOADING");
         CGRect rect = CGRectMake(0.0, 0.0, 320.0, 58.0);
