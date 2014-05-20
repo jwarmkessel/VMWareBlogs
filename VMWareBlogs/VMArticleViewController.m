@@ -21,6 +21,9 @@
 @property (strong, nonatomic) VMArticleOptions *articleOptionsView;
 @property (strong, nonatomic) ACAccountStore *accountStore;
 @property (strong, nonatomic) ACAccount *fbAccount;
+
+@property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
+
 @end
 
 @implementation VMArticleViewController
@@ -67,6 +70,13 @@
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url];
     [self.webView loadRequest:urlRequest];
     [self.view addSubview:self.webView];
+    
+    CGRect indicatorView = self.webView.frame;
+    indicatorView.size.width = 58.0f;
+    indicatorView.size.height = 58.0f;
+    self.indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:indicatorView];
+    [self.indicatorView setCenter:self.webView.center];
+    [self.webView addSubview:self.indicatorView];
     
     //Setup the optional tools view.
     CGRect rect = CGRectMake(0.0, 0.0, 320.0, 568.0);

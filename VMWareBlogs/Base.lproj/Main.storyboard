@@ -266,6 +266,7 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
+                        <outlet property="refreshButton" destination="5Ze-5f-tPD" id="cAQ-3H-9xo"/>
                         <outlet property="view" destination="FXG-Lu-cou" id="cUA-ay-vXc"/>
                         <segue destination="rV9-Ve-Kre" kind="push" identifier="articleSegue" id="UzI-rs-gnM"/>
                     </connections>

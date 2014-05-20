@@ -31,6 +31,8 @@
     @property (nonatomic, strong) dispatch_queue_t backgroundQueue;
     @property (atomic, strong) NSManagedObjectContext *moc;
     @property (nonatomic, assign) BOOL updateFlag;
+
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
     - (IBAction)refreshListHandler:(id)sender;
 @end
 
@@ -55,6 +57,18 @@
     
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
+    
+
+    
+    NSMutableArray *toolbarButtons = [self.toolbarItems mutableCopy];
+    
+    // This is how you remove the button from the toolbar and animate it
+//    for (UIBarButtonItem *barButton in toolbarButtons) {
+//            barButton.
+//    }
+    
+    [toolbarButtons removeObject:self.refreshButton];
+    [self setToolbarItems:toolbarButtons animated:YES];
     
     [self.tableView setBackgroundColor:[self colorWithHexString:@"24232F"]];
     
