@@ -39,6 +39,7 @@
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *filteredTableData;
 @property (assign, getter = isFilteredList) BOOL filteredList;
+@property (strong, nonatomic) UITapGestureRecognizer *tap;
 
 
 @end
@@ -102,10 +103,12 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:@"UIApplicationWillEnterForegroundNotification" object:nil];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                          action:@selector(dismissKeyboard)];
+    self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                  action:@selector(dismissKeyboard)];
     
-    [self.view addGestureRecognizer:tap];
+    [self.view addGestureRecognizer:self.tap];
+    
+    [self.tap setEnabled:NO];
 }
 
 
@@ -327,6 +330,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"didSelectRowAtIndexPath");
     
     NSManagedObjectContext *tempContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     
@@ -339,7 +343,13 @@
         
         VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        Blog *blog = [_fetchedResultsController objectAtIndexPath:indexPath];
+        Blog *blog;
+        
+        if(![self isFilteredList]) {
+            blog = [_fetchedResultsController objectAtIndexPath:indexPath];
+        } else {
+            blog = [self.filteredTableData objectAtIndex:indexPath.row];
+        }
 
         NSError *temporaryMOCError;
 
@@ -513,12 +523,20 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    
+    NSLog(@"prepareForSegue");
     //Stop the blog update;
     [_updateBlogListTimer invalidate];
     
     VMArticleViewController *vc = (VMArticleViewController *)[segue destinationViewController];
 
-    Blog *blog = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    Blog *blog;
+    
+    if(![self isFilteredList]) {
+        blog = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    } else {
+        blog = [self.filteredTableData objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+    }
     
     NSLog(@"Selecting the link %@", blog.link);
  
@@ -700,12 +718,13 @@
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     NSLog(@"searchBarShouldBeginEditing");
-    
+
     return YES;
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     NSLog(@"searchBarTextDidBeginEditing");
+    [self.tap setEnabled:YES];
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
@@ -715,6 +734,7 @@
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
     NSLog(@"searchBarTextDidEndEditing");
+    [self.tap setEnabled:NO];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {

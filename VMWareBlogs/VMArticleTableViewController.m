@@ -359,7 +359,7 @@
             
         case NSFetchedResultsChangeUpdate:
             NSLog(@"Results Change Update");
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self configureCell:(VMArticleCell *)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
