@@ -38,6 +38,7 @@
 
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *filteredTableData;
+@property (assign, getter = isFilteredList) BOOL filteredList;
 
 
 @end
@@ -66,6 +67,8 @@
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.searchBar setDelegate:self];
+    
+    self.filteredList = NO;
     
     [self.tableView setBackgroundColor:[self colorWithHexString:@"24232F"]];
     
@@ -263,9 +266,14 @@
 {
 //    NSLog(@"Number of rows in tableView %lu", (unsigned long)[self.blogArray count]);
 
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    NSLog(@"%lu", (unsigned long)[sectionInfo numberOfObjects]);
-    return [sectionInfo numberOfObjects];
+    if(![self isFilteredList]) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+        NSLog(@"%lu", (unsigned long)[sectionInfo numberOfObjects]);
+        return [sectionInfo numberOfObjects];
+    } else {
+        return [self.filteredTableData count];
+    }
+    
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -408,8 +416,13 @@
     
     // Configure the cell to show the book's title
     NSLog(@"Configuring Cell %d", [_fetchedResultsController.fetchedObjects count]);
+    Blog *blog;
     
-    Blog *blog = [_fetchedResultsController objectAtIndexPath:indexPath];
+    if(![self isFilteredList]) {
+        blog = [_fetchedResultsController objectAtIndexPath:indexPath];
+    } else {
+        blog = [self.filteredTableData objectAtIndex:indexPath.row];
+    }
     
     
     
@@ -707,6 +720,8 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     NSLog(@"textDidChange");
     
+    [self setFilteredList:YES];
+    
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     managedObjectContext = appDelegate.managedObjectContext;
@@ -723,7 +738,7 @@
     
     // Define how we want our entities to be sorted
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc]
-                                        initWithKey:@"title" ascending:YES];
+                                        initWithKey:@"order" ascending:YES];
     
     NSArray* sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     
@@ -740,8 +755,7 @@
     NSError *error;
     
     // Finally, perform the load
-
-    NSArray* loadedEntities = [_fetchedResultsController.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray* loadedEntities = [self.fetchedResultsController.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     
 
     self.filteredTableData = [[NSMutableArray alloc] initWithArray:loadedEntities];
