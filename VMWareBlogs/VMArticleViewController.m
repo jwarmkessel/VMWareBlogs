@@ -21,7 +21,6 @@
 @property (strong, nonatomic) VMArticleOptions *articleOptionsView;
 @property (strong, nonatomic) ACAccountStore *accountStore;
 @property (strong, nonatomic) ACAccount *fbAccount;
-
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 
 @end
@@ -34,6 +33,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
     }
     return self;
 }

@@ -35,6 +35,11 @@
     @property (nonatomic, strong) UIBarButtonItem *activityIndicatorBarButton;
     @property (strong, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
     - (IBAction)refreshListHandler:(id)sender;
+
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (strong, nonatomic) NSMutableArray *filteredTableData;
+
+
 @end
 
 @implementation VMBlogFeedViewController
@@ -42,6 +47,8 @@
     @synthesize blogArray;
     @synthesize updateFlag;
     @synthesize moc = _moc;
+    @synthesize filteredTableData = _filteredTableData;
+
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -58,6 +65,7 @@
     
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
+    [self.searchBar setDelegate:self];
     
     [self.tableView setBackgroundColor:[self colorWithHexString:@"24232F"]];
     
@@ -91,6 +99,17 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:@"UIApplicationWillEnterForegroundNotification" object:nil];
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                          action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
+}
+
+
+- (void) dismissKeyboard
+{
+    // add self
+    [self.searchBar resignFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -388,7 +407,8 @@
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     
     // Configure the cell to show the book's title
-    NSLog(@"Configuring Cell");
+    NSLog(@"Configuring Cell %d", [_fetchedResultsController.fetchedObjects count]);
+    
     Blog *blog = [_fetchedResultsController objectAtIndexPath:indexPath];
     
     
@@ -440,33 +460,33 @@
     
     
     
-    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.link];
-    
-    NSURL *url = [NSURL URLWithString:imageGetter];
-    
-    
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-
-    
-    
-    NSLog(@"%@",url);
-    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageGetter]];
-    [req setHTTPMethod:@"GET"]; // This might be redundant, I'm pretty sure GET is the default value
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
-    [connection start];
-    
-    [NSURLConnection sendAsynchronousRequest:req
-                                       queue:queue
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)  {
-                               
-                               NSLog(@"Response %@", response);
-                               NSLog(@"Data %@", data);
-                               NSLog(@"Error %@", connectionError);
-                               
-                               UIImage *img = [[UIImage alloc] initWithData:data];
-                               
-                               imageView.image = img;
-                           }];
+//    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.link];
+//    
+//    NSURL *url = [NSURL URLWithString:imageGetter];
+//    
+//    
+//    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+//
+//    
+//    
+//    NSLog(@"%@",url);
+//    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageGetter]];
+//    [req setHTTPMethod:@"GET"]; // This might be redundant, I'm pretty sure GET is the default value
+//    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
+//    [connection start];
+//    
+//    [NSURLConnection sendAsynchronousRequest:req
+//                                       queue:queue
+//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)  {
+//                               
+//                               NSLog(@"Response %@", response);
+//                               NSLog(@"Data %@", data);
+//                               NSLog(@"Error %@", connectionError);
+//                               
+//                               UIImage *img = [[UIImage alloc] initWithData:data];
+//                               
+//                               imageView.image = img;
+//                           }];
 
     
     
@@ -546,7 +566,7 @@
 
  */
 
-#pragma mark - Fetched results controller
+#pragma mark - FetchedResults controller
 
 /*
  Returns the fetched results controller. Creates and configures the controller if necessary.
@@ -662,7 +682,98 @@
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
 
     [self.tableView endUpdates];
+}
+#pragma mark - UISearchBar delegates
 
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    NSLog(@"searchBarShouldBeginEditing");
+    
+    return YES;
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    NSLog(@"searchBarTextDidBeginEditing");
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+    NSLog(@"searchBarShouldEndEditing");
+    return YES;
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    NSLog(@"searchBarTextDidEndEditing");
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    NSLog(@"textDidChange");
+    
+    VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    managedObjectContext = appDelegate.managedObjectContext;
+    
+    self.filteredTableData = [[NSMutableArray alloc] init];
+    
+    // Create our fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Define the entity we are looking for
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"Blog" inManagedObjectContext:_fetchedResultsController.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Define how we want our entities to be sorted
+    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc]
+                                        initWithKey:@"title" ascending:YES];
+    
+    NSArray* sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    // If we are searching for anything...
+    if(searchText.length > 0)
+    {
+        // Define how we want our entities to be filtered
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(title CONTAINS[c] %@) OR (descr CONTAINS[c] %@)", searchText, searchText];
+        [fetchRequest setPredicate:predicate];
+    }
+    
+    NSError *error;
+    
+    // Finally, perform the load
+
+    NSArray* loadedEntities = [_fetchedResultsController.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+
+    self.filteredTableData = [[NSMutableArray alloc] initWithArray:loadedEntities];
+    
+    [self.tableView reloadData];
+    
+    
+    
+//    _fetchedResultsController = nil;
+//    
+//    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+//                                                                    managedObjectContext:appDelegate.managedObjectContext
+//                                                                      sectionNameKeyPath:nil
+//                                                                               cacheName:@"Root"];
+//    
+//    _fetchedResultsController.delegate = self;
+//    
+//    [self.tableView reloadData];
+}
+
+//- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text NS_AVAILABLE_IOS(3_0); // called before text changes
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    NSLog(@"searchBarSearchButtonClicked");
+}
+
+- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar {
+    NSLog(@"searchBarBookmarkButtonClicked");
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar {
+    NSLog(@"searchBarCancelButtonClicked");
 }
 
 #pragma mark - common functions.

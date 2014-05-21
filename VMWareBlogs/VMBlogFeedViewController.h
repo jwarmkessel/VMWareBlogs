@@ -10,7 +10,7 @@
 #import <AwesomeMenu.h>
 #import "VMArticleEntityUpdater.h"
 
-@interface VMBlogFeedViewController : UITableViewController <NSFetchedResultsControllerDelegate, VMArticleEntityUpdaterDelegate>
+@interface VMBlogFeedViewController : UITableViewController <NSFetchedResultsControllerDelegate, VMArticleEntityUpdaterDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic, strong) NSMutableArray *blogArray;
