@@ -209,6 +209,9 @@
 
 -(void)articleEntityUpdaterDidFinishUpdating {
     NSLog(@"articleEntityUpdaterDidFinishUpdating Stop animation");
+    
+    //TODO http://iphonedevsdk.com/forum/iphone-sdk-development/83249-uiactivityindicatorview-doesn-t-immediately-stopanimating.html
+    
     [self.activityIndicator stopAnimating];
 
     self.navigationItem.rightBarButtonItem = nil;
@@ -388,6 +391,26 @@
     NSLog(@"Configuring Cell");
     Blog *blog = [_fetchedResultsController objectAtIndexPath:indexPath];
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
     UILabel *orderLbl = (UILabel *)[cell viewWithTag:100];
     [orderLbl setFont:[UIFont fontWithName:@"futura" size:20]];
     
@@ -412,7 +435,47 @@
     titleLbl.text = blog.title;
     descLbl.text = blog.descr;
     
-    imageView.image = image;
+    
+    
+    
+    
+    
+    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.link];
+    
+    NSURL *url = [NSURL URLWithString:imageGetter];
+    
+    
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+
+    
+    
+    NSLog(@"%@",url);
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageGetter]];
+    [req setHTTPMethod:@"GET"]; // This might be redundant, I'm pretty sure GET is the default value
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
+    [connection start];
+    
+    [NSURLConnection sendAsynchronousRequest:req
+                                       queue:queue
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)  {
+                               
+                               NSLog(@"Response %@", response);
+                               NSLog(@"Data %@", data);
+                               NSLog(@"Error %@", connectionError);
+                               
+                               UIImage *img = [[UIImage alloc] initWithData:data];
+                               
+                               imageView.image = img;
+                           }];
+
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

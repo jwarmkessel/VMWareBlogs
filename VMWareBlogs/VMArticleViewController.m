@@ -337,17 +337,15 @@
     [self.indicatorView stopAnimating];
     if(webView.loading < 1) {
         NSLog(@"FINISHED LOADING");
-        CGRect rect = CGRectMake(0.0, 0.0, 320.0, 58.0);
-        rect.origin.y = self.articlePreviewView.frame.size.height - rect.size.height - (rect.size.height/2);
-        UILabel *arrowLabel = [[UILabel alloc] initWithFrame:rect];
-        arrowLabel.text = @"^";
-        arrowLabel.textAlignment = NSTextAlignmentCenter;
-        [arrowLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:40.0f]];
-        arrowLabel.alpha = 0;
-        [self.articlePreviewView addSubview:arrowLabel];
+        CGRect rect = CGRectMake( ((self.view.frame.size.width/2) - 15), (self.view.frame.size.height - 90), 30.0, 30.0);
+        rect.origin.y = (self.view.frame.size.height - 40);
+        UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:rect];
+        arrowImageView.image = [UIImage imageNamed:@"arrowUp.png"];
+        arrowImageView.alpha = 0;
+        [self.articlePreviewView addSubview:arrowImageView];
         
         [UIView animateWithDuration:0.2 animations:^{
-            [arrowLabel setAlpha:0.8];
+            [arrowImageView setAlpha:0.8];
         }];
     }
     

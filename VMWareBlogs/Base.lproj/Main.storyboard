@@ -4,11 +4,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Navigation View Controller - Item-->
+        <!--Navigation View Controller - Articles-->
         <scene sceneID="6Pr-PE-5UN">
             <objects>
                 <navigationController definesPresentationContext="YES" id="wiJ-vc-oOo" customClass="VMNavigationViewController" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="s5y-oC-c08"/>
+                    <tabBarItem key="tabBarItem" title="Articles" image="articles.png" id="s5y-oC-c08"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="A1n-1m-Umb">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -55,11 +55,11 @@
             </objects>
             <point key="canvasLocation" x="-160" y="1039"/>
         </scene>
-        <!--Navigation Controller - Item-->
+        <!--Navigation Controller - Recent-->
         <scene sceneID="m6Y-WA-f32">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Phr-JY-D00" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="9JV-Qd-Zec"/>
+                    <tabBarItem key="tabBarItem" title="Recent" image="save.png" id="9JV-Qd-Zec"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gbp-uZ-IXk">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -428,7 +428,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="articles.png" width="30" height="30"/>
         <image name="placeholder.png" width="450" height="450"/>
+        <image name="save.png" width="30" height="30"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
