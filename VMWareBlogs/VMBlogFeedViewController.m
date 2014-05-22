@@ -114,6 +114,36 @@
     self.scrollToTopTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                        action:@selector(scrollToTopTapHander)];
     [self.navigationController.navigationBar addGestureRecognizer:self.scrollToTopTap];
+    
+    //Change keyboard Search button to Done button.
+    for(UIView *subView in [self.searchBar subviews]) {
+        if([subView conformsToProtocol:@protocol(UITextInputTraits)]) {
+            [(UITextField *)subView setReturnKeyType: UIReturnKeyDone];
+        } else {
+            for(UIView *subSubView in [subView subviews]) {
+                if([subSubView conformsToProtocol:@protocol(UITextInputTraits)]) {
+                    [(UITextField *)subSubView setReturnKeyType: UIReturnKeyDone];
+                }
+            }      
+        }
+    }
+    
+    //if < iOS 7
+//    for (UIView *searchBarSubview in [self.searchBar subviews]) {
+//        
+//        if ([searchBarSubview conformsToProtocol:@protocol(UITextInputTraits)]) {
+//            
+//            @try {
+//                
+//                [(UITextField *)searchBarSubview setReturnKeyType:UIReturnKeyDone];
+//                [(UITextField *)searchBarSubview setKeyboardAppearance:UIKeyboardAppearanceAlert];
+//            }
+//            @catch (NSException * e) {
+//                
+//                // ignore exception
+//            }
+//        }
+//    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -707,6 +737,7 @@
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     NSLog(@"searchBarTextDidBeginEditing");
     [self.tap setEnabled:YES];
+    
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
