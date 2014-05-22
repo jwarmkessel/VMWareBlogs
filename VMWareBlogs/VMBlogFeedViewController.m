@@ -39,6 +39,7 @@
 @property (strong, nonatomic) NSMutableArray *filteredTableData;
 @property (assign, getter = isFilteredList) BOOL filteredList;
 @property (strong, nonatomic) UITapGestureRecognizer *tap;
+@property (strong, nonatomic) UITapGestureRecognizer *scrollToTopTap;
 
 
 @end
@@ -110,12 +111,17 @@
     [self.tap setEnabled:NO];
     
     //Scroll to the top on single tap to the navigatio bar.
-    UITapGestureRecognizer *scrollToTopTap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                       action:@selector(scrollToTopTap)];
-    [self.navigationController.navigationBar addGestureRecognizer:scrollToTopTap];
+    self.scrollToTopTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                       action:@selector(scrollToTopTapHander)];
+    [self.navigationController.navigationBar addGestureRecognizer:self.scrollToTopTap];
 }
 
-- (void)scrollToTopTap {
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self.scrollToTopTap setEnabled:YES];
+}
+
+- (void)scrollToTopTapHander {
     NSLog(@"Scoll to tap");
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
 }
@@ -337,6 +343,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"didSelectRowAtIndexPath");
+    [self.scrollToTopTap setEnabled:NO];
     
     NSManagedObjectContext *tempContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     
