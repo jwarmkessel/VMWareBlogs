@@ -28,7 +28,6 @@
     @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
     @property (nonatomic, strong) NSTimer *updateBlogListTimer;
     @property (nonatomic, strong) NSData *responseData;
-    @property (nonatomic, strong) dispatch_queue_t backgroundQueue;
     @property (atomic, strong) NSManagedObjectContext *moc;
     @property (nonatomic, assign) BOOL updateFlag;
     @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
@@ -95,30 +94,24 @@
         abort();
     }
     
-    _backgroundQueue = dispatch_queue_create("com.vmwareblogs.articleupdater.bgqueue", NULL);
+    //_backgroundQueue = dispatch_queue_create("com.vmwareblogs.articleupdater.bgqueue", NULL);
 
+    //Notification of special events.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterBackground:) name:@"UIApplicationDidEnterBackgroundNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillTerminate:) name:@"UIApplicationWillResignActiveNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:@"UIApplicationWillEnterForegroundNotification" object:nil];
     
+    //Dismiss the keyboard if it's present.
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                   action:@selector(dismissKeyboard)];
-    
     [self.view addGestureRecognizer:self.tap];
-    
     [self.tap setEnabled:NO];
     
-    
-    
-    
-    
-
+    //Scroll to the top on single tap to the navigatio bar.
     UITapGestureRecognizer *scrollToTopTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                        action:@selector(scrollToTopTap)];
-
-
     [self.navigationController.navigationBar addGestureRecognizer:scrollToTopTap];
 }
 
@@ -722,8 +715,6 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     NSLog(@"textDidChange");
     
-    [self setFilteredList:YES];
-    
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     managedObjectContext = appDelegate.managedObjectContext;
@@ -759,7 +750,7 @@
     // Finally, perform the load
     NSArray* loadedEntities = [self.fetchedResultsController.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     
-
+    [self setFilteredList:YES];
     self.filteredTableData = [[NSMutableArray alloc] initWithArray:loadedEntities];
     
     [self.tableView reloadData];
@@ -782,6 +773,7 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     NSLog(@"searchBarSearchButtonClicked");
+    [searchBar resignFirstResponder];
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar {
