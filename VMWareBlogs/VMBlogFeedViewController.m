@@ -109,11 +109,24 @@
     [self.view addGestureRecognizer:self.tap];
     
     [self.tap setEnabled:NO];
+    
+    
+    
+    
+    
+
+    UITapGestureRecognizer *scrollToTopTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                       action:@selector(scrollToTopTap)];
+
+
+    [self.navigationController.navigationBar addGestureRecognizer:scrollToTopTap];
 }
 
-
-- (void) dismissKeyboard
-{
+- (void)scrollToTopTap {
+    NSLog(@"Scoll to tap");
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+}
+- (void)dismissKeyboard {
     // add self
     [self.searchBar resignFirstResponder];
 }
