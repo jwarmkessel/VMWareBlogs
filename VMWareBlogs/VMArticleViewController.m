@@ -65,7 +65,10 @@
     self.articlePreviewView.titleTextView.text = self.articleTitle;
     
     //Load the blog article into a webview.
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0,475.0, 320.0, 568)];
+    float visibleWindow = 568 - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height;
+    
+    NSLog(@"VISIBLE WINODW %f", visibleWindow);
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0,475.0, 320.0, visibleWindow)];
     [self.webView setDelegate:self];
     NSURL *url = [NSURL URLWithString:self.articleURL];
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url];
@@ -266,12 +269,13 @@
     [UIView animateWithDuration:0.01 animations:^{
 
         
-        self.webView.layer.frame = CGRectMake(0.0, asdf, 320.0, 568.0);
+        self.webView.layer.frame = CGRectMake(0.0, asdf, 320.0, 468.0);
     }];
 }
 
 -(void)articlePreviewFinishedMoving:(float)offset {
     NSLog(@"articlePreviewFinishedMoving");
+
     [UIView beginAnimations:nil context:nil];
     CATransform3D transform = CATransform3DIdentity;
     transform.m34 = 1.0 / -2000;
@@ -284,11 +288,17 @@
     self.articlePreviewView.testView.layer.transform = rotationAndPerspectiveTransform;
     [UIView commitAnimations];
 
+    float visibleWindow = 568 - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height;
+    
     [UIView animateWithDuration:0.3 animations:^{
-        self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
+        self.arrowImageView.alpha = 0;
+        
+        self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, visibleWindow);
         self.articlePreviewView.testView.alpha = 0;
         [self.indicatorView setCenter:self.view.center];
     }];
+    
+    
     
 //    if(offset < -200) {
 //        [UIView animateWithDuration:0.3 animations:^{
