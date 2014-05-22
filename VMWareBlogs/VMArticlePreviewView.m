@@ -87,7 +87,7 @@ BOOL dragging;
     //Now you can create the short string
     NSString *shortString = [text substringWithRange:stringRange];
     
-    self.descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(0.0, 110.0, 320.0, 600.0)];
+    self.descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, 110.0, 300.0, 600.0)];
     [self.testView addSubview:self.descriptionTextView];
 
     //THIS WILL ONLY WORK FOR iOS 6 and greater.

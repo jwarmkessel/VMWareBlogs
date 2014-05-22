@@ -22,6 +22,7 @@
 @property (strong, nonatomic) ACAccountStore *accountStore;
 @property (strong, nonatomic) ACAccount *fbAccount;
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
+@property (strong, nonatomic) UIImageView *arrowImageView;
 
 @end
 
@@ -95,6 +96,14 @@
     self.articleOptionsView = [[VMArticleOptions alloc] initWithFrame:rect viewController:self height:100.0f];
     [self.articleOptionsView setDelegate:self];
     [self.view addSubview:self.articleOptionsView];
+    
+    CGRect arrowRect = CGRectMake( ((self.view.frame.size.width/2) - 15), (self.view.frame.size.height - 90), 30.0, 30.0);
+    NSLog(@"Arrow Rect %f", self.view.frame.size.height - 132);
+    arrowRect.origin.y = (self.view.frame.size.height - 132);
+    self.arrowImageView = [[UIImageView alloc] initWithFrame:arrowRect];
+    self.arrowImageView.image = [UIImage imageNamed:@"arrowUp.png"];
+    self.arrowImageView.alpha = 0.3;
+    [self.articlePreviewView addSubview:self.arrowImageView];
     
     //Override the back button.
 //    self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"< back"
@@ -337,15 +346,10 @@
     [self.indicatorView stopAnimating];
     if(webView.loading < 1) {
         NSLog(@"FINISHED LOADING");
-        CGRect rect = CGRectMake( ((self.view.frame.size.width/2) - 15), (self.view.frame.size.height - 90), 30.0, 30.0);
-        rect.origin.y = (self.view.frame.size.height - 40);
-        UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:rect];
-        arrowImageView.image = [UIImage imageNamed:@"arrowUp.png"];
-        arrowImageView.alpha = 0;
-        [self.articlePreviewView addSubview:arrowImageView];
+
         
         [UIView animateWithDuration:0.2 animations:^{
-            [arrowImageView setAlpha:0.8];
+            [self.arrowImageView setAlpha:0.8];
         }];
     }
     

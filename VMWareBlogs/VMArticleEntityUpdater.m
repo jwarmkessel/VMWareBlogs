@@ -511,6 +511,8 @@ finish:
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&#8230;" withString:@"'"];
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&#8243;" withString:@"″"];
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&#8594;" withString:@" "];
+    result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&ldquo;" withString:@"\""];
+    result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&rdquo;" withString:@"\""];
     
     return result;
 }

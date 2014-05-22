@@ -434,37 +434,18 @@
         blog = [self.filteredTableData objectAtIndex:indexPath.row];
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-    
-    
-    
     UILabel *orderLbl = (UILabel *)[cell viewWithTag:100];
     [orderLbl setFont:[UIFont fontWithName:@"futura" size:20]];
     
     UITextField *titleLbl = (UITextField *)[cell viewWithTag:101];
     [titleLbl setUserInteractionEnabled:NO];
     titleLbl.text = @"text";
-    [titleLbl setFont:[UIFont fontWithName:@"Arial" size:17.0f]];
+    [titleLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:17.0f]];
     titleLbl.textColor = [self colorWithHexString:@"343A43"];
     
     UITextView *descLbl = (UITextView *)[cell viewWithTag:102];
-    [descLbl setFont:[UIFont fontWithName:@"Arial" size:15.0f]];
+    [descLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
+    descLbl.textColor = [UIColor whiteColor];
     descLbl.userInteractionEnabled = NO;
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
@@ -477,11 +458,6 @@
     orderLbl.text = [NSString stringWithFormat:@"%@", blog.order];
     titleLbl.text = blog.title;
     descLbl.text = blog.descr;
-    
-    
-    
-    
-    
     
 //    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.link];
 //    
@@ -510,15 +486,6 @@
 //                               
 //                               imageView.image = img;
 //                           }];
-
-    
-    
-    
-    
-    
-    
-    
-    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -604,6 +571,8 @@
  */
 - (NSFetchedResultsController *)fetchedResultsController {
     NSLog(@"FetchedResultsController");
+    
+    self.filteredList = NO;
 
     if (_fetchedResultsController != nil) {
         NSLog(@"FetchedResultsController is not equal to NIL");
