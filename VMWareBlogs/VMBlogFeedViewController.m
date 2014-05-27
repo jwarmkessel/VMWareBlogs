@@ -411,6 +411,7 @@
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSError *fetchRequestError;
         
+        [fetchRequest setReturnsObjectsAsFaults:NO];
         [fetchRequest setEntity:entityDescription];
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"link = %@", blog.link]];
         [fetchRequest setFetchLimit:1];
@@ -502,7 +503,6 @@
     orderLbl.text = [NSString stringWithFormat:@"%@", blog.order];
     titleLbl.text = blog.title;
     descLbl.text = blog.descr;
-    NSLog(@"BLOG DESC %@", blog.descr);
     
 //    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.link];
 //    
@@ -763,6 +763,7 @@
     
     // Create our fetch request
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setReturnsObjectsAsFaults:NO];
     
     // Define the entity we are looking for
     NSEntityDescription *entity = [NSEntityDescription

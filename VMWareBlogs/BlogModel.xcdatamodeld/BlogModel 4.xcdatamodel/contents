@@ -10,6 +10,7 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="RecentArticle" representedClassName="Entity" syncable="YES">
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="descr" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
@@ -18,6 +19,7 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="SavedArticle" representedClassName="Entity" syncable="YES">
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="descr" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
@@ -27,7 +29,7 @@
     </entity>
     <elements>
         <element name="Blog" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="RecentArticle" positionX="81" positionY="144" width="128" height="135"/>
-        <element name="SavedArticle" positionX="45" positionY="90" width="128" height="135"/>
+        <element name="RecentArticle" positionX="81" positionY="144" width="128" height="148"/>
+        <element name="SavedArticle" positionX="45" positionY="90" width="128" height="148"/>
     </elements>
 </model>

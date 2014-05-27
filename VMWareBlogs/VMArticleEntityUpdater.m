@@ -88,6 +88,9 @@
             NSEntityDescription *entityDescription = [NSEntityDescription
                                                       entityForName:@"Blog" inManagedObjectContext:self.updateContext];
             NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+
+            [fetchRequest setReturnsObjectsAsFaults:NO];
+            
             NSError *fetchRequestError;
             [fetchRequest setEntity:entityDescription];
             NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
@@ -111,9 +114,14 @@
                 TBXMLElement * titleElem = [TBXML childElementNamed:@"title" parentElement:itemElement];
                 TBXMLElement * linkElem = [TBXML childElementNamed:@"link" parentElement:itemElement];
                 TBXMLElement * descElement = [TBXML childElementNamed:@"description" parentElement:itemElement];
-                NSLog(@"Description String %@", [TBXML textForElement:descElement]);
                 TBXMLElement * pubDateElement = [TBXML childElementNamed:@"pubDate" parentElement:itemElement];
+                // Tue, 27 May 2014 16:53:37 +0000
+                
                 TBXMLElement * guidElement = [TBXML childElementNamed:@"guid" parentElement:itemElement];
+                NSLog(@"THE GUID %@", [TBXML textForElement:guidElement]);
+                
+                TBXMLElement * authorElement = [TBXML childElementNamed:@"dc:creator" parentElement:itemElement];
+                NSLog(@"THE authorElement %@", [TBXML textForElement:authorElement]);
                 
                 NSLog(@"xml %d DB %d", articleCount, j);
                 //If the input is greater than database...
@@ -122,7 +130,7 @@
                     NSLog(@"sortedArticleArray Count %d", [sortedArticleArray count]);
                     
                     //Just save the articles.
-                    blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement andOrder:order];
+                    blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
 
                     if (![self.updateContext save:&temporaryMOCError]) {
                         NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
@@ -142,7 +150,7 @@
                         [self.updateContext deleteObject:article];
                         
                         //Just save the articles.
-                        blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement andOrder:order];
+                        blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
 
                         if (![self.updateContext save:&temporaryMOCError]) {
                             NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
@@ -198,7 +206,7 @@
     }];
 }
 
-- (Blog *)createArticleEntityWithTitle:(TBXMLElement *)titleElem articleLink:(TBXMLElement *)linkElem articleDescription:(TBXMLElement *)descElement publishDate:(TBXMLElement *)pubDateElement GUIDElement:(TBXMLElement *)guidElement andOrder:(int)order {
+- (Blog *)createArticleEntityWithTitle:(TBXMLElement *)titleElem articleLink:(TBXMLElement *)linkElem articleDescription:(TBXMLElement *)descElement publishDate:(TBXMLElement *)pubDateElement GUIDElement:(TBXMLElement *)guidElement AuthorElement:(TBXMLElement *)authorElement andOrder:(int)order {
     
     //Initialize Blog Entity.
     Blog *blogEntry;
@@ -217,8 +225,6 @@
     [blogEntry setValue:[TBXML textForElement:linkElem] forKey:@"link"];
     
     NSString *descStr = [TBXML textForElement:descElement];
-    
-    NSLog(@"Description String %@", [TBXML textForElement:descElement]);
     
     descStr = [self stringByDecodingXMLEntities:descStr];
     descStr = [self stringByStrippingTags:descStr];
