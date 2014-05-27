@@ -8,12 +8,14 @@
 
 #import "VMArticlePreviewView.h"
 #import <QuartzCore/QuartzCore.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface VMArticlePreviewView()
 
 @end
 
 @implementation VMArticlePreviewView
+@synthesize guid;
 
 float oldX, oldY;
 float touchBeganX, touchBeganY;
@@ -51,18 +53,43 @@ BOOL dragging;
     [v.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
 }
 
-- (void)setDescriptionWithAttributedText:(NSString *)text {
-
+- (void)setArticleImageURL:(NSString *)url {
     self.testView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 600.0)];
-//    [self setAnchorPoint:CGPointMake(1.0, 0.0) forView:self.testView];
+    //    [self setAnchorPoint:CGPointMake(1.0, 0.0) forView:self.testView];
     self.testView.userInteractionEnabled = NO;
     [self addSubview:self.testView];
     
     //[self setBorderForView:self.testView];
     
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 109.0)];
+    self.imageView.alpha = 1;
     [self.imageView setImage:[UIImage imageNamed:@"placeholder.png"]];
     [self.testView addSubview:self.imageView];
+    
+    NSLog(@"PREVIEW VIEW %@", self.guid);
+    
+    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", url];
+    
+    //[[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
+    
+    
+    NSURL *imageGetterURL = [NSURL URLWithString:imageGetter];
+    [self.imageView setImageWithURL:imageGetterURL];
+    
+    [self.imageView setImageWithURL:imageGetterURL placeholderImage:[UIImage imageNamed:@"placeholder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+        [UIView animateWithDuration:0.4 animations:^{
+            
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+            self.imageView.alpha = 1;
+#pragma clang diagnostic pop
+            
+            
+        } completion:^(BOOL finished) {
+            NSLog(@"Image loaded");
+        }];
+    }];
+    
     
     UIView *imageViewCover = [[UIView alloc] initWithFrame:self.imageView.frame];
     [imageViewCover setBackgroundColor:[UIColor blackColor]];
@@ -77,6 +104,9 @@ BOOL dragging;
     self.titleTextView.textColor = [UIColor whiteColor];
     
     [self.testView addSubview:self.titleTextView];
+    
+}
+- (void)setDescriptionWithAttributedText:(NSString *)text {
     
     //Define the range you're interested in
     NSRange stringRange = {0, MIN([text length], 550)};

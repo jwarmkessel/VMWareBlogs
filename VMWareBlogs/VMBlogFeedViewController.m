@@ -22,6 +22,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <dispatch/dispatch.h>
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
 #define UPDATE_ARTICLES_INTERVAL 60
 
 @interface VMBlogFeedViewController ()
@@ -497,6 +499,7 @@
     descLbl.userInteractionEnabled = NO;
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
+    imageView.alpha = 0;
     
     [imageView.layer setBorderColor: [[UIColor grayColor] CGColor]];
     [imageView.layer setBorderWidth: 0.5];
@@ -508,33 +511,25 @@
     titleLbl.text = blog.title;
     descLbl.text = blog.descr;
     
-//    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.link];
-//    
-//    NSURL *url = [NSURL URLWithString:imageGetter];
-//    
-//    
-//    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-//
-//    
-//    
-//    NSLog(@"%@",url);
-//    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageGetter]];
-//    [req setHTTPMethod:@"GET"]; // This might be redundant, I'm pretty sure GET is the default value
-//    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
-//    [connection start];
-//    
-//    [NSURLConnection sendAsynchronousRequest:req
-//                                       queue:queue
-//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)  {
-//                               
-//                               NSLog(@"Response %@", response);
-//                               NSLog(@"Data %@", data);
-//                               NSLog(@"Error %@", connectionError);
-//                               
-//                               UIImage *img = [[UIImage alloc] initWithData:data];
-//                               
-//                               imageView.image = img;
-//                           }];
+    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
+    
+    [[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
+    
+    NSURL *url = [NSURL URLWithString:imageGetter];
+
+    [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+        [UIView animateWithDuration:0.4 animations:^{
+            
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+            imageView.alpha = 1;
+#pragma clang diagnostic pop
+            
+
+        } completion:^(BOOL finished) {
+            NSLog(@"Image loaded");
+        }];
+    }];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

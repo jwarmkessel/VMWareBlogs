@@ -60,9 +60,16 @@
     }
     
     //Setup Article Preview and segue animations.
+    
+    [self.articlePreviewView setArticleImageURL:self.articleURL];
+    
     [self.articlePreviewView setDescriptionWithAttributedText:self.articleDescription];
     [self.articlePreviewView setDelegate:self];
     self.articlePreviewView.titleTextView.text = self.articleTitle;
+    NSLog(@"Set the articlePreviewView GUID %@", self.articleURL);
+    
+    
+
     
     //Load the blog article into a webview.
     float visibleWindow = 568 - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height;
@@ -90,8 +97,6 @@
     [self.indicatorView setCenter:self.webView.center];
     
     [self.indicatorView startAnimating];
-    //[self.view addSubview:self.indicatorView];
-    
     [self.view addSubview:self.indicatorView];
     
     //Setup the optional tools view.

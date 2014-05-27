@@ -14,11 +14,15 @@
 @property (nonatomic, strong) UITextView *descriptionTextView;
 @property (nonatomic, strong) UIView *testView;
 @property (nonatomic, strong) UIWebView *webView;
+@property (nonatomic, strong) NSString *guid;
+
+- (void)setArticleImageURL:(NSString *)url;
+- (void)setDescriptionWithAttributedText:(NSString *)text;
 
 // define delegate property
 @property (nonatomic, assign) id  delegate;
 
-- (void)setDescriptionWithAttributedText:(NSString *)text;
+
 @end
 
 // define the protocol for the delegate
