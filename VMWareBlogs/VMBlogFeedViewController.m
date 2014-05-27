@@ -497,38 +497,40 @@
     [imageView.layer setBorderWidth: 0.5];
     
     UIImage *image = [UIImage imageNamed:@"placeholder.png"];
+    imageView.image = image;
     
     orderLbl.text = [NSString stringWithFormat:@"%@", blog.order];
     titleLbl.text = blog.title;
     descLbl.text = blog.descr;
+    NSLog(@"BLOG DESC %@", blog.descr);
     
-    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.link];
-    
-    NSURL *url = [NSURL URLWithString:imageGetter];
-    
-    
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-
-    
-    
-    NSLog(@"%@",url);
-    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageGetter]];
-    [req setHTTPMethod:@"GET"]; // This might be redundant, I'm pretty sure GET is the default value
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
-    [connection start];
-    
-    [NSURLConnection sendAsynchronousRequest:req
-                                       queue:queue
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)  {
-                               
-                               NSLog(@"Response %@", response);
-                               NSLog(@"Data %@", data);
-                               NSLog(@"Error %@", connectionError);
-                               
-                               UIImage *img = [[UIImage alloc] initWithData:data];
-                               
-                               imageView.image = img;
-                           }];
+//    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.link];
+//    
+//    NSURL *url = [NSURL URLWithString:imageGetter];
+//    
+//    
+//    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+//
+//    
+//    
+//    NSLog(@"%@",url);
+//    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageGetter]];
+//    [req setHTTPMethod:@"GET"]; // This might be redundant, I'm pretty sure GET is the default value
+//    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:req delegate:self];
+//    [connection start];
+//    
+//    [NSURLConnection sendAsynchronousRequest:req
+//                                       queue:queue
+//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)  {
+//                               
+//                               NSLog(@"Response %@", response);
+//                               NSLog(@"Data %@", data);
+//                               NSLog(@"Error %@", connectionError);
+//                               
+//                               UIImage *img = [[UIImage alloc] initWithData:data];
+//                               
+//                               imageView.image = img;
+//                           }];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

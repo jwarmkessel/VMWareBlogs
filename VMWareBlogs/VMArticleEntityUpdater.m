@@ -100,28 +100,6 @@
             TBXMLElement * channelElement = [TBXML childElementNamed:@"channel" parentElement:rootXMLElement];
             TBXMLElement * itemElement = [TBXML childElementNamed:@"item" parentElement:channelElement];
             
-
-            
-            
-
-            /*
-            Outcome:
-             Handle varying sizes of xml data coming in.
-             
-             Case 1: input > database 
-             Solution for Case 1:
-             
-             We can set a hard limit and take what data we want. Do we have to know whether a cap exists?
-             
-             When: 
-             - When the database is empty.
-             - When the input exceeds 100 indexes.
-             
-             Case 2: input < database
-             Solution for Case 2:
-             
-             We can just save over the existing fetched array.
-            */
             int j = 0;
             int order = 1;
             int articleCount = 0;
@@ -133,6 +111,7 @@
                 TBXMLElement * titleElem = [TBXML childElementNamed:@"title" parentElement:itemElement];
                 TBXMLElement * linkElem = [TBXML childElementNamed:@"link" parentElement:itemElement];
                 TBXMLElement * descElement = [TBXML childElementNamed:@"description" parentElement:itemElement];
+                NSLog(@"Description String %@", [TBXML textForElement:descElement]);
                 TBXMLElement * pubDateElement = [TBXML childElementNamed:@"pubDate" parentElement:itemElement];
                 TBXMLElement * guidElement = [TBXML childElementNamed:@"guid" parentElement:itemElement];
                 
@@ -145,8 +124,6 @@
                     //Just save the articles.
                     blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement andOrder:order];
 
-
-                    
                     if (![self.updateContext save:&temporaryMOCError]) {
                         NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
                         
@@ -167,8 +144,6 @@
                         //Just save the articles.
                         blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement andOrder:order];
 
-                        
-                        
                         if (![self.updateContext save:&temporaryMOCError]) {
                             NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
                         }
@@ -241,9 +216,11 @@
     //Set the link.
     [blogEntry setValue:[TBXML textForElement:linkElem] forKey:@"link"];
     
-    NSString *descStr;
+    NSString *descStr = [TBXML textForElement:descElement];
     
-    descStr = [self stringByDecodingXMLEntities:[TBXML textForElement:descElement]];
+    NSLog(@"Description String %@", [TBXML textForElement:descElement]);
+    
+    descStr = [self stringByDecodingXMLEntities:descStr];
     descStr = [self stringByStrippingTags:descStr];
     
     [blogEntry setValue:descStr forKey:@"descr"];
