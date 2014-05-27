@@ -413,7 +413,7 @@
         
         [fetchRequest setReturnsObjectsAsFaults:NO];
         [fetchRequest setEntity:entityDescription];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"link = %@", blog.link]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"guid = %@", blog.guid]];
         [fetchRequest setFetchLimit:1];
         NSArray *recentlyReadArticle = [tempContext executeFetchRequest:fetchRequest error:&fetchRequestError];
         
@@ -426,6 +426,10 @@
             [recentArticle setValue:blog.title forKey:@"title"];
             [recentArticle setValue:blog.descr forKey:@"descr"];
             [recentArticle setValue:blog.order forKey:@"order"];
+
+            [recentArticle setValue:blog.author forKey:@"author"];
+            [recentArticle setValue:blog.guid forKey:@"guid"];
+            [recentArticle setValue:blog.pubDate forKey:@"pubDate"];
             
             NSLog(@"Saving to recently read");
             if (![tempContext save:&temporaryMOCError]) {
@@ -550,9 +554,9 @@
         blog = [self.filteredTableData objectAtIndex:[self.tableView indexPathForSelectedRow].row];
     }
     
-    NSLog(@"Selecting the link %@", blog.link);
+    NSLog(@"Selecting the guid link %@", blog.guid);
  
-    vc.articleURL = blog.link;
+    vc.articleURL = blog.guid;
     
     NSLog(@"Selecting the link %@", blog.descr);
     vc.articleDescription = blog.descr;

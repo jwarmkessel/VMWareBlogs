@@ -232,8 +232,10 @@
     [blogEntry setValue:descStr forKey:@"descr"];
     
     //Set the description.
-    [blogEntry setValue:[TBXML textForElement:pubDateElement] forKey:@"guid"];
-    [blogEntry setValue:[TBXML textForElement:guidElement] forKey:@"pubDate"];
+    [blogEntry setValue:[TBXML textForElement:guidElement] forKey:@"guid"];
+    [blogEntry setValue:[TBXML textForElement:pubDateElement] forKey:@"pubDate"];
+
+    [blogEntry setValue:[TBXML textForElement:authorElement] forKey:@"author"];
     
     NSNumber *myIntNumber = [NSNumber numberWithInt:order];
     

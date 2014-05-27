@@ -38,9 +38,6 @@
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSString * pubDate;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * guid;
+@property (nonatomic, retain) NSString * author;
 @property (nonatomic, assign) NSNumber *order;
 
 @end
