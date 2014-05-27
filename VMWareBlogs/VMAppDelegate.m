@@ -67,6 +67,25 @@
 }
 
 #pragma mark - Core Data stack
+/*
+Lightweight migrations can handle the following changes:
+ - Adding or removing an entity, attribute, or relationship
+ - Making an attribute non-optional with a default value
+ - Making a non-optional attribute optional
+ - Renaming an entity or attribute using a renaming identifier
+ 
+On a related subject, there are some changes that do not require a migration, basically anything that doesn’t change the underlying SQLite backing store, including:
+ - Changing the name of an NSManagedObject subclass
+ - Adding or removing a transient property
+ - Making changes to the user info dictionary
+ - Changing validation rules
+
+To enable lightweight migrations, you need to pass a dictionary containing two keys to the options parameter of the method that initializes the persistent store coordinator. These keys are:
+ - NSMigratePersistentStoresAutomaticallyOption – attempt to automatically migrate versioned stores
+ - NSInferMappingModelAutomaticallyOption – attempt to create the mapping model automatically
+
+Important note: Don’t run your project after making these modifications yet. This is because if you do it will upgrade your model to the new version, and you don’t want to do that until you actually modify it.
+ */
 
 // Returns the managed object context for the application.
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
@@ -119,8 +138,13 @@
      Rename an entity.
     */
     
+    NSDictionary *options = @{
+                              NSMigratePersistentStoresAutomaticallyOption : @YES,
+                              NSInferMappingModelAutomaticallyOption : @YES
+                              };
+    
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:@{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES} error:&error]) {
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
         
         
 
