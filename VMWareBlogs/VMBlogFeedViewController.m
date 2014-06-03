@@ -762,6 +762,14 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     NSLog(@"textDidChange");
     
+    NSLog(@"Search Text Length %lu", (unsigned long)searchText.length);
+    
+    [self setFilteredList:YES];
+    
+    if (searchText.length == 0) {
+        [self setFilteredList:NO];
+    }
+    
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     managedObjectContext = appDelegate.managedObjectContext;
@@ -798,7 +806,7 @@
     // Finally, perform the load
     NSArray* loadedEntities = [self.fetchedResultsController.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     
-    [self setFilteredList:YES];
+    
     self.filteredTableData = [[NSMutableArray alloc] initWithArray:loadedEntities];
     
     [self.tableView reloadData];
@@ -872,6 +880,8 @@
 
 - (IBAction)refreshListHandler:(id)sender {
     
+    self.searchBar.text = @"";
+    [self setFilteredList:NO];
     
     self.navigationItem.rightBarButtonItem = nil;
     
