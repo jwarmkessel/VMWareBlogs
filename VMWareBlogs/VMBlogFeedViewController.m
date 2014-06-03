@@ -53,16 +53,6 @@
     @synthesize moc = _moc;
     @synthesize filteredTableData = _filteredTableData;
 
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -77,12 +67,6 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     //TODO status bar: https://developer.apple.com/library/ios/qa/qa1797/_index.html
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     NSError *error;
     self.fetchedResultsController = nil;
@@ -94,12 +78,12 @@
          
          abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
          */
+        //TODO
+        abort();
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
     
-    //_backgroundQueue = dispatch_queue_create("com.vmwareblogs.articleupdater.bgqueue", NULL);
-
     //Notification of special events.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterBackground:) name:@"UIApplicationDidEnterBackgroundNotification" object:nil];
     
@@ -131,22 +115,8 @@
         }
     }
     
-    //if < iOS 7
-//    for (UIView *searchBarSubview in [self.searchBar subviews]) {
-//        
-//        if ([searchBarSubview conformsToProtocol:@protocol(UITextInputTraits)]) {
-//            
-//            @try {
-//                
-//                [(UITextField *)searchBarSubview setReturnKeyType:UIReturnKeyDone];
-//                [(UITextField *)searchBarSubview setKeyboardAppearance:UIKeyboardAppearanceAlert];
-//            }
-//            @catch (NSException * e) {
-//                
-//                // ignore exception
-//            }
-//        }
-//    }
+    //Update the list.
+    [self refreshList];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -173,8 +143,6 @@
     self.updateFlag = NO;
 
     [self.tableView reloadData];
-    
-//    [self performSelectorInBackground:@selector(updateList:) withObject:self];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -878,6 +846,10 @@
 
 
 - (IBAction)refreshListHandler:(id)sender {
+    [self refreshList];
+}
+
+- (void)refreshList {
     self.searchBar.text = @"";
     [self setFilteredList:NO];
     
@@ -899,4 +871,5 @@
     
     [self performSelectorInBackground:@selector(updateList:) withObject:self];
 }
+
 @end
