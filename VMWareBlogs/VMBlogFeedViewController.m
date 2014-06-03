@@ -73,7 +73,8 @@
     
     self.filteredList = NO;
     
-    [self.tableView setBackgroundColor:[self colorWithHexString:@"24232F"]];
+    [self.tableView setBackgroundColor:[self colorWithHexString:@"272A41"]];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     //TODO status bar: https://developer.apple.com/library/ios/qa/qa1797/_index.html
 
@@ -346,7 +347,7 @@
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 30)];
     if (section == 0) {
-        [headerView setBackgroundColor:[self colorWithHexString:@"2F3485"]];
+        [headerView setBackgroundColor:[self colorWithHexString:@"2F3250"]];
         UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(5.0f, 0, self.tableView.bounds.size.width, 21.5)];
         [sectionTitle setFont:[UIFont fontWithName:@"ArialMT" size:13]];
         sectionTitle.text = @"The Latest Posts From All VMware Blogs";
@@ -490,13 +491,19 @@
     UITextField *titleLbl = (UITextField *)[cell viewWithTag:101];
     [titleLbl setUserInteractionEnabled:NO];
     titleLbl.text = @"text";
-    [titleLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:17.0f]];
-    titleLbl.textColor = [self colorWithHexString:@"343A43"];
+    [titleLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
+    [titleLbl setBackgroundColor:[UIColor clearColor]];
+    titleLbl.textColor = [UIColor whiteColor];
     
     UITextView *descLbl = (UITextView *)[cell viewWithTag:102];
     [descLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
-    descLbl.textColor = [UIColor whiteColor];
+    descLbl.textColor = [self colorWithHexString:@"8D8D8D"];
     descLbl.userInteractionEnabled = NO;
+    
+    UILabel *dateLbl = (UILabel *)[cell viewWithTag:104];
+    [dateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:18.0f]];
+    dateLbl.textColor = [self colorWithHexString:@"BBBBBB"];
+    [dateLbl setBackgroundColor:[UIColor clearColor]];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
     imageView.alpha = 0;
@@ -510,6 +517,7 @@
     orderLbl.text = [NSString stringWithFormat:@"%@", blog.order];
     titleLbl.text = blog.title;
     descLbl.text = blog.descr;
+    dateLbl.text = blog.pubDate;
     
     NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
     

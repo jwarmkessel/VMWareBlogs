@@ -167,10 +167,7 @@
 
                     order++;
                     j++;
-                    articleCount++;
-                    
-                    
-                    
+                    articleCount++; 
                 }
             
             } while ((itemElement = itemElement->nextSibling));
@@ -233,7 +230,13 @@
     
     //Set the description.
     [blogEntry setValue:[TBXML textForElement:guidElement] forKey:@"guid"];
-    [blogEntry setValue:[TBXML textForElement:pubDateElement] forKey:@"pubDate"];
+    
+    //Truncate date string
+    NSString * pubDateString = [TBXML textForElement:pubDateElement];
+    NSArray* dateStrArray = [pubDateString componentsSeparatedByString: @" "];
+    pubDateString = [NSString stringWithFormat:@"%@ %@ %@ %@", [dateStrArray objectAtIndex: 0], [dateStrArray objectAtIndex: 1], [dateStrArray objectAtIndex: 2], [dateStrArray objectAtIndex: 3]];
+    
+    [blogEntry setValue:pubDateString forKey:@"pubDate"];
 
     [blogEntry setValue:[TBXML textForElement:authorElement] forKey:@"author"];
     
