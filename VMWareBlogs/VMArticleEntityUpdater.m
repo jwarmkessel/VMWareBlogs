@@ -234,7 +234,15 @@
     //Truncate date string
     NSString * pubDateString = [TBXML textForElement:pubDateElement];
     NSArray* dateStrArray = [pubDateString componentsSeparatedByString: @" "];
-    pubDateString = [NSString stringWithFormat:@"%@ %@ %@ %@", [dateStrArray objectAtIndex: 0], [dateStrArray objectAtIndex: 1], [dateStrArray objectAtIndex: 2], [dateStrArray objectAtIndex: 3]];
+    NSString *dayString = (NSString *) [dateStrArray objectAtIndex: 1];
+    
+    NSString *ichar = [NSString stringWithFormat:@"%c", [dayString characterAtIndex:0]];
+    
+    if([ichar  isEqual: @"0"]) {
+        dayString = [NSString stringWithFormat:@"%c", [dayString characterAtIndex:1]];
+    }
+    
+    pubDateString = [NSString stringWithFormat:@"%@ %@ %@", dayString, [dateStrArray objectAtIndex: 2], [dateStrArray objectAtIndex: 3]];
     
     [blogEntry setValue:pubDateString forKey:@"pubDate"];
 
@@ -480,6 +488,7 @@ finish:
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&quot;" withString:@"/"""];
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&rsquo;" withString:@"'"];
+    result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&lsquo;" withString:@"'"];
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&hellip;" withString:@"..."];
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&#38;" withString:@"&"];
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&#39;" withString:@"'"];

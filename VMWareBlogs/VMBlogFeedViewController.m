@@ -472,9 +472,14 @@
     descLbl.userInteractionEnabled = NO;
     
     UILabel *dateLbl = (UILabel *)[cell viewWithTag:104];
-    [dateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:18.0f]];
+    [dateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:17.0f]];
     dateLbl.textColor = [self colorWithHexString:@"BBBBBB"];
     [dateLbl setBackgroundColor:[UIColor clearColor]];
+    
+    UILabel *authorLbl = (UILabel *)[cell viewWithTag:105];
+    [authorLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:13.0f]];
+    authorLbl.textColor = [self colorWithHexString:@"BBBBBB"];
+    [authorLbl setBackgroundColor:[UIColor clearColor]];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
     imageView.alpha = 0;
@@ -482,20 +487,29 @@
     [imageView.layer setBorderColor: [[UIColor grayColor] CGColor]];
     [imageView.layer setBorderWidth: 0.5];
     
+    orderLbl.text = [NSString stringWithFormat:@"%@", blog.order];
+    titleLbl.text = blog.title;
+    
+    if ([blog.descr isEqualToString:@""]) {
+        blog.descr = @"Description unavailable.";
+    }
+    
+    descLbl.text = blog.descr;
+    dateLbl.text = blog.pubDate;
+    dateLbl.hidden = YES;
+    authorLbl.text = [NSString stringWithFormat:@"%@ - %@", blog.author, blog.pubDate];
+    [authorLbl setTextAlignment:NSTextAlignmentLeft];
+
+    NSLog(@"Image in NIL");
     UIImage *image = [UIImage imageNamed:@"placeholder.png"];
     imageView.image = image;
     
-    orderLbl.text = [NSString stringWithFormat:@"%@", blog.order];
-    titleLbl.text = blog.title;
-    descLbl.text = blog.descr;
-    dateLbl.text = blog.pubDate;
+    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=1280&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
     
-    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
-    
-    [[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
+    //[[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
     
     NSURL *url = [NSURL URLWithString:imageGetter];
-
+    
     [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
         [UIView animateWithDuration:0.4 animations:^{
             
@@ -504,7 +518,7 @@
             imageView.alpha = 1;
 #pragma clang diagnostic pop
             
-
+            
         } completion:^(BOOL finished) {
             NSLog(@"Image loaded");
         }];
@@ -852,6 +866,7 @@
 - (void)refreshList {
     self.searchBar.text = @"";
     [self setFilteredList:NO];
+    [self.tableView reloadData];
     
     self.navigationItem.rightBarButtonItem = nil;
     
