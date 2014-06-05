@@ -20,9 +20,11 @@
 @synthesize moc, updateFlag;
 
 - (NSString *)requestRSS {
-    
+
+    //NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp?nocache=true", BASE_URI];
     NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp", BASE_URI];
     NSURL *url = [NSURL URLWithString:urlStr];
+    
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     
     NSURLResponse* response = nil;
@@ -42,7 +44,16 @@
         responseString = [NSString stringWithCString:[responseString cStringUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding];
         
     } else {
-        NSLog(@"NSURLConnection Error");
+        NSLog(@"NSURLConnection Error %@", NSURLConnectionError);
+        NSLog(@"NSURLConnection Error %ld", (long)NSURLConnectionError.code);
+        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.domain);
+        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.userInfo);
+        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedDescription);
+        
+        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedDescription);
+        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedRecoveryOptions);
+        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedFailureReason);
+        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedRecoverySuggestion);
     }
 
     NSLog(@"Returning response");

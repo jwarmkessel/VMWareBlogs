@@ -483,6 +483,7 @@
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
     imageView.alpha = 0;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
     
     [imageView.layer setBorderColor: [[UIColor grayColor] CGColor]];
     [imageView.layer setBorderWidth: 0.5];
@@ -504,7 +505,16 @@
     UIImage *image = [UIImage imageNamed:@"placeholder.png"];
     imageView.image = image;
     
-    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=1280&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
+    /*
+     Parameter   	Size             	Dimensions
+     xlg	Extra Large	320 x 240
+     lg	Large	200 x 150
+     sm	Small	100 x 75
+     vsm	Very Small	90 x 68
+     mcr	Micro	75 x 57
+     */
+    
+    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwymax=480&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
     
     //[[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
     

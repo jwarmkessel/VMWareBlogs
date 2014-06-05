@@ -11,6 +11,7 @@
 #import "Blog.h"
 #import "VMWareBlogsAPI.h"
 #import <TBXML.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 #define UPDATE_ARTICLES_INTERVAL 60
 
@@ -42,6 +43,7 @@
         
         if(xmlString == nil) {
             self.updating = NO;
+            NSLog(@"(WARNING) ------------------------------XML string is equal to nil");
             [self.delegate articleEntityUpdaterDidError];
             return;
         }
@@ -140,14 +142,17 @@
                     [blogEntry.managedObjectContext refreshObject:blogEntry mergeChanges:YES];
 
                 } else {
-                    
-                    
                     Blog *article = [sortedArticleArray objectAtIndex:j];
                     
                     if( ![article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
                     
                         //If the ordered article is different then delete the article and insert new one.
                         [self.updateContext deleteObject:article];
+                        
+                        //Delete corresponding image in SDWebImage.
+                        NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", [TBXML textForElement:guidElement]];
+                        
+                        [[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
                         
                         //Just save the articles.
                         blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
