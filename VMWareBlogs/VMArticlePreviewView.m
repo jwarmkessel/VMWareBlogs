@@ -63,6 +63,7 @@ BOOL dragging;
     
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 109.0)];
     self.imageView.alpha = 1;
+    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.imageView setImage:[UIImage imageNamed:@"placeholder.png"]];
     [self.testView addSubview:self.imageView];
     
