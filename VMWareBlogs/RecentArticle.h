@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSString * link;
 @property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) NSString * pubDate;
+@property (nonatomic, retain) NSString * author;
 @property (nonatomic, retain) NSString * title;
 
 @end

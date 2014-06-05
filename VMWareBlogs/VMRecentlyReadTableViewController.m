@@ -38,6 +38,7 @@
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     //self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.tableView setBackgroundColor:[UIColor grayColor]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -100,14 +101,25 @@
     NSLog(@"Configuring Cell");
     RecentArticle *recentArticle = [_fetchedResultsController objectAtIndexPath:indexPath];
     
+    UIView *mask = (UIView *)[cell viewWithTag:103];
+    [mask setBackgroundColor:[self colorWithHexString:@"292929"]];
+    
     UITextView *titleTextView = (UITextView *)[cell viewWithTag:101];
     titleTextView.editable = NO;
     titleTextView.selectable = NO;
     titleTextView.userInteractionEnabled = NO;
 
-    [titleTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
+    [titleTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:18.0f]];
     NSLog(@"Cell title %@", recentArticle.title);
     titleTextView.text = recentArticle.title;
+    [titleTextView setTextColor:[UIColor whiteColor]];
+    [titleTextView setBackgroundColor:[UIColor clearColor]];
+    
+    UILabel *authorAndDateLbl = (UILabel *)[cell viewWithTag:102];
+    authorAndDateLbl.text = [NSString stringWithFormat:@"%@ - %@", recentArticle.author, recentArticle.pubDate];
+    [authorAndDateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:12.0f]];
+    [authorAndDateLbl setTextColor:[UIColor whiteColor]];
+    [authorAndDateLbl setBackgroundColor:[UIColor clearColor]];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

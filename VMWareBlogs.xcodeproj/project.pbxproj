@@ -185,6 +185,7 @@
 		8360925E1900BCC200C8EA13 /* VMTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMTestViewController.h; sourceTree = "<group>"; };
 		8360925F1900BCC200C8EA13 /* VMTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMTestViewController.m; sourceTree = "<group>"; };
 		8368D7C8193538CF00EA2140 /* BlogModel 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 4.xcdatamodel"; sourceTree = "<group>"; };
+		837F88EB19412E540011531E /* BlogModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		8399298A18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VmWareNavBarImg-568h@2x.png"; sourceTree = "<group>"; };
 		8399298B18EA04B800F3D713 /* VmWareNavBarImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VmWareNavBarImg.png; sourceTree = "<group>"; };
 		8399298C18EA04B800F3D713 /* VmWareNavBarImg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VmWareNavBarImg@2x.png"; sourceTree = "<group>"; };
@@ -968,6 +969,7 @@
 		83FE344C18CE75670080C64C /* BlogModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				837F88EB19412E540011531E /* BlogModel 5.xcdatamodel */,
 				8368D7C8193538CF00EA2140 /* BlogModel 4.xcdatamodel */,
 				83FF03D4190F037B003AF06C /* BlogModel 2.xcdatamodel */,
 				83FF03D519103C92003AF06C /* BlogModel 3.xcdatamodel */,

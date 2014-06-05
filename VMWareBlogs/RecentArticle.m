@@ -16,6 +16,7 @@
 @dynamic link;
 @dynamic order;
 @dynamic pubDate;
+@dynamic author;
 @dynamic title;
 
 @end
