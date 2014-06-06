@@ -75,6 +75,10 @@
 		8360925819006E3B00C8EA13 /* VMWareBlogsAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 8360925719006E3B00C8EA13 /* VMWareBlogsAPI.m */; };
 		8360925C19007A7F00C8EA13 /* VMArticleEntityUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 8360925B19007A7F00C8EA13 /* VMArticleEntityUpdater.m */; };
 		836092601900BCC200C8EA13 /* VMTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8360925F1900BCC200C8EA13 /* VMTestViewController.m */; };
+		83768B7E1942540D00A171DA /* imageHolder.png in Resources */ = {isa = PBXBuildFile; fileRef = 83768B7C1942540D00A171DA /* imageHolder.png */; };
+		83768B7F1942540D00A171DA /* imageHolder.png in Resources */ = {isa = PBXBuildFile; fileRef = 83768B7C1942540D00A171DA /* imageHolder.png */; };
+		83768B801942540D00A171DA /* imageHolder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83768B7D1942540D00A171DA /* imageHolder@2x.png */; };
+		83768B811942540D00A171DA /* imageHolder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83768B7D1942540D00A171DA /* imageHolder@2x.png */; };
 		8399298D18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8399298A18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png */; };
 		8399298E18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8399298A18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png */; };
 		8399298F18EA04B800F3D713 /* VmWareNavBarImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8399298B18EA04B800F3D713 /* VmWareNavBarImg.png */; };
@@ -185,6 +189,8 @@
 		8360925E1900BCC200C8EA13 /* VMTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMTestViewController.h; sourceTree = "<group>"; };
 		8360925F1900BCC200C8EA13 /* VMTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMTestViewController.m; sourceTree = "<group>"; };
 		8368D7C8193538CF00EA2140 /* BlogModel 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 4.xcdatamodel"; sourceTree = "<group>"; };
+		83768B7C1942540D00A171DA /* imageHolder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imageHolder.png; sourceTree = "<group>"; };
+		83768B7D1942540D00A171DA /* imageHolder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "imageHolder@2x.png"; sourceTree = "<group>"; };
 		837F88EB19412E540011531E /* BlogModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		8399298A18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VmWareNavBarImg-568h@2x.png"; sourceTree = "<group>"; };
 		8399298B18EA04B800F3D713 /* VmWareNavBarImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VmWareNavBarImg.png; sourceTree = "<group>"; };
@@ -404,6 +410,8 @@
 		8399297C18E3AEF800F3D713 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				83768B7C1942540D00A171DA /* imageHolder.png */,
+				83768B7D1942540D00A171DA /* imageHolder@2x.png */,
 				832559B7192C50FF00E357B1 /* arrowUp.png */,
 				832559B8192C50FF00E357B1 /* arrowUp@2x.png */,
 				832559B1192C508800E357B1 /* articles.png */,
@@ -602,6 +610,7 @@
 				8359B0021919676200CAD9B9 /* Damion-Regular.ttf in Resources */,
 				8359B0011919676200CAD9B9 /* CloseXPressed.png in Resources */,
 				8311E33118F52FAE0053B4D6 /* markAsReadIcon.png in Resources */,
+				83768B7E1942540D00A171DA /* imageHolder.png in Resources */,
 				83255999192C4EFE00E357B1 /* book.png in Resources */,
 				83FE342D18CE6F450080C64C /* Images.xcassets in Resources */,
 				832559B3192C508800E357B1 /* articles.png in Resources */,
@@ -627,6 +636,7 @@
 				832559B5192C508800E357B1 /* articles@2x.png in Resources */,
 				8325599B192C4EFE00E357B1 /* book@2x-568h.png in Resources */,
 				833253DF19205F1700A3F5EF /* facebook@2x.png in Resources */,
+				83768B801942540D00A171DA /* imageHolder@2x.png in Resources */,
 				833253E019205F1700A3F5EF /* twitter.png in Resources */,
 				832559B9192C50FF00E357B1 /* arrowUp.png in Resources */,
 				839929AB18EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png in Resources */,
@@ -648,6 +658,7 @@
 				8325599C192C4EFE00E357B1 /* book@2x-568h.png in Resources */,
 				83255989192C4BD000E357B1 /* align_justify-128.png in Resources */,
 				8399299218EA04B800F3D713 /* VmWareNavBarImg@2x.png in Resources */,
+				83768B7F1942540D00A171DA /* imageHolder.png in Resources */,
 				8327408E190701230015923A /* vmWareBlogsTestPlaceholder.jpg in Resources */,
 				8311E33218F52FAE0053B4D6 /* markAsReadIcon.png in Resources */,
 				83FE343E18CE6F460080C64C /* InfoPlist.strings in Resources */,
@@ -660,6 +671,7 @@
 				832559AA192C4EFE00E357B1 /* upArrow@2x.png in Resources */,
 				839929AE18EA12AA00F3D713 /* navBarLogoNoStatusBar.png in Resources */,
 				8325599E192C4EFE00E357B1 /* book@2x.png in Resources */,
+				83768B811942540D00A171DA /* imageHolder@2x.png in Resources */,
 				832559A0192C4EFE00E357B1 /* floppy-disk.png in Resources */,
 				832559BA192C50FF00E357B1 /* arrowUp.png in Resources */,
 				839929AC18EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png in Resources */,

@@ -63,10 +63,10 @@
     
     self.filteredList = NO;
     
-    [self.tableView setBackgroundColor:[self colorWithHexString:@"272A41"]];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    //TODO status bar: https://developer.apple.com/library/ios/qa/qa1797/_index.html
+    [self.tableView setBackgroundColor:[self colorWithHexString:@"696566"]];
+    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    [[UIBarButtonItem appearance] setTintColor:[self colorWithHexString:@"346633"]];
+    [self.tabBarController.tabBar setTintColor:[self colorWithHexString:@"346633"]];
     
     NSError *error;
     self.fetchedResultsController = nil;
@@ -268,7 +268,7 @@
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 197;
+    return 190;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -315,7 +315,7 @@
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 30)];
     if (section == 0) {
-        [headerView setBackgroundColor:[self colorWithHexString:@"2F3250"]];
+        [headerView setBackgroundColor:[self colorWithHexString:@"346633"]];
         UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(5.0f, 0, self.tableView.bounds.size.width, 21.5)];
         [sectionTitle setFont:[UIFont fontWithName:@"ArialMT" size:13]];
         sectionTitle.text = @"The Latest Posts From All VMware Blogs";
@@ -464,7 +464,7 @@
     titleLbl.text = @"text";
     [titleLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
     [titleLbl setBackgroundColor:[UIColor clearColor]];
-    titleLbl.textColor = [UIColor whiteColor];
+    titleLbl.textColor = [self colorWithHexString:@"696566"];
     
     UITextView *descLbl = (UITextView *)[cell viewWithTag:102];
     [descLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
@@ -478,15 +478,16 @@
     
     UILabel *authorLbl = (UILabel *)[cell viewWithTag:105];
     [authorLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:13.0f]];
-    authorLbl.textColor = [self colorWithHexString:@"BBBBBB"];
+    authorLbl.textColor = [self colorWithHexString:@"8D8D8D"];
     [authorLbl setBackgroundColor:[UIColor clearColor]];
+    [authorLbl setTextAlignment:NSTextAlignmentRight];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
     imageView.alpha = 0;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     
-    [imageView.layer setBorderColor: [[UIColor grayColor] CGColor]];
-    [imageView.layer setBorderWidth: 0.5];
+//    [imageView.layer setBorderColor: [[UIColor grayColor] CGColor]];
+//    [imageView.layer setBorderWidth: 0.5];
     
     orderLbl.text = [NSString stringWithFormat:@"%@", blog.order];
     titleLbl.text = blog.title;
@@ -499,7 +500,6 @@
     dateLbl.text = blog.pubDate;
     dateLbl.hidden = YES;
     authorLbl.text = [NSString stringWithFormat:@"%@ - %@", blog.author, blog.pubDate];
-    [authorLbl setTextAlignment:NSTextAlignmentLeft];
 
     NSLog(@"Image in NIL");
     UIImage *image = [UIImage imageNamed:@"placeholder.png"];
@@ -514,7 +514,7 @@
      mcr	Micro	75 x 57
      */
     
-    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwymax=480&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
+    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=100&stwymax=90&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
     
     //[[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
     

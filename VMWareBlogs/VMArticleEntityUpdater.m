@@ -515,6 +515,10 @@ finish:
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&#8594;" withString:@" "];
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&ldquo;" withString:@"\""];
     result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&rdquo;" withString:@"\""];
+    result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&#rdquo;" withString:@"\""];
+    result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&#ldquo;" withString:@"\""];
+    result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&#rsquo;" withString:@"'"];
+    result = (NSMutableString *)[result stringByReplacingOccurrencesOfString:@"&#lsquo;" withString:@"'"];
     
     return result;
 }

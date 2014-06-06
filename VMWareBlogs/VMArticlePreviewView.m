@@ -64,7 +64,7 @@ BOOL dragging;
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 109.0)];
     self.imageView.alpha = 1;
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.imageView setImage:[UIImage imageNamed:@"placeholder.png"]];
+    [self.imageView setImage:[UIImage imageNamed:@"imageHolder.png"]];
     [self.testView addSubview:self.imageView];
     
     NSLog(@"PREVIEW VIEW %@", self.guid);
@@ -77,7 +77,7 @@ BOOL dragging;
     NSURL *imageGetterURL = [NSURL URLWithString:imageGetter];
     [self.imageView setImageWithURL:imageGetterURL];
     
-    [self.imageView setImageWithURL:imageGetterURL placeholderImage:[UIImage imageNamed:@"placeholder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+    [self.imageView setImageWithURL:imageGetterURL placeholderImage:[UIImage imageNamed:@"imageHolder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
         [UIView animateWithDuration:0.4 animations:^{
             
 #pragma clang diagnostic push

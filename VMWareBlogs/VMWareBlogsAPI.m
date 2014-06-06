@@ -21,8 +21,8 @@
 
 - (NSString *)requestRSS {
 
-    //NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp?nocache=true", BASE_URI];
-    NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp", BASE_URI];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp?nocache=true", BASE_URI];
+    //NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp", BASE_URI];
     NSURL *url = [NSURL URLWithString:urlStr];
     
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
