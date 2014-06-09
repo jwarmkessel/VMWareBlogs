@@ -54,6 +54,7 @@
 
     // Do any additional setup after loading the view.
 //    self.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBar.tintColor = [self colorWithHexString:@"346633"];
 
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) { // if iOS 7
         self.edgesForExtendedLayout = UIRectEdgeNone; //layout adjustements
@@ -75,7 +76,7 @@
     float visibleWindow = 568 - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height;
     
     NSLog(@"VISIBLE WINODW %f", visibleWindow);
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0,475.0, 320.0, visibleWindow)];
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0,0.0, 320.0, visibleWindow)];
     [self.webView setDelegate:self];
     NSURL *url = [NSURL URLWithString:self.articleURL];
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url];
