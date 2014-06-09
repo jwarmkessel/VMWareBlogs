@@ -93,6 +93,7 @@
 		839929AE18EA12AA00F3D713 /* navBarLogoNoStatusBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 839929A918EA12AA00F3D713 /* navBarLogoNoStatusBar.png */; };
 		839929AF18EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 839929AA18EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png */; };
 		839929B018EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 839929AA18EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png */; };
+		83C6EC6C1946499F005AE08A /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C6EC6B1946499F005AE08A /* Crashlytics.framework */; };
 		83CF9BAD18FDE31B004DFCC4 /* VMMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CF9BAC18FDE31B004DFCC4 /* VMMasterViewController.m */; };
 		83E0742018FEF6FC00ACBD63 /* VMArticleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E0741F18FEF6FC00ACBD63 /* VMArticleTableViewController.m */; };
 		83E0742318FEFF0B00ACBD63 /* VMArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E0742218FEFF0B00ACBD63 /* VMArticleCell.m */; };
@@ -199,6 +200,7 @@
 		839929A818EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navBarLogoNoStatusBar-568h@2x.png"; sourceTree = "<group>"; };
 		839929A918EA12AA00F3D713 /* navBarLogoNoStatusBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navBarLogoNoStatusBar.png; sourceTree = "<group>"; };
 		839929AA18EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navBarLogoNoStatusBar@2x.png"; sourceTree = "<group>"; };
+		83C6EC6B1946499F005AE08A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		83CF9BAB18FDE31B004DFCC4 /* VMMasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMasterViewController.h; sourceTree = "<group>"; };
 		83CF9BAC18FDE31B004DFCC4 /* VMMasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMasterViewController.m; sourceTree = "<group>"; };
 		83E0741E18FEF6FC00ACBD63 /* VMArticleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMArticleTableViewController.h; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 			files = (
 				833253E3192064B100A3F5EF /* Social.framework in Frameworks */,
 				8327409019070C000015923A /* QuartzCore.framework in Frameworks */,
+				83C6EC6C1946499F005AE08A /* Crashlytics.framework in Frameworks */,
 				83FE34DE18CFCCA10080C64C /* CoreData.framework in Frameworks */,
 				83FE341718CE6F450080C64C /* CoreGraphics.framework in Frameworks */,
 				83FE341918CE6F450080C64C /* UIKit.framework in Frameworks */,
@@ -473,6 +476,7 @@
 		83FE341318CE6F450080C64C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				83C6EC6B1946499F005AE08A /* Crashlytics.framework */,
 				833253E2192064B100A3F5EF /* Social.framework */,
 				8327408F19070C000015923A /* QuartzCore.framework */,
 				83FE34DD18CFCCA10080C64C /* CoreData.framework */,
@@ -537,6 +541,7 @@
 				83FE340E18CE6F450080C64C /* Frameworks */,
 				83FE340F18CE6F450080C64C /* Resources */,
 				830B385BD5114E5C9769DE42 /* Copy Pods Resources */,
+				83C6EC6A19464948005AE08A /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -707,6 +712,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		83C6EC6A19464948005AE08A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 59c371b61d689f5678d0ebe6a0d8db4973125312 9b080842dcb795756c6fb014135793b48093299bd40028226dcd0175c5b7a6ec";
 		};
 		8EF98BF57A7B45BAA5E8E7A6 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -881,6 +899,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VMWareBlogs/VMWareBlogs-Prefix.pch";
 				INFOPLIST_FILE = "VMWareBlogs/VMWareBlogs-Info.plist";
@@ -895,6 +917,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VMWareBlogs/VMWareBlogs-Prefix.pch";
 				INFOPLIST_FILE = "VMWareBlogs/VMWareBlogs-Info.plist";
