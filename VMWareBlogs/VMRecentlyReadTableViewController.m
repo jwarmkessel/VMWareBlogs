@@ -10,8 +10,11 @@
 #import "VMAppDelegate.h"
 #import "RecentArticle.h"
 #import "VMArticleViewController.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <UIImageView+WebCache.h>
 
 #import "VMJunkArticleViewController.h"
+
 
 @interface VMRecentlyReadTableViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -36,9 +39,8 @@
     // self.clearsSelectionOnViewWillAppear = NO;
 
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    //self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.tableView setBackgroundColor:[UIColor grayColor]];
+    //[self.tableView setBackgroundColor:[self colorWithHexString:@"696566"]];
+    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,7 +77,7 @@
 #pragma mark - Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 80;
+    return 120;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -101,9 +103,6 @@
     NSLog(@"Configuring Cell");
     RecentArticle *recentArticle = [_fetchedResultsController objectAtIndexPath:indexPath];
     
-    UIView *mask = (UIView *)[cell viewWithTag:103];
-    [mask setBackgroundColor:[self colorWithHexString:@"292929"]];
-    
     UITextView *titleTextView = (UITextView *)[cell viewWithTag:101];
     titleTextView.editable = NO;
     titleTextView.selectable = NO;
@@ -112,14 +111,47 @@
     [titleTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:18.0f]];
     NSLog(@"Cell title %@", recentArticle.title);
     titleTextView.text = recentArticle.title;
-    [titleTextView setTextColor:[UIColor whiteColor]];
+    [titleTextView setTextColor:[self colorWithHexString:@"696566"]];
     [titleTextView setBackgroundColor:[UIColor clearColor]];
     
     UILabel *authorAndDateLbl = (UILabel *)[cell viewWithTag:102];
     authorAndDateLbl.text = [NSString stringWithFormat:@"%@ - %@", recentArticle.author, recentArticle.pubDate];
     [authorAndDateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:12.0f]];
-    [authorAndDateLbl setTextColor:[UIColor whiteColor]];
+    [authorAndDateLbl setTextColor:[self colorWithHexString:@"8D8D8D"]];
     [authorAndDateLbl setBackgroundColor:[UIColor clearColor]];
+    
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:105];
+    imageView.alpha = 0;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    /*
+     Parameter   	Size             	Dimensions
+     xlg	Extra Large	320 x 240
+     lg	Large	200 x 150
+     sm	Small	100 x 75
+     vsm	Very Small	90 x 68
+     mcr	Micro	75 x 57
+     */
+    
+    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=100&stwymax=90&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", recentArticle.guid];
+    
+    //[[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
+    
+    NSURL *url = [NSURL URLWithString:imageGetter];
+    
+    [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+        [UIView animateWithDuration:0.4 animations:^{
+            
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+            imageView.alpha = 1;
+#pragma clang diagnostic pop
+            
+            
+        } completion:^(BOOL finished) {
+            NSLog(@"Image loaded");
+        }];
+    }];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

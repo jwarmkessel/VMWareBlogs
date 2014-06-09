@@ -496,9 +496,6 @@
     imageView.alpha = 0;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     
-//    [imageView.layer setBorderColor: [[UIColor grayColor] CGColor]];
-//    [imageView.layer setBorderWidth: 0.5];
-    
     orderLbl.text = [NSString stringWithFormat:@"%@", blog.order];
     titleLbl.text = blog.title;
     
