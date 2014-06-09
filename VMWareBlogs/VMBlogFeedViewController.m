@@ -52,6 +52,7 @@
     @synthesize updateFlag;
     @synthesize moc = _moc;
     @synthesize filteredTableData = _filteredTableData;
+    @synthesize updater;
 
 - (void)viewDidLoad
 {
@@ -114,13 +115,20 @@
             }      
         }
     }
-    
-    //Update the list.
-    [self refreshList];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.updater.updateBlogListTimer invalidate];
+    NSLog(@"view will disappear");
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
+    //Update the list.
+    [self refreshList];
+    
     [self.scrollToTopTap setEnabled:YES];
 }
 
@@ -238,9 +246,9 @@
 - (void)updateList:(id)sender {
     NSLog(@"Update Core Manager");
     
-    VMArticleEntityUpdater *updater = [[VMArticleEntityUpdater alloc] init];
-    [updater setDelegate:self];
-    [updater updateList];
+    self.updater = [[VMArticleEntityUpdater alloc] init];
+    [self.updater setDelegate:self];
+    [self.updater updateList];
 }
 
 #pragma mark - VMarticleEntityUpdater delegates
@@ -346,6 +354,7 @@
 {
     NSLog(@"didSelectRowAtIndexPath");
     [self.scrollToTopTap setEnabled:NO];
+    [self.updater.updateBlogListTimer invalidate];
     
     NSManagedObjectContext *tempContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     

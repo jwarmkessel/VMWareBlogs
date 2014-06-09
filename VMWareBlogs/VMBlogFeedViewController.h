@@ -14,5 +14,6 @@
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic, strong) NSMutableArray *blogArray;
+@property (nonatomic, strong) VMArticleEntityUpdater *updater;
 
 @end
