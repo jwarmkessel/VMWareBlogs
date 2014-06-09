@@ -13,7 +13,7 @@
 #import <TBXML.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-#define UPDATE_ARTICLES_INTERVAL 60
+#define UPDATE_ARTICLES_INTERVAL 2
 
 @interface VMArticleEntityUpdater()
 - (NSString *)stringByDecodingXMLEntities: (NSString *)stringToParse;
@@ -179,20 +179,22 @@
             
             NSLog(@"Reset the update flag on private queue.");
             self.updating = NO;
-
+            
             // save parent to disk asynchronously
-            [appDelegate.managedObjectContext performBlock:^{
+            dispatch_sync(dispatch_get_main_queue(), ^{
                 NSLog(@"Perform save to the parent context");
                 
                 NSError *error;
                 if (![appDelegate.managedObjectContext save:&error])
                 {
                     // handle error
+                    NSLog(@"Error saving to parent context");
                 }
                 
                 //Update the article list every x number of seconds.
                 NSLog(@"Start timer");
                 if([updateBlogListTimer isValid]) {
+                    NSLog(@"Invalidate timer");
                     [updateBlogListTimer invalidate];
                     updateBlogListTimer = nil;
                 }
@@ -201,10 +203,10 @@
                                                                        target:self
                                                                      selector:@selector(updateList) userInfo:nil
                                                                       repeats: YES];
-                }];
+                
+                [self.delegate articleEntityUpdaterDidFinishUpdating];
+                });
         }
-
-        [self.delegate articleEntityUpdaterDidFinishUpdating];
     }];
 }
 

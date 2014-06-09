@@ -250,8 +250,9 @@
     
     //TODO http://iphonedevsdk.com/forum/iphone-sdk-development/83249-uiactivityindicatorview-doesn-t-immediately-stopanimating.html
     
+    NSLog(@"STOP ANIMATING activity indicator");
     [self.activityIndicator stopAnimating];
-
+    
     self.navigationItem.rightBarButtonItem = nil;
     
     self.navigationItem.rightBarButtonItem = self.refreshButton;
