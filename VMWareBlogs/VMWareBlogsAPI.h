@@ -15,6 +15,6 @@
 @property (atomic, strong) NSManagedObjectContext *moc;
 @property (nonatomic, assign) BOOL updateFlag;
 @property (strong, nonatomic) NSString *songID;
-- (NSString *)requestRSS;
++ (NSString *)requestRSS;
 
 @end

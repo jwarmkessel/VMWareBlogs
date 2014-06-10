@@ -19,7 +19,7 @@
 @implementation VMWareBlogsAPI
 @synthesize moc, updateFlag;
 
-- (NSString *)requestRSS {
++ (NSString *)requestRSS {
 
     NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp?nocache=true", BASE_URI];
     //NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp", BASE_URI];

@@ -17,10 +17,20 @@
 
 @interface VMArticleEntityUpdater()
 - (NSString *)stringByDecodingXMLEntities: (NSString *)stringToParse;
+
 - (NSString *)stringByRemovingNewLinesAndWhitespace:(NSString*)stringToParse;
+
 - (NSString *)stringByStrippingTags:(NSString *)stringtoParse;
+
 - (void)contextDidSave:(NSNotification *)notification;
+
+/*
+ Update list
+*/
 - (void)updateList;
+
+- (Blog *)createArticleEntityWithTitle:(TBXMLElement *)titleElem articleLink:(TBXMLElement *)linkElem articleDescription:(TBXMLElement *)descElement publishDate:(TBXMLElement *)pubDateElement GUIDElement:(TBXMLElement *)guidElement AuthorElement:(TBXMLElement *)authorElement andOrder:(int)order;
+
 @end
 
 @implementation VMArticleEntityUpdater
@@ -29,7 +39,10 @@
 
 - (void)updateList {
     
-    if([self isUpdating]) return;
+    if([self isUpdating]) {
+        NSLog(@"DENY UPDATE REQUEST");
+        return;
+    }
     
     self.updating = YES;
     
@@ -38,8 +51,7 @@
     [self.updateContext performBlock:^{
         
         //Request data.
-        VMWareBlogsAPI *api = [[VMWareBlogsAPI alloc] init];
-        NSString *xmlString = [api requestRSS];
+        NSString *xmlString = [VMWareBlogsAPI requestRSS];
         
         if(xmlString == nil) {
             self.updating = NO;
@@ -199,10 +211,10 @@
                     updateBlogListTimer = nil;
                 }
                 
-                updateBlogListTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_ARTICLES_INTERVAL
-                                                                       target:self
-                                                                     selector:@selector(updateList) userInfo:nil
-                                                                      repeats: YES];
+//                updateBlogListTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_ARTICLES_INTERVAL
+//                                                                       target:self
+//                                                                     selector:@selector(updateList) userInfo:nil
+//                                                                      repeats: YES];
                 
                 [self.delegate articleEntityUpdaterDidFinishUpdating];
                 });
