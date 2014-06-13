@@ -299,7 +299,7 @@
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 190;
+    return 210;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -525,7 +525,18 @@
         blog.descr = @"Description unavailable.";
     }
     
-    descLbl.text = blog.descr;
+    //Define the range you're interested in
+    NSRange stringRange = {0, MIN([blog.descr length], 150)};
+    
+    //Adjust the range to include dependent chars
+    stringRange = [blog.descr rangeOfComposedCharacterSequencesForRange:stringRange];
+    
+    //Now you can create the short string
+    NSString *shortString = [blog.descr substringWithRange:stringRange];
+    
+    shortString = [NSString stringWithFormat:@"%@...", shortString];
+
+    descLbl.text = shortString;
     dateLbl.text = blog.pubDate;
     dateLbl.hidden = YES;
     authorLbl.text = [NSString stringWithFormat:@"%@ - %@", blog.author, blog.pubDate];

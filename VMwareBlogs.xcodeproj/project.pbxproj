@@ -75,24 +75,20 @@
 		8360925819006E3B00C8EA13 /* VMWareBlogsAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 8360925719006E3B00C8EA13 /* VMWareBlogsAPI.m */; };
 		8360925C19007A7F00C8EA13 /* VMArticleEntityUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 8360925B19007A7F00C8EA13 /* VMArticleEntityUpdater.m */; };
 		836092601900BCC200C8EA13 /* VMTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8360925F1900BCC200C8EA13 /* VMTestViewController.m */; };
-		83768B7E1942540D00A171DA /* imageHolder.png in Resources */ = {isa = PBXBuildFile; fileRef = 83768B7C1942540D00A171DA /* imageHolder.png */; };
-		83768B7F1942540D00A171DA /* imageHolder.png in Resources */ = {isa = PBXBuildFile; fileRef = 83768B7C1942540D00A171DA /* imageHolder.png */; };
-		83768B801942540D00A171DA /* imageHolder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83768B7D1942540D00A171DA /* imageHolder@2x.png */; };
-		83768B811942540D00A171DA /* imageHolder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83768B7D1942540D00A171DA /* imageHolder@2x.png */; };
 		8399298D18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8399298A18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png */; };
 		8399298E18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8399298A18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png */; };
 		8399298F18EA04B800F3D713 /* VmWareNavBarImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8399298B18EA04B800F3D713 /* VmWareNavBarImg.png */; };
 		8399299018EA04B800F3D713 /* VmWareNavBarImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8399298B18EA04B800F3D713 /* VmWareNavBarImg.png */; };
 		8399299118EA04B800F3D713 /* VmWareNavBarImg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8399298C18EA04B800F3D713 /* VmWareNavBarImg@2x.png */; };
 		8399299218EA04B800F3D713 /* VmWareNavBarImg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8399298C18EA04B800F3D713 /* VmWareNavBarImg@2x.png */; };
-		8399299D18EA0BF000F3D713 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8399299C18EA0BF000F3D713 /* placeholder.png */; };
-		8399299E18EA0BF000F3D713 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8399299C18EA0BF000F3D713 /* placeholder.png */; };
 		839929AB18EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 839929A818EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png */; };
 		839929AC18EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 839929A818EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png */; };
 		839929AD18EA12AA00F3D713 /* navBarLogoNoStatusBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 839929A918EA12AA00F3D713 /* navBarLogoNoStatusBar.png */; };
 		839929AE18EA12AA00F3D713 /* navBarLogoNoStatusBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 839929A918EA12AA00F3D713 /* navBarLogoNoStatusBar.png */; };
 		839929AF18EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 839929AA18EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png */; };
 		839929B018EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 839929AA18EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png */; };
+		83B3A71D194BC44200DF6511 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 83B3A71B194BC44200DF6511 /* placeholder.png */; };
+		83B3A71E194BC44200DF6511 /* placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83B3A71C194BC44200DF6511 /* placeholder@2x.png */; };
 		83C6EC6C1946499F005AE08A /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C6EC6B1946499F005AE08A /* Crashlytics.framework */; };
 		83CF9BAD18FDE31B004DFCC4 /* VMMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CF9BAC18FDE31B004DFCC4 /* VMMasterViewController.m */; };
 		83E0742018FEF6FC00ACBD63 /* VMArticleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E0741F18FEF6FC00ACBD63 /* VMArticleTableViewController.m */; };
@@ -190,16 +186,15 @@
 		8360925E1900BCC200C8EA13 /* VMTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMTestViewController.h; sourceTree = "<group>"; };
 		8360925F1900BCC200C8EA13 /* VMTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMTestViewController.m; sourceTree = "<group>"; };
 		8368D7C8193538CF00EA2140 /* BlogModel 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 4.xcdatamodel"; sourceTree = "<group>"; };
-		83768B7C1942540D00A171DA /* imageHolder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imageHolder.png; sourceTree = "<group>"; };
-		83768B7D1942540D00A171DA /* imageHolder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "imageHolder@2x.png"; sourceTree = "<group>"; };
 		837F88EB19412E540011531E /* BlogModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		8399298A18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VmWareNavBarImg-568h@2x.png"; sourceTree = "<group>"; };
 		8399298B18EA04B800F3D713 /* VmWareNavBarImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VmWareNavBarImg.png; sourceTree = "<group>"; };
 		8399298C18EA04B800F3D713 /* VmWareNavBarImg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VmWareNavBarImg@2x.png"; sourceTree = "<group>"; };
-		8399299C18EA0BF000F3D713 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 		839929A818EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navBarLogoNoStatusBar-568h@2x.png"; sourceTree = "<group>"; };
 		839929A918EA12AA00F3D713 /* navBarLogoNoStatusBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navBarLogoNoStatusBar.png; sourceTree = "<group>"; };
 		839929AA18EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navBarLogoNoStatusBar@2x.png"; sourceTree = "<group>"; };
+		83B3A71B194BC44200DF6511 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
+		83B3A71C194BC44200DF6511 /* placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x.png"; sourceTree = "<group>"; };
 		83C6EC6B1946499F005AE08A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		83CF9BAB18FDE31B004DFCC4 /* VMMasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMasterViewController.h; sourceTree = "<group>"; };
 		83CF9BAC18FDE31B004DFCC4 /* VMMasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMasterViewController.m; sourceTree = "<group>"; };
@@ -413,8 +408,6 @@
 		8399297C18E3AEF800F3D713 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				83768B7C1942540D00A171DA /* imageHolder.png */,
-				83768B7D1942540D00A171DA /* imageHolder@2x.png */,
 				832559B7192C50FF00E357B1 /* arrowUp.png */,
 				832559B8192C50FF00E357B1 /* arrowUp@2x.png */,
 				832559B1192C508800E357B1 /* articles.png */,
@@ -442,10 +435,18 @@
 				839929A818EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png */,
 				839929A918EA12AA00F3D713 /* navBarLogoNoStatusBar.png */,
 				839929AA18EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png */,
-				8399299C18EA0BF000F3D713 /* placeholder.png */,
 				8399298A18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png */,
 				8399298B18EA04B800F3D713 /* VmWareNavBarImg.png */,
 				8399298C18EA04B800F3D713 /* VmWareNavBarImg@2x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		83B3A71A194BC42800DF6511 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				83B3A71B194BC44200DF6511 /* placeholder.png */,
+				83B3A71C194BC44200DF6511 /* placeholder@2x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -502,6 +503,7 @@
 		83FE341B18CE6F450080C64C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				83B3A71A194BC42800DF6511 /* Images */,
 				83FE341C18CE6F450080C64C /* VMwareBlogs-Info.plist */,
 				83FE341D18CE6F450080C64C /* InfoPlist.strings */,
 				83FE342018CE6F450080C64C /* main.m */,
@@ -613,9 +615,9 @@
 				8359B0001919676200CAD9B9 /* CloseX.png in Resources */,
 				8399299118EA04B800F3D713 /* VmWareNavBarImg@2x.png in Resources */,
 				8359B0021919676200CAD9B9 /* Damion-Regular.ttf in Resources */,
+				83B3A71E194BC44200DF6511 /* placeholder@2x.png in Resources */,
 				8359B0011919676200CAD9B9 /* CloseXPressed.png in Resources */,
 				8311E33118F52FAE0053B4D6 /* markAsReadIcon.png in Resources */,
-				83768B7E1942540D00A171DA /* imageHolder.png in Resources */,
 				83255999192C4EFE00E357B1 /* book.png in Resources */,
 				83FE342D18CE6F450080C64C /* Images.xcassets in Resources */,
 				832559B3192C508800E357B1 /* articles.png in Resources */,
@@ -628,7 +630,6 @@
 				8325598E192C4D1E00E357B1 /* book 4.png in Resources */,
 				8325598B192C4D0500E357B1 /* arrow 5.png in Resources */,
 				839929AD18EA12AA00F3D713 /* navBarLogoNoStatusBar.png in Resources */,
-				8399299D18EA0BF000F3D713 /* placeholder.png in Resources */,
 				8359AFFE1919676200CAD9B9 /* blue-arrow-right.png in Resources */,
 				83255988192C4BD000E357B1 /* align_justify-128.png in Resources */,
 				832559BB192C50FF00E357B1 /* arrowUp@2x.png in Resources */,
@@ -636,12 +637,12 @@
 				8399298F18EA04B800F3D713 /* VmWareNavBarImg.png in Resources */,
 				8311E32E18F52CC40053B4D6 /* folderIcon.png in Resources */,
 				8359AFFD1919676200CAD9B9 /* blue-arrow-left.png in Resources */,
+				83B3A71D194BC44200DF6511 /* placeholder.png in Resources */,
 				832559A7192C4EFE00E357B1 /* upArrow@2x-568h.png in Resources */,
 				832559AF192C500C00E357B1 /* save@2x.png in Resources */,
 				832559B5192C508800E357B1 /* articles@2x.png in Resources */,
 				8325599B192C4EFE00E357B1 /* book@2x-568h.png in Resources */,
 				833253DF19205F1700A3F5EF /* facebook@2x.png in Resources */,
-				83768B801942540D00A171DA /* imageHolder@2x.png in Resources */,
 				833253E019205F1700A3F5EF /* twitter.png in Resources */,
 				832559B9192C50FF00E357B1 /* arrowUp.png in Resources */,
 				839929AB18EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png in Resources */,
@@ -663,7 +664,6 @@
 				8325599C192C4EFE00E357B1 /* book@2x-568h.png in Resources */,
 				83255989192C4BD000E357B1 /* align_justify-128.png in Resources */,
 				8399299218EA04B800F3D713 /* VmWareNavBarImg@2x.png in Resources */,
-				83768B7F1942540D00A171DA /* imageHolder.png in Resources */,
 				8327408E190701230015923A /* vmWareBlogsTestPlaceholder.jpg in Resources */,
 				8311E33218F52FAE0053B4D6 /* markAsReadIcon.png in Resources */,
 				83FE343E18CE6F460080C64C /* InfoPlist.strings in Resources */,
@@ -671,12 +671,10 @@
 				839929B018EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png in Resources */,
 				8325599A192C4EFE00E357B1 /* book.png in Resources */,
 				8325598C192C4D0500E357B1 /* arrow 5.png in Resources */,
-				8399299E18EA0BF000F3D713 /* placeholder.png in Resources */,
 				832559B6192C508800E357B1 /* articles@2x.png in Resources */,
 				832559AA192C4EFE00E357B1 /* upArrow@2x.png in Resources */,
 				839929AE18EA12AA00F3D713 /* navBarLogoNoStatusBar.png in Resources */,
 				8325599E192C4EFE00E357B1 /* book@2x.png in Resources */,
-				83768B811942540D00A171DA /* imageHolder@2x.png in Resources */,
 				832559A0192C4EFE00E357B1 /* floppy-disk.png in Resources */,
 				832559BA192C50FF00E357B1 /* arrowUp.png in Resources */,
 				839929AC18EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png in Resources */,
