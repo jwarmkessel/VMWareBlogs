@@ -27,15 +27,16 @@
 #define UPDATE_ARTICLES_INTERVAL 60
 
 @interface VMBlogFeedViewController ()
-    @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-    @property (nonatomic, strong) NSTimer *updateBlogListTimer;
-    @property (nonatomic, strong) NSData *responseData;
-    @property (atomic, strong) NSManagedObjectContext *moc;
-    @property (nonatomic, assign) BOOL updateFlag;
-    @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
-    @property (nonatomic, strong) UIBarButtonItem *activityIndicatorBarButton;
-    @property (strong, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
-    - (IBAction)refreshListHandler:(id)sender;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSTimer *updateBlogListTimer;
+@property (nonatomic, strong) NSData *responseData;
+@property (atomic, strong) NSManagedObjectContext *moc;
+@property (nonatomic, assign) BOOL updateFlag;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) UIBarButtonItem *activityIndicatorBarButton;
+
+
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *filteredTableData;
@@ -53,6 +54,7 @@
     @synthesize moc = _moc;
     @synthesize filteredTableData = _filteredTableData;
     @synthesize updater;
+    @synthesize refreshControl;
 
 - (void)viewDidLoad
 {
@@ -61,7 +63,14 @@
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.searchBar setDelegate:self];
+    self.updater = [[VMArticleEntityUpdater alloc] init];
+    [self.updater setDelegate:self];
     
+    refreshControl = [[UIRefreshControl alloc]init];
+    [refreshControl setTintColor:[UIColor whiteColor]];
+    [self.tableView addSubview:refreshControl];
+    [refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+
     self.filteredList = NO;
     
     [self.tableView setBackgroundColor:[self colorWithHexString:@"696566"]];
@@ -117,6 +126,16 @@
     }
 }
 
+- (void)refreshTable {
+    //TODO: refresh your data
+    self.searchBar.text = @"";
+    [self setFilteredList:NO];
+    
+    [self.updater updateList];
+
+    
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.updater.updateBlogListTimer invalidate];
@@ -127,7 +146,7 @@
     [super viewDidAppear:animated];
 
     //Update the list.
-    [self refreshList];
+    [self refreshTable];
     
     [self.scrollToTopTap setEnabled:YES];
 }
@@ -154,7 +173,7 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-    return NO;
+    return YES;
 }
 
 - (void)viewDidUnload {
@@ -246,8 +265,6 @@
 - (void)updateList:(id)sender {
     NSLog(@"Update Core Manager");
     
-    self.updater = [[VMArticleEntityUpdater alloc] init];
-    [self.updater setDelegate:self];
     [self.updater updateList];
 }
 
@@ -258,20 +275,25 @@
     
     //TODO http://iphonedevsdk.com/forum/iphone-sdk-development/83249-uiactivityindicatorview-doesn-t-immediately-stopanimating.html
     
-    NSLog(@"STOP ANIMATING activity indicator");
-    [self.activityIndicator stopAnimating];
     
-    self.navigationItem.rightBarButtonItem = nil;
+    [refreshControl endRefreshing];
     
-    self.navigationItem.rightBarButtonItem = self.refreshButton;
+//    NSLog(@"STOP ANIMATING activity indicator");
+//    [self.activityIndicator stopAnimating];
+//
+//    self.navigationItem.rightBarButtonItem = nil;
+//    
+//    self.navigationItem.rightBarButtonItem = self.refreshButton;
 }
 -(void)articleEntityUpdaterDidError {
     NSLog(@"articleEntityUpdaterDidError");
-    [self.activityIndicator stopAnimating];
-    
-    self.navigationItem.rightBarButtonItem = nil;
-    
-    self.navigationItem.rightBarButtonItem = self.refreshButton;
+    [refreshControl endRefreshing];
+
+//    [self.activityIndicator stopAnimating];
+//    
+//    self.navigationItem.rightBarButtonItem = nil;
+//    
+//    self.navigationItem.rightBarButtonItem = self.refreshButton;
 }
 
 #pragma mark - Table view data source
@@ -875,33 +897,28 @@
                            alpha:1.0f];
 }
 
-
-- (IBAction)refreshListHandler:(id)sender {
-    [self refreshList];
-}
-
-- (void)refreshList {
-    self.searchBar.text = @"";
-    [self setFilteredList:NO];
-    [self.tableView reloadData];
+//- (void)refreshList {
+//    self.searchBar.text = @"";
+//    [self setFilteredList:NO];
+    //[self.tableView reloadData];
     
-    self.navigationItem.rightBarButtonItem = nil;
+//    self.navigationItem.rightBarButtonItem = nil;
     
     //self.navigationItem.rightBarButtonItem = self.refreshButton;
     
-    if(!self.activityIndicatorBarButton) {
-        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        self.activityIndicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
-    }
-    
-    [self navigationItem].rightBarButtonItem = self.activityIndicatorBarButton;
-    [self.activityIndicator startAnimating];
-    self.activityIndicator.hidesWhenStopped = YES;
+//    if(!self.activityIndicatorBarButton) {
+//        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//        self.activityIndicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
+//    }
+//    
+//    [self navigationItem].rightBarButtonItem = self.activityIndicatorBarButton;
+//    [self.activityIndicator startAnimating];
+//    self.activityIndicator.hidesWhenStopped = YES;
     //Invalidate the previous timer.
-    [_updateBlogListTimer invalidate];
-    _updateBlogListTimer = nil;
-    
-    [self performSelectorInBackground:@selector(updateList:) withObject:self];
-}
+//    [_updateBlogListTimer invalidate];
+//    _updateBlogListTimer = nil;
+//    
+//    [self performSelectorInBackground:@selector(updateList:) withObject:self];
+//}
 
 @end

@@ -275,16 +275,9 @@
                             <outlet property="delegate" destination="gLf-IA-OnT" id="Ytb-xD-wVE"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="po2-QX-YMI">
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="5Ze-5f-tPD">
-                            <connections>
-                                <action selector="refreshListHandler:" destination="gLf-IA-OnT" id="1LA-ye-Z33"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="po2-QX-YMI"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
-                        <outlet property="refreshButton" destination="5Ze-5f-tPD" id="cAQ-3H-9xo"/>
                         <outlet property="searchBar" destination="4PS-gl-7Ok" id="5Zh-EK-LzV"/>
                         <outlet property="view" destination="FXG-Lu-cou" id="cUA-ay-vXc"/>
                         <segue destination="rV9-Ve-Kre" kind="push" identifier="articleSegue" id="UzI-rs-gnM"/>
