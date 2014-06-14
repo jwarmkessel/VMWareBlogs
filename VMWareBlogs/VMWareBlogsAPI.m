@@ -20,44 +20,74 @@
 @synthesize moc, updateFlag;
 
 + (NSString *)requestRSS {
-
-    NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp?nocache=true", BASE_URI];
-    //NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp", BASE_URI];
-    NSURL *url = [NSURL URLWithString:urlStr];
     
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+    NSString *post = [NSString stringWithFormat:@""];
     
-    NSURLResponse* response = nil;
-    NSError *NSURLConnectionError = nil;
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     
-    NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&NSURLConnectionError];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/rss.jsp", BASE_URI]]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
     
-    NSString* responseString;
+    NSURLResponse *response;
+    NSError *error;
+    NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     
-    if(!NSURLConnectionError) {
+    if (!error) {
+        NSString *theReply = [[NSString alloc] initWithBytes:[POSTReply bytes] length:[POSTReply length] encoding: NSASCIIStringEncoding];
         
-        //Decode data.
-        responseString = [[NSString alloc] initWithData:data
-                                                       encoding:NSASCIIStringEncoding];
-
         //character decoding http://stackoverflow.com/questions/4913499/utf8-character-decoding-in-objective-c
-        responseString = [NSString stringWithCString:[responseString cStringUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding];
+        NSString *responseString = [NSString stringWithCString:[theReply cStringUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding];
         
+        return responseString;
     } else {
-        NSLog(@"NSURLConnection Error %@", NSURLConnectionError);
-        NSLog(@"NSURLConnection Error %ld", (long)NSURLConnectionError.code);
-        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.domain);
-        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.userInfo);
-        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedDescription);
-        
-        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedDescription);
-        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedRecoveryOptions);
-        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedFailureReason);
-        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedRecoverySuggestion);
+        NSLog(@"Error %@", error);
     }
+    
+    return @"";
+    
 
-    NSLog(@"Returning response");
-    return responseString;
+//    NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp?nocache=true", BASE_URI];
+//    //NSString *urlStr = [NSString stringWithFormat:@"%@/rss.jsp", BASE_URI];
+//    NSURL *url = [NSURL URLWithString:urlStr];
+//    
+//    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+//    
+//    NSURLResponse* response = nil;
+//    NSError *NSURLConnectionError = nil;
+//    
+//    NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&NSURLConnectionError];
+//    
+//    NSString* responseString;
+//    
+//    if(!NSURLConnectionError) {
+//        
+//        //Decode data.
+//        responseString = [[NSString alloc] initWithData:data
+//                                                       encoding:NSASCIIStringEncoding];
+//
+//        //character decoding http://stackoverflow.com/questions/4913499/utf8-character-decoding-in-objective-c
+//        responseString = [NSString stringWithCString:[responseString cStringUsingEncoding:NSISOLatin1StringEncoding] encoding:NSUTF8StringEncoding];
+//        
+//    } else {
+//        NSLog(@"NSURLConnection Error %@", NSURLConnectionError);
+//        NSLog(@"NSURLConnection Error %ld", (long)NSURLConnectionError.code);
+//        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.domain);
+//        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.userInfo);
+//        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedDescription);
+//        
+//        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedDescription);
+//        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedRecoveryOptions);
+//        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedFailureReason);
+//        NSLog(@"NSURLConnection Error %@", NSURLConnectionError.localizedRecoverySuggestion);
+//    }
+//
+//    NSLog(@"Returning response");
+//    return responseString;
 }
 
 @end
