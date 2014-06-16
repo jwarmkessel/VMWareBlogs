@@ -32,10 +32,6 @@
 @property (nonatomic, strong) NSData *responseData;
 @property (atomic, strong) NSManagedObjectContext *moc;
 @property (nonatomic, assign) BOOL updateFlag;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, strong) UIBarButtonItem *activityIndicatorBarButton;
-
-
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -124,6 +120,9 @@
             }      
         }
     }
+    
+    //Update the list.
+    [self refreshTable];
 }
 
 - (void)refreshTable {
@@ -144,10 +143,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
-    //Update the list.
-    [self refreshTable];
-    
     [self.scrollToTopTap setEnabled:YES];
 }
 
