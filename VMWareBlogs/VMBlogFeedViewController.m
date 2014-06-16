@@ -120,9 +120,6 @@
             }      
         }
     }
-    
-    //Update the list.
-    [self refreshTable];
 }
 
 - (void)refreshTable {
@@ -143,6 +140,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
+    //Update the list.
+    [self refreshTable];
+    
     [self.scrollToTopTap setEnabled:YES];
 }
 
@@ -676,6 +677,7 @@
     NSLog(@"get blog entity");
     NSEntityDescription *entity = [NSEntityDescription
                                               entityForName:@"Blog" inManagedObjectContext:managedObjectContext];
+    [fetchRequest setFetchLimit:50];
     
     [fetchRequest setEntity:entity];
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];

@@ -159,8 +159,11 @@
                     
                     if( ![article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
                     
-                        //If the ordered article is different then delete the article and insert new one.
-                        [self.updateContext deleteObject:article];
+                        [article setOrder:[NSNumber numberWithInt:101]];
+                        //If the ordered article is different then save the article with an order that will not be displayed.
+                        if (![self.updateContext save:&temporaryMOCError]) {
+                            NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
+                        }
                         
                         //Delete corresponding image in SDWebImage.
                         NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", [TBXML textForElement:guidElement]];
@@ -175,10 +178,6 @@
                         }
                         
                         [self.updateContext refreshObject:article mergeChanges:YES];
-                        
-                        if([article isDeleted]) {
-                            NSLog(@"Article is deleted");
-                        }
                     }
                     
                     NSLog(@"Article Count %d", articleCount);
