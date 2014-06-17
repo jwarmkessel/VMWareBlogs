@@ -17,10 +17,7 @@
 
 @interface VMBlogFeedViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, strong) NSTimer *updateBlogListTimer;
-@property (nonatomic, strong) NSData *responseData;
 @property (atomic, strong) NSManagedObjectContext *moc;
-@property (nonatomic, assign) BOOL updateFlag;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *filteredTableData;
@@ -32,7 +29,6 @@
 @implementation VMBlogFeedViewController
     @synthesize managedObjectContext;
     @synthesize blogArray;
-    @synthesize updateFlag;
     @synthesize moc = _moc;
     @synthesize filteredTableData = _filteredTableData;
     @synthesize updater;
@@ -120,7 +116,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self.updater.updateBlogListTimer invalidate];
     NSLog(@"view will disappear");
 }
 
@@ -131,6 +126,20 @@
     [self refreshTable];
     
     [self.scrollToTopTap setEnabled:YES];
+    
+    NSLog(@"Perform fetch");
+    NSError *error;
+    if (![[self fetchedResultsController] performFetch:&error]) {
+        /*
+         Replace this implementation with code to handle the error appropriately.
+         
+         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+         */
+        //TODO
+        abort();
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
 }
 
 - (void)scrollToTopTapHander {
@@ -148,9 +157,6 @@
     UIImage *backgroundImage = [UIImage imageNamed:@"navBarLogoNoStatusBar.png"];
     [navBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
     
-    //Set the update flag to no update being made.
-    self.updateFlag = NO;
-
     [self.tableView reloadData];
 }
 
@@ -172,49 +178,35 @@
 
 - (void)appWillEnterForeground:(id)sender {
     if([self isKindOfClass:[VMBlogFeedViewController class]]) {
-        NSLog(@"App is entering foreground from Blog feed update flag: %d", self.updateFlag);
+        NSLog(@"App is entering foreground from Blog feed");
 
         [self refreshTable];
+        NSLog(@"Perform fetch");
+        NSError *error;
+
+        if (![[self fetchedResultsController] performFetch:&error]) {
+            /*
+             Replace this implementation with code to handle the error appropriately.
+             
+             abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+             */
+            //TODO
+            abort();
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
     }
 }
 
 - (void)appWillEnterBackground:(id)sender {
     if([self isKindOfClass:[VMBlogFeedViewController class]]) {
-        NSLog(@"App is entering background from Blog feed update flag: %d", self.updateFlag);
-        
-//        [self.moc rollback];
-//        if(self.updateFlag) {
-//            NSLog(@"Rolling back the managed object context");
-//            [self.moc rollback];
-//            self.updateFlag = NO;
-//        }
-        
-//        NSError *error;
-//        [managedObjectContext save:&error];
-//        if(error) {
-//            NSLog(@"Crap error");
-//        }
-        [_updateBlogListTimer invalidate];
+        NSLog(@"App is entering background from Blog feed");
     }
 }
 
 - (void)appWillTerminate:(id)sender {
-    NSLog(@"App will terminate from Blog feed");
     if([self isKindOfClass:[VMBlogFeedViewController class]]) {
-        
-//        if(self.updateFlag) {
-//            //Apple’s template saves on each addition of an entity and also (curiously) in applicationWillTerminate.
-//            NSLog(@"Rolling back the managed object context from termination");
-//            [self.moc rollback];
-//            self.updateFlag = NO;
-//        }
-//        
-//        NSError *error;
-//        [managedObjectContext save:&error];
-//        if(error) {
-//            NSLog(@"Crappers error");
-//        }
-//        [_updateBlogListTimer invalidate];
+        NSLog(@"App will terminate from Blog feed");
     }
 }
 
@@ -334,7 +326,6 @@
 {
     NSLog(@"didSelectRowAtIndexPath");
     [self.scrollToTopTap setEnabled:NO];
-    [self.updater.updateBlogListTimer invalidate];
     
     NSManagedObjectContext *tempContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     
@@ -533,9 +524,6 @@
 {
     
     NSLog(@"prepareForSegue");
-    //Stop the blog update;
-    [_updateBlogListTimer invalidate];
-    
     VMArticleViewController *vc = (VMArticleViewController *)[segue destinationViewController];
 
     Blog *blog;
