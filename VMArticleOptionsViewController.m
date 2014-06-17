@@ -36,8 +36,6 @@
     UIView *dropDownView = [[UIView alloc] initWithFrame:rect];
     [dropDownView setBackgroundColor:[UIColor colorWithHexString:@"181A1D"]];
     [self.view addSubview:dropDownView];
-    
-    
 }
 
 - (void)didReceiveMemoryWarning

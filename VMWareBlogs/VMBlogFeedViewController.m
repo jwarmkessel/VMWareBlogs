@@ -461,7 +461,7 @@
     [authorLbl setBackgroundColor:[UIColor clearColor]];
     [authorLbl setTextAlignment:NSTextAlignmentRight];
     
-    UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
+    __weak UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
     imageView.alpha = 0;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     
@@ -509,22 +509,26 @@
     
     NSURL *url = [NSURL URLWithString:imageGetter];
     
-    // request image
-    SDWebImageManager *manager = [SDWebImageManager sharedManager];
-    [manager downloadWithURL:url options:SDWebImageContinueInBackground progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        NSLog(@"receivedSize: %ld, expectedSize: %ld", (long)receivedSize, (long)expectedSize);
-        
-    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-        NSLog(@"cacheType: %d", cacheType);
-        imageView.alpha = 0.0;
-        [UIView transitionWithView:imageView
-                          duration:0.5
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            [imageView setImage:image];
-                            imageView.alpha = 1.0;
-                        } completion:NULL];
-    }];
+    // Interesting way of handling batch image downloads http://stackoverflow.com/questions/23818055/handling-download-of-image-using-sdwebimage-while-reusing-uitableviewcell.
+    // request image.
+
+    UIImage *imageFromCache = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageGetter];
+    
+    if (imageFromCache) {
+        imageView.image = imageFromCache;
+        [imageView setAlpha:1.0];
+    } else {
+        [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeHolder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+            
+            //[[SDImageCache sharedImageCache] storeImage:image forKey:imageGetter];
+            
+            [UIView animateWithDuration:0.5 animations:^{
+                imageView.image = image;
+                [imageView setAlpha:1.0];
+            }];
+        }];
+    }
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -654,7 +658,11 @@
 
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    NSLog(@"didChangeObject");
+    NSLog(@"didChangeObject Row %ld", (long)indexPath.row);
+    
+    if(indexPath.row > 100){
+        return;
+    }
     
     UITableView *tableView = self.tableView;
     
@@ -779,19 +787,6 @@
     }
     
     [self.tableView reloadData];
-    
-    
-    
-//    _fetchedResultsController = nil;
-//    
-//    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-//                                                                    managedObjectContext:appDelegate.managedObjectContext
-//                                                                      sectionNameKeyPath:nil
-//                                                                               cacheName:@"Root"];
-//    
-//    _fetchedResultsController.delegate = self;
-//    
-//    [self.tableView reloadData];
 }
 
 //- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text NS_AVAILABLE_IOS(3_0); // called before text changes
