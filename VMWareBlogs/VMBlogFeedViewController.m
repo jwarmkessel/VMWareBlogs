@@ -548,6 +548,11 @@
      sm	Small	100 x 75
      vsm	Very Small	90 x 68
      mcr	Micro	75 x 57
+     
+     Mute warnings using: 
+     #pragma clang diagnostic push
+     #pragma clang diagnostic ignored "-Warc-retain-cycles"
+     #pragma clang diagnostic pop
      ************************************************/
     
     NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=100&stwymax=90&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
