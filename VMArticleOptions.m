@@ -34,7 +34,7 @@
         rect.size.height = height;
         _dropDownView = [[UIView alloc] initWithFrame:rect];
         _common = [[VMCommon alloc] init];
-        [_dropDownView setBackgroundColor:[_common colorWithHexString:@"8A8D91"]];
+        [_dropDownView setBackgroundColor:[UIColor colorWithHexString:@"8A8D91"]];
         [self addSubview:_dropDownView];
         
         //set default to hidden.

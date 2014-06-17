@@ -7,24 +7,13 @@
 //
 
 #import "VMBlogFeedViewController.h"
-
 #import "VMAppDelegate.h"
 #import "VMArticleViewController.h"
 #import "VMArticleEntityUpdater.h"
-
 #import "Blog.h"
 #import "RecentArticle.h"
-
-#import <TBXML+HTTP.h>
-#import <TBXML.h>
-#import <TBXML+Compression.h>
-
-#import <QuartzCore/QuartzCore.h>
 #import <dispatch/dispatch.h>
-
 #import <SDWebImage/UIImageView+WebCache.h>
-
-#define UPDATE_ARTICLES_INTERVAL 60
 
 @interface VMBlogFeedViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -33,14 +22,11 @@
 @property (atomic, strong) NSManagedObjectContext *moc;
 @property (nonatomic, assign) BOOL updateFlag;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
-
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *filteredTableData;
 @property (assign, getter = isFilteredList) BOOL filteredList;
 @property (strong, nonatomic) UITapGestureRecognizer *tap;
 @property (strong, nonatomic) UITapGestureRecognizer *scrollToTopTap;
-
-
 @end
 
 @implementation VMBlogFeedViewController
@@ -69,10 +55,10 @@
 
     self.filteredList = NO;
     
-    [self.tableView setBackgroundColor:[self colorWithHexString:@"696566"]];
+    [self.tableView setBackgroundColor:[UIColor colorWithHexString:@"696566"]];
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
-    [[UIBarButtonItem appearance] setTintColor:[self colorWithHexString:@"346633"]];
-    [self.tabBarController.tabBar setTintColor:[self colorWithHexString:@"346633"]];
+    [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithHexString:@"346633"]];
+    [self.tabBarController.tabBar setTintColor:[UIColor colorWithHexString:@"346633"]];
     
     NSError *error;
     self.fetchedResultsController = nil;
@@ -233,9 +219,8 @@
 }
 
 // Whatever method you registered as an observer to NSManagedObjectContextDidSave
-- (void)contextDidSave:(NSNotification *)notification
-{
-    NSLog(@"The notification from saved changes %@", notification);
+- (void)contextDidSave:(NSNotification *)notification {
+    NSLog(@"contextDidSave");
     [self.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
                                                 withObject:notification
                                              waitUntilDone:YES];
@@ -267,29 +252,10 @@
 #pragma mark - VMarticleEntityUpdater delegates
 
 -(void)articleEntityUpdaterDidFinishUpdating {
-    NSLog(@"articleEntityUpdaterDidFinishUpdating Stop animation");
-    
-    //TODO http://iphonedevsdk.com/forum/iphone-sdk-development/83249-uiactivityindicatorview-doesn-t-immediately-stopanimating.html
-    
-    
     [refreshControl endRefreshing];
-    
-//    NSLog(@"STOP ANIMATING activity indicator");
-//    [self.activityIndicator stopAnimating];
-//
-//    self.navigationItem.rightBarButtonItem = nil;
-//    
-//    self.navigationItem.rightBarButtonItem = self.refreshButton;
 }
 -(void)articleEntityUpdaterDidError {
-    NSLog(@"articleEntityUpdaterDidError");
     [refreshControl endRefreshing];
-
-//    [self.activityIndicator stopAnimating];
-//    
-//    self.navigationItem.rightBarButtonItem = nil;
-//    
-//    self.navigationItem.rightBarButtonItem = self.refreshButton;
 }
 
 #pragma mark - Table view data source
@@ -300,18 +266,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-//    NSLog(@"Number of sections in tableView");
-    // Return the number of sections.
     return [[_fetchedResultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    NSLog(@"Number of rows in tableView %lu", (unsigned long)[self.blogArray count]);
-
     if(![self isFilteredList]) {
         id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-        NSLog(@"%lu", (unsigned long)[sectionInfo numberOfObjects]);
+        NSLog(@"Blog TableView Count: %lu", (unsigned long)[sectionInfo numberOfObjects]);
         return [sectionInfo numberOfObjects];
     } else {
         return [self.filteredTableData count];
@@ -342,7 +304,7 @@
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 30)];
     if (section == 0) {
-        [headerView setBackgroundColor:[self colorWithHexString:@"346633"]];
+        [headerView setBackgroundColor:[UIColor colorWithHexString:@"346633"]];
         UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(5.0f, 0, self.tableView.bounds.size.width, 21.5)];
         [sectionTitle setFont:[UIFont fontWithName:@"ArialMT" size:13]];
         sectionTitle.text = @"The Latest Posts From All VMware Blogs";
@@ -456,13 +418,8 @@
 
 - (void)RecentArticleSaved:(NSNotification *)notification {
     NSLog(@"Recent Article Saved Notification");
-    // Whatever method you registered as an observer to NSManagedObjectContextDidSave
 
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    NSLog(@"The notification from saved changes %@", notification.name);
-    
-
     [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
                                                        withObject:notification
                                                     waitUntilDone:YES];
@@ -470,17 +427,11 @@
 
 // Customize the appearance of table view cells.
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    
-    // Configure the cell to show the book's title
-    NSLog(@"Configuring Cell %d", [_fetchedResultsController.fetchedObjects count]);
     Blog *blog;
     
     if(![self isFilteredList]) {
-        NSLog(@"---------- USER fetched");
         blog = [_fetchedResultsController objectAtIndexPath:indexPath];
     } else {
-        
-        NSLog(@"---------- USER filtered");
         blog = [self.filteredTableData objectAtIndex:indexPath.row];
     }
     
@@ -492,21 +443,21 @@
     titleLbl.text = @"text";
     [titleLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
     [titleLbl setBackgroundColor:[UIColor clearColor]];
-    titleLbl.textColor = [self colorWithHexString:@"696566"];
+    titleLbl.textColor = [UIColor colorWithHexString:@"696566"];
     
     UITextView *descLbl = (UITextView *)[cell viewWithTag:102];
     [descLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
-    descLbl.textColor = [self colorWithHexString:@"8D8D8D"];
+    descLbl.textColor = [UIColor colorWithHexString:@"8D8D8D"];
     descLbl.userInteractionEnabled = NO;
     
     UILabel *dateLbl = (UILabel *)[cell viewWithTag:104];
     [dateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:17.0f]];
-    dateLbl.textColor = [self colorWithHexString:@"BBBBBB"];
+    dateLbl.textColor = [UIColor colorWithHexString:@"BBBBBB"];
     [dateLbl setBackgroundColor:[UIColor clearColor]];
     
     UILabel *authorLbl = (UILabel *)[cell viewWithTag:105];
     [authorLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:13.0f]];
-    authorLbl.textColor = [self colorWithHexString:@"8D8D8D"];
+    authorLbl.textColor = [UIColor colorWithHexString:@"8D8D8D"];
     [authorLbl setBackgroundColor:[UIColor clearColor]];
     [authorLbl setTextAlignment:NSTextAlignmentRight];
     
@@ -537,7 +488,6 @@
     dateLbl.hidden = YES;
     authorLbl.text = [NSString stringWithFormat:@"%@ - %@", blog.author, blog.pubDate];
 
-    NSLog(@"Image in NIL");
     UIImage *image = [UIImage imageNamed:@"placeholder.png"];
     imageView.image = image;
     
@@ -549,7 +499,7 @@
      vsm	Very Small	90 x 68
      mcr	Micro	75 x 57
      
-     Mute warnings using: 
+     Mute warnings using:
      #pragma clang diagnostic push
      #pragma clang diagnostic ignored "-Warc-retain-cycles"
      #pragma clang diagnostic pop
@@ -563,7 +513,9 @@
     SDWebImageManager *manager = [SDWebImageManager sharedManager];
     [manager downloadWithURL:url options:SDWebImageContinueInBackground progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         NSLog(@"receivedSize: %ld, expectedSize: %ld", (long)receivedSize, (long)expectedSize);
+        
     } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+        NSLog(@"cacheType: %d", cacheType);
         imageView.alpha = 0.0;
         [UIView transitionWithView:imageView
                           duration:0.5
@@ -592,11 +544,7 @@
         blog = [self.filteredTableData objectAtIndex:[self.tableView indexPathForSelectedRow].row];
     }
     
-    NSLog(@"Selecting the guid link %@", blog.guid);
- 
     vc.articleURL = blog.guid;
-    
-    NSLog(@"Selecting the link %@", blog.descr);
     vc.articleDescription = blog.descr;
     vc.articleTitle = blog.title;
 }
@@ -657,12 +605,9 @@
  Returns the fetched results controller. Creates and configures the controller if necessary.
  */
 - (NSFetchedResultsController *)fetchedResultsController {
-    NSLog(@"FetchedResultsController");
-    
     self.filteredList = NO;
 
     if (_fetchedResultsController != nil) {
-        NSLog(@"FetchedResultsController is not equal to NIL");
         return _fetchedResultsController;
     }
     
@@ -675,13 +620,9 @@
     
     [fetchRequest setReturnsObjectsAsFaults:NO];
     
-    NSLog(@"alloc FetchedResultsController");
-    //Retrieve the entity description
-
-    NSLog(@"get blog entity");
     NSEntityDescription *entity = [NSEntityDescription
                                               entityForName:@"Blog" inManagedObjectContext:managedObjectContext];
-    [fetchRequest setFetchLimit:50];
+    [fetchRequest setFetchLimit:100];
     
     [fetchRequest setEntity:entity];
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
@@ -689,7 +630,6 @@
     
     [fetchRequest setSortDescriptors:sortDescriptors];
     
-    NSLog(@"Create and initialize the fetch results controller.");
     // Create and initialize the fetch results controller.
     _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                     managedObjectContext:appDelegate.managedObjectContext
@@ -709,10 +649,7 @@
     NSLog(@"controllerWillChangeContent");
     
     // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-
-
     [self.tableView beginUpdates];
-
 }
 
 
@@ -870,43 +807,6 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar {
     NSLog(@"searchBarCancelButtonClicked");
-}
-
-#pragma mark - common functions.
-
--(UIColor*)colorWithHexString:(NSString*)hex {
-    NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
-    
-    // String should be 6 or 8 characters
-    if ([cString length] < 6) return [UIColor grayColor];
-    
-    // strip 0X if it appears
-    if ([cString hasPrefix:@"0X"]) cString = [cString substringFromIndex:2];
-    
-    if ([cString length] != 6) return  [UIColor grayColor];
-    
-    // Separate into r, g, b substrings
-    NSRange range;
-    range.location = 0;
-    range.length = 2;
-    NSString *rString = [cString substringWithRange:range];
-    
-    range.location = 2;
-    NSString *gString = [cString substringWithRange:range];
-    
-    range.location = 4;
-    NSString *bString = [cString substringWithRange:range];
-    
-    // Scan values
-    unsigned int r, g, b;
-    [[NSScanner scannerWithString:rString] scanHexInt:&r];
-    [[NSScanner scannerWithString:gString] scanHexInt:&g];
-    [[NSScanner scannerWithString:bString] scanHexInt:&b];
-    
-    return [UIColor colorWithRed:((float) r / 255.0f)
-                           green:((float) g / 255.0f)
-                            blue:((float) b / 255.0f)
-                           alpha:1.0f];
 }
 
 @end

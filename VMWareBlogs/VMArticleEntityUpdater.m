@@ -13,9 +13,6 @@
 #import <TBXML.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-
-#define UPDATE_ARTICLES_INTERVAL 2
-
 @interface VMArticleEntityUpdater()
 - (NSString *)stringByDecodingXMLEntities: (NSString *)stringToParse;
 
@@ -56,7 +53,7 @@
         
         if(xmlString == nil) {
             self.updating = NO;
-            NSLog(@"(WARNING) ------------------------------XML string is equal to nil");
+            NSLog(@"(Developer WARNING) XML string is equal to nil");
             [self.delegate articleEntityUpdaterDidError];
             return;
         }
@@ -65,8 +62,8 @@
         
         //initiate tbxml frameworks to consume xml data.
         TBXML *tbxml = [[TBXML alloc] initWithXMLString:xmlString error:&TBXMLError];
-        if(TBXMLError) {
-            NSLog(@"THERE WAS A BIG MISTAKE %@", TBXMLError);
+        if (TBXMLError) {
+            NSLog(@"(Developer WARNING) THERE WAS A BIG MISTAKE %@", TBXMLError);
             self.updating = NO;
             [self.delegate articleEntityUpdaterDidError];
             [self performSelectorInBackground:@selector(updateList) withObject:self];
@@ -74,17 +71,6 @@
             return;
             
         } else if (!TBXMLError) {
-            
-            TBXMLElement * rootElement = tbxml.rootXMLElement;
-            NSString *rootElementSTr = [TBXML textForElement:rootElement];
-            
-            NSLog(@"Root Element String %@", rootElementSTr);
-            
-            if([rootElementSTr isEqualToString:@""]) {
-                NSLog(@"Root Element String empty");
-            } else if( rootElementSTr == NULL ) {
-                NSLog(@"Root Element String null");
-            }
             
             //Configure notifications to update when there is a save in Core Data.
             [[NSNotificationCenter defaultCenter] addObserver:self
@@ -130,19 +116,11 @@
                 TBXMLElement * linkElem = [TBXML childElementNamed:@"link" parentElement:itemElement];
                 TBXMLElement * descElement = [TBXML childElementNamed:@"description" parentElement:itemElement];
                 TBXMLElement * pubDateElement = [TBXML childElementNamed:@"pubDate" parentElement:itemElement];
-                // Tue, 27 May 2014 16:53:37 +0000
-                
                 TBXMLElement * guidElement = [TBXML childElementNamed:@"guid" parentElement:itemElement];
-                NSLog(@"THE GUID %@", [TBXML textForElement:guidElement]);
-                
                 TBXMLElement * authorElement = [TBXML childElementNamed:@"dc:creator" parentElement:itemElement];
-                NSLog(@"THE authorElement %@", [TBXML textForElement:authorElement]);
                 
-                NSLog(@"xml %d DB %d", articleCount, j);
                 //If the input is greater than database...
-
                 if(articleCount >= totalArticles) {
-                    NSLog(@"sortedArticleArray Count %d", [sortedArticleArray count]);
                     
                     //Just save the articles.
                     blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
@@ -180,8 +158,6 @@
                         [self.updateContext refreshObject:article mergeChanges:YES];
                     }
                     
-                    NSLog(@"Article Count %d", articleCount);
-
                     order++;
                     j++;
                     articleCount++; 
@@ -189,7 +165,7 @@
             
             } while ((itemElement = itemElement->nextSibling));
             
-            NSLog(@"Reset the update flag on private queue.");
+            //Update is complete. Reset the flag.
             self.updating = NO;
             
             // save parent to disk asynchronously
@@ -197,27 +173,13 @@
                 NSLog(@"Perform save to the parent context");
                 
                 NSError *error;
-                if (![appDelegate.managedObjectContext save:&error])
-                {
+                if (![appDelegate.managedObjectContext save:&error]) {
                     // handle error
                     NSLog(@"Error saving to parent context");
                 }
-                
-                //Update the article list every x number of seconds.
-                NSLog(@"Start timer");
-                if([updateBlogListTimer isValid]) {
-                    NSLog(@"Invalidate timer");
-                    [updateBlogListTimer invalidate];
-                    updateBlogListTimer = nil;
-                }
-                
-//                updateBlogListTimer = [NSTimer scheduledTimerWithTimeInterval:UPDATE_ARTICLES_INTERVAL
-//                                                                       target:self
-//                                                                     selector:@selector(updateList) userInfo:nil
-//                                                                      repeats: YES];
-                
+
                 [self.delegate articleEntityUpdaterDidFinishUpdating];
-                });
+            });
         }
     }];
 }
@@ -280,8 +242,6 @@
 - (void)contextDidSave:(NSNotification *)notification
 {
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    NSLog(@"The notification from saved changes %@", notification);
     [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
                                                        withObject:notification
                                                     waitUntilDone:YES];
@@ -399,9 +359,6 @@
 }
 
 - (NSString *)stringByDecodingXMLEntities: (NSString *)stringToParse {
-    
-    NSLog(@"stringByDecodingXMLEntities");
-    
     NSUInteger myLength = [stringToParse length];
     NSUInteger ampIndex = [stringToParse rangeOfString:@"&" options:NSLiteralSearch].location;
     

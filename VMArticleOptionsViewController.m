@@ -37,7 +37,7 @@
     rect.size.height = height;
     UIView *dropDownView = [[UIView alloc] initWithFrame:rect];
     self.common = [[VMCommon alloc] init];
-    [dropDownView setBackgroundColor:[self.common colorWithHexString:@"181A1D"]];
+    [dropDownView setBackgroundColor:[UIColor colorWithHexString:@"181A1D"]];
     [self.view addSubview:dropDownView];
     
     

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3206DCAE407843F6B88CF0CF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6853D35B6BC3472F91A23ABD /* libPods.a */; };
+		83075C2D194FCD7A00A1BC07 /* UIColor+UIColor_usingHexStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 83075C2C194FCD7A00A1BC07 /* UIColor+UIColor_usingHexStrings.m */; };
 		8311E32C18F33F850053B4D6 /* VMArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8311E32B18F33F850053B4D6 /* VMArticleViewController.m */; };
 		8311E32E18F52CC40053B4D6 /* folderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8311E32D18F52CC40053B4D6 /* folderIcon.png */; };
 		8311E32F18F52CC40053B4D6 /* folderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8311E32D18F52CC40053B4D6 /* folderIcon.png */; };
@@ -125,6 +126,8 @@
 /* Begin PBXFileReference section */
 		2510EC6ACFD44C4787D61132 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		6853D35B6BC3472F91A23ABD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		83075C2B194FCD7A00A1BC07 /* UIColor+UIColor_usingHexStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+UIColor_usingHexStrings.h"; sourceTree = "<group>"; };
+		83075C2C194FCD7A00A1BC07 /* UIColor+UIColor_usingHexStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+UIColor_usingHexStrings.m"; sourceTree = "<group>"; };
 		8311E32A18F33F850053B4D6 /* VMArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMArticleViewController.h; path = VMWareBlogs/VMArticleViewController.h; sourceTree = "<group>"; };
 		8311E32B18F33F850053B4D6 /* VMArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMArticleViewController.m; path = VMWareBlogs/VMArticleViewController.m; sourceTree = "<group>"; };
 		8311E32D18F52CC40053B4D6 /* folderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folderIcon.png; sourceTree = "<group>"; };
@@ -254,6 +257,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		83075C2A194FCD2500A1BC07 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				83075C2B194FCD7A00A1BC07 /* UIColor+UIColor_usingHexStrings.h */,
+				83075C2C194FCD7A00A1BC07 /* UIColor+UIColor_usingHexStrings.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		833253D1191F50D300A3F5EF /* MainClasses */ = {
 			isa = PBXGroup;
 			children = (
@@ -263,6 +275,7 @@
 				83FE34EC18D912770080C64C /* VMNavigationViewController.m */,
 				83FE344918CE6FC90080C64C /* VMBlogFeedViewController.h */,
 				83FE344A18CE6FC90080C64C /* VMBlogFeedViewController.m */,
+				83075C2A194FCD2500A1BC07 /* Categories */,
 				833253D4191F52B800A3F5EF /* Recently Read */,
 				833253D3191F52A200A3F5EF /* Features */,
 				83609259190072C300C8EA13 /* Tools */,
@@ -741,6 +754,7 @@
 				8360925C19007A7F00C8EA13 /* VMArticleEntityUpdater.m in Sources */,
 				83FF03DB19106519003AF06C /* VMRecentlyReadTableViewController.m in Sources */,
 				833253D8191F56F400A3F5EF /* VMArticleOptions.m in Sources */,
+				83075C2D194FCD7A00A1BC07 /* UIColor+UIColor_usingHexStrings.m in Sources */,
 				8360925819006E3B00C8EA13 /* VMWareBlogsAPI.m in Sources */,
 				833253CD191EF2B000A3F5EF /* VMCommon.m in Sources */,
 				83FE344B18CE6FC90080C64C /* VMBlogFeedViewController.m in Sources */,

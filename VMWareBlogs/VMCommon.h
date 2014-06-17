@@ -11,6 +11,4 @@
 @interface VMCommon : NSObject
 
 -(void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view;
--(UIColor*)colorWithHexString:(NSString*)hex;
-
 @end
