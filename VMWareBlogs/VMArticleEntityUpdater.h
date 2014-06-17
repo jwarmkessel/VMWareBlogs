@@ -13,8 +13,8 @@
 @property (nonatomic, getter = isUpdating) BOOL updating;
 @property (nonatomic, strong) NSTimer *updateBlogListTimer;
 @property (nonatomic, assign) id delegate;
-- (void)updateList;
 
+-(void)updateList;
 @end
 
 @protocol VMArticleEntityUpdaterDelegate

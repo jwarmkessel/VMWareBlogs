@@ -188,7 +188,7 @@
     if([self isKindOfClass:[VMBlogFeedViewController class]]) {
         NSLog(@"App is entering foreground from Blog feed update flag: %d", self.updateFlag);
 
-        [self performSelectorInBackground:@selector(updateList:) withObject:self];
+        [self refreshTable];
     }
 }
 
@@ -541,33 +541,32 @@
     UIImage *image = [UIImage imageNamed:@"placeholder.png"];
     imageView.image = image;
     
-    /*
+    /************************************************
      Parameter   	Size             	Dimensions
      xlg	Extra Large	320 x 240
      lg	Large	200 x 150
      sm	Small	100 x 75
      vsm	Very Small	90 x 68
      mcr	Micro	75 x 57
-     */
+     ************************************************/
     
     NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=100&stwymax=90&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
     
-    //[[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
-    
     NSURL *url = [NSURL URLWithString:imageGetter];
     
-    [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-        [UIView animateWithDuration:0.4 animations:^{
-            
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            imageView.alpha = 1;
-#pragma clang diagnostic pop
-            
-            
-        } completion:^(BOOL finished) {
-            NSLog(@"Image loaded");
-        }];
+    // request image
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    [manager downloadWithURL:url options:SDWebImageContinueInBackground progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        NSLog(@"receivedSize: %ld, expectedSize: %ld", (long)receivedSize, (long)expectedSize);
+    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+        imageView.alpha = 0.0;
+        [UIView transitionWithView:imageView
+                          duration:0.5
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            [imageView setImage:image];
+                            imageView.alpha = 1.0;
+                        } completion:NULL];
     }];
 }
 
@@ -904,29 +903,5 @@
                             blue:((float) b / 255.0f)
                            alpha:1.0f];
 }
-
-//- (void)refreshList {
-//    self.searchBar.text = @"";
-//    [self setFilteredList:NO];
-    //[self.tableView reloadData];
-    
-//    self.navigationItem.rightBarButtonItem = nil;
-    
-    //self.navigationItem.rightBarButtonItem = self.refreshButton;
-    
-//    if(!self.activityIndicatorBarButton) {
-//        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//        self.activityIndicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
-//    }
-//    
-//    [self navigationItem].rightBarButtonItem = self.activityIndicatorBarButton;
-//    [self.activityIndicator startAnimating];
-//    self.activityIndicator.hidesWhenStopped = YES;
-    //Invalidate the previous timer.
-//    [_updateBlogListTimer invalidate];
-//    _updateBlogListTimer = nil;
-//    
-//    [self performSelectorInBackground:@selector(updateList:) withObject:self];
-//}
 
 @end
