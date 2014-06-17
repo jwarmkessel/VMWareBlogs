@@ -10,6 +10,7 @@
 
 @implementation VMCommon
 
+//Manage the adjust of the anchor point and frame. 
 -(void)setAnchorPoint:(CGPoint)anchorPoint forView:(UIView *)view {
     CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x,
                                    view.bounds.size.height * anchorPoint.y);

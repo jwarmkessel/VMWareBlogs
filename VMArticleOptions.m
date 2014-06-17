@@ -7,14 +7,12 @@
 //
 
 #import "VMArticleOptions.h"
-#import "VMCommon.h"
 #import <Social/Social.h>
 
 @interface VMArticleOptions (){
     UITextView *sharingTextView;
 }
 
-@property (strong, nonatomic) VMCommon *common;
 @property (strong, nonatomic) UIView *dropDownView;
 @property (strong, nonatomic) id viewController;
 @end
@@ -33,7 +31,7 @@
         rect.origin.y = -1 * height;
         rect.size.height = height;
         _dropDownView = [[UIView alloc] initWithFrame:rect];
-        _common = [[VMCommon alloc] init];
+
         [_dropDownView setBackgroundColor:[UIColor colorWithHexString:@"8A8D91"]];
         [self addSubview:_dropDownView];
         

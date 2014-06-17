@@ -7,10 +7,8 @@
 //
 
 #import "VMArticleOptionsViewController.h"
-#import "VMCommon.h"
 
 @interface VMArticleOptionsViewController ()
-@property (strong, nonatomic)VMCommon *common;
 @end
 
 @implementation VMArticleOptionsViewController
@@ -36,7 +34,6 @@
     rect.origin.y = -1 * height;
     rect.size.height = height;
     UIView *dropDownView = [[UIView alloc] initWithFrame:rect];
-    self.common = [[VMCommon alloc] init];
     [dropDownView setBackgroundColor:[UIColor colorWithHexString:@"181A1D"]];
     [self.view addSubview:dropDownView];
     

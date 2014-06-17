@@ -15,7 +15,6 @@
 - (void)addRemoveButton;
 - (void)removeSelf;
 - (void)addLabels;
-- (UIColor*)colorWithHexString:(NSString*)hex;
 - (UILabel *)createOverlayLabelsWithFrame: (CGRect)rect;
 - (UIImageView *)createArrowImage:(NSString *)imageName frame:(CGRect)rect;
 @end
