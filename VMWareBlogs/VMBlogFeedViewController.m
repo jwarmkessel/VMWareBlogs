@@ -462,7 +462,6 @@
     [authorLbl setTextAlignment:NSTextAlignmentRight];
     
     __weak UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
-    imageView.alpha = 0;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     
     orderLbl.text = [NSString stringWithFormat:@"%@", blog.order];
@@ -490,7 +489,7 @@
 
     UIImage *image = [UIImage imageNamed:@"placeholder.png"];
     imageView.image = image;
-    
+    [imageView setAlpha:1.0];
     /************************************************
      Parameter   	Size             	Dimensions
      xlg	Extra Large	320 x 240
@@ -511,24 +510,23 @@
     
     // Interesting way of handling batch image downloads http://stackoverflow.com/questions/23818055/handling-download-of-image-using-sdwebimage-while-reusing-uitableviewcell.
     // request image.
-
     UIImage *imageFromCache = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageGetter];
     
     if (imageFromCache) {
         imageView.image = imageFromCache;
         [imageView setAlpha:1.0];
     } else {
-        [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeHolder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+        [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
             
-            //[[SDImageCache sharedImageCache] storeImage:image forKey:imageGetter];
-            
-            [UIView animateWithDuration:0.5 animations:^{
-                imageView.image = image;
-                [imageView setAlpha:1.0];
-            }];
+            if (!error) {
+                [imageView setAlpha:0.0];
+                [UIView animateWithDuration:0.5 animations:^{
+                    imageView.image = image;
+                    [imageView setAlpha:1.0];
+                }];
+            }
         }];
     }
-    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
