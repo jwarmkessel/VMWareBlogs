@@ -35,6 +35,8 @@
     
     NSURLResponse *response;
     NSError *error;
+    
+    NSLog(@"\t\t\t\t\t\t\t\tRequesting from RSS");
     NSData *POSTReply = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     
     if (!error) {

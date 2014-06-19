@@ -136,12 +136,9 @@
                     Blog *article = [sortedArticleArray objectAtIndex:j];
                     
                     if( ![article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
-                    
-                        [article setOrder:[NSNumber numberWithInt:101]];
-                        //If the ordered article is different then save the article with an order that will not be displayed.
-                        if (![self.updateContext save:&temporaryMOCError]) {
-                            NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
-                        }
+                        
+                        // Delete the row from the data source
+                        [self.updateContext deleteObject:article];
                         
                         //Delete corresponding image in SDWebImage.
                         NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", [TBXML textForElement:guidElement]];

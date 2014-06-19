@@ -24,6 +24,9 @@
 @property (assign, getter = isFilteredList) BOOL filteredList;
 @property (strong, nonatomic) UITapGestureRecognizer *tap;
 @property (strong, nonatomic) UITapGestureRecognizer *scrollToTopTap;
+
+//TODO TEST CODE
+@property (assign) BOOL toggle;
 @end
 
 @implementation VMBlogFeedViewController
@@ -33,6 +36,7 @@
     @synthesize filteredTableData = _filteredTableData;
     @synthesize updater;
     @synthesize refreshControl;
+    @synthesize toggle;
 
 - (void)viewDidLoad
 {
@@ -102,6 +106,27 @@
             }      
         }
     }
+    
+    //Make the call to action text animate with blinking.
+    //[NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(scrollTest) userInfo:nil repeats: YES];
+}
+
+- (void)refreshTest {
+    self.searchBar.text = @"";
+    [self setFilteredList:NO];
+    
+    [self.updater updateList];
+}
+
+- (void)scrollTest {
+
+    if(toggle) {
+        [self.tableView scrollRectToVisible:CGRectMake(0, arc4random() % (int)self.tableView.contentSize.height, 1, 1) animated:YES];
+    } else {
+        [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+    }
+    
+    toggle = !toggle;
 }
 
 - (void)refreshTable {
@@ -110,8 +135,6 @@
     [self setFilteredList:NO];
     
     [self.updater updateList];
-
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -126,20 +149,6 @@
     [self refreshTable];
     
     [self.scrollToTopTap setEnabled:YES];
-    
-    NSLog(@"Perform fetch");
-    NSError *error;
-    if (![[self fetchedResultsController] performFetch:&error]) {
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-         */
-        //TODO
-        abort();
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
 }
 
 - (void)scrollToTopTapHander {
@@ -179,22 +188,7 @@
 - (void)appWillEnterForeground:(id)sender {
     if([self isKindOfClass:[VMBlogFeedViewController class]]) {
         NSLog(@"App is entering foreground from Blog feed");
-
         [self refreshTable];
-        NSLog(@"Perform fetch");
-        NSError *error;
-
-        if (![[self fetchedResultsController] performFetch:&error]) {
-            /*
-             Replace this implementation with code to handle the error appropriately.
-             
-             abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-             */
-            //TODO
-            abort();
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
     }
 }
 
@@ -218,23 +212,6 @@
                                              waitUntilDone:YES];
 }
 
-- (void)listHasUpdated {
-    NSLog(@"The list has been updated");
-   
-    self.fetchedResultsController = nil;
-    
-    NSError *error;
-    if (![[self fetchedResultsController] performFetch:&error]) {
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-         */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-}
-
 - (void)updateList:(id)sender {
     NSLog(@"Update Core Manager");
     
@@ -245,6 +222,7 @@
 
 -(void)articleEntityUpdaterDidFinishUpdating {
     [refreshControl endRefreshing];
+    //[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(refreshTest) userInfo:nil repeats: YES];
 }
 -(void)articleEntityUpdaterDidError {
     [refreshControl endRefreshing];
@@ -315,10 +293,10 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
     }
     
     [self configureCell:cell atIndexPath:indexPath];
+
     return cell;
 }
 
@@ -478,9 +456,9 @@
     dateLbl.hidden = YES;
     authorLbl.text = [NSString stringWithFormat:@"%@ - %@", blog.author, blog.pubDate];
 
-    UIImage *image = [UIImage imageNamed:@"placeholder.png"];
+    __weak UIImage *image = [UIImage imageNamed:@"placeholder.png"];
     imageView.image = image;
-    [imageView setAlpha:1.0];
+
     /************************************************
      Parameter   	Size             	Dimensions
      xlg	Extra Large	320 x 240
@@ -494,7 +472,7 @@
      #pragma clang diagnostic ignored "-Warc-retain-cycles"
      #pragma clang diagnostic pop
      ************************************************/
-    
+    //NSLog(@"GUID: %@", blog.guid);
     NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=100&stwymax=90&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
     
     NSURL *url = [NSURL URLWithString:imageGetter];
@@ -504,20 +482,31 @@
     UIImage *imageFromCache = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageGetter];
     
     if (imageFromCache) {
+        NSLog(@"\t\t\t\t\tUsing image from Cache");
         imageView.image = imageFromCache;
         [imageView setAlpha:1.0];
     } else {
-        [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-            
-            if (!error) {
-                [imageView setAlpha:0.0];
-                [UIView animateWithDuration:0.5 animations:^{
-                    imageView.image = image;
-                    [imageView setAlpha:1.0];
-                }];
-            }
-        }];
+        
+        BOOL result = [[blog.guid lowercaseString] hasPrefix:@"http://"];
+        if(result) {
+            NSLog(@"\t\t\t\t\tDownloading the image again GUID: %@", blog.guid);
+            [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                
+                if (!error) {
+                    [imageView setAlpha:0.0];
+                    [UIView animateWithDuration:0.5 animations:^{
+                        imageView.image = image;
+                        [imageView setAlpha:1.0];
+                    }];
+                }
+            }];
+        }
     }
+    
+    url = nil;
+    imageGetter = nil;
+    image = nil;
+    [[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -646,10 +635,6 @@
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
     NSLog(@"didChangeObject Row %ld", (long)indexPath.row);
     
-    if(indexPath.row > 100){
-        return;
-    }
-    
     UITableView *tableView = self.tableView;
     
     switch(type) {
@@ -702,6 +687,7 @@
 
     [self.tableView endUpdates];
 }
+
 #pragma mark - UISearchBar delegates
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
