@@ -231,6 +231,8 @@
     [self.loadingView removeFromSuperview];
     [self.tableView setUserInteractionEnabled:YES];
     [refreshControl endRefreshing];
+    
+    [self.tableView reloadData];    
 }
 -(void)articleEntityUpdaterDidError {
     
