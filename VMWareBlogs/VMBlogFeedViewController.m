@@ -578,7 +578,7 @@
         blog = [self.filteredTableData objectAtIndex:[self.tableView indexPathForSelectedRow].row];
     }
     
-    vc.articleURL = blog.guid;
+    vc.articleURL = blog.link;
     vc.articleDescription = blog.descr;
     vc.articleTitle = blog.title;
 }

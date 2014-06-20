@@ -126,10 +126,6 @@
                     Blog *article = [sortedArticleArray objectAtIndex:j];
                     
                     if( ![article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
-
-                        dispatch_sync(dispatch_get_main_queue(), ^{
-                            [self.delegate articleEntityUpdaterWillDeleteEntity:article];
-                        });
                         
                         // Delete the row from the data source
                         [self.updateContext deleteObject:article];

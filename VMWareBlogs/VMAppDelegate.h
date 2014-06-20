@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-@class VMArticleEntityUpdater;
+@class VMSynchronousFeedUpdater;
 @interface VMAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic, strong) VMArticleEntityUpdater *updater;
+@property (nonatomic, strong) VMSynchronousFeedUpdater *updater;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;

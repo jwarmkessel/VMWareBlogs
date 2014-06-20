@@ -82,6 +82,8 @@
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url];
     [self.webView loadRequest:urlRequest];
     [self.view addSubview:self.webView];
+
+    self.webView.scalesPageToFit = YES; 
     
     CALayer *upperBorder = [CALayer layer];
     upperBorder.backgroundColor = [[UIColor grayColor] CGColor];
