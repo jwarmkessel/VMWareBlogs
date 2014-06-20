@@ -22,7 +22,7 @@
 + (NSString *)requestRSS {
     
     NSTimeInterval timeInMilliseconds = [[NSDate date] timeIntervalSince1970];
-    NSString *post = [NSString stringWithFormat:@"timestamp=%f&nocache=true", timeInMilliseconds];
+    NSString *post = [NSString stringWithFormat:@"timestamp=%f", timeInMilliseconds];
     
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];

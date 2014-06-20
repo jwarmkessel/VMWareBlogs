@@ -192,10 +192,6 @@
 - (void)appWillEnterForeground:(id)sender {
     if([self isKindOfClass:[VMBlogFeedViewController class]]) {
         NSLog(@"App is entering foreground from Blog feed");
-//        SDImageCache *imageCache = [SDImageCache sharedImageCache];
-//        [imageCache clearMemory];
-//        [imageCache clearDisk];
-        [self refreshTable];
     }
 }
 
@@ -226,13 +222,6 @@
 }
 
 #pragma mark - VMarticleEntityUpdater delegates
-
-- (void)articleEntityUpdaterWillDeleteEntity:(id)entity {
-    Blog *article = (Blog*)entity;
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[article.order integerValue] inSection:0];
-    
-    //[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]  withRowAnimation:UITableViewRowAnimationFade];
-}
 
 -(void)articleEntityUpdaterDidFinishUpdating {
     //[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(refreshTable) userInfo:nil repeats: YES];

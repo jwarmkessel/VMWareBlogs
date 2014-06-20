@@ -141,8 +141,6 @@
                         
                         //Just save the articles.
                         blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
-
-
                     }
                     
                     order++;

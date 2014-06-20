@@ -7,7 +7,6 @@
         <!--Navigation Controller - Articles-->
         <scene sceneID="6Pr-PE-5UN">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yf4-cu-eEU" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController definesPresentationContext="YES" id="wiJ-vc-oOo" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Articles" image="articles.png" id="s5y-oC-c08"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="A1n-1m-Umb">
@@ -17,6 +16,7 @@
                         <segue destination="gLf-IA-OnT" kind="relationship" relationship="rootViewController" id="ucP-uK-A0m"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yf4-cu-eEU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="16" y="922"/>
         </scene>
@@ -42,7 +42,6 @@
         <!--Navigation Controller - Recent-->
         <scene sceneID="m6Y-WA-f32">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IQH-W5-5In" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController definesPresentationContext="YES" id="Phr-JY-D00" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Recent" image="save.png" id="9JV-Qd-Zec"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gbp-uZ-IXk">
@@ -52,6 +51,7 @@
                         <segue destination="3xA-m8-ZhG" kind="relationship" relationship="rootViewController" id="w7x-yi-ib3"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IQH-W5-5In" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="22" y="33"/>
         </scene>
@@ -211,7 +211,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="ONj-FQ-Bwo">
-                        <barButtonItem key="rightBarButtonItem" tag="101" style="plain" systemItem="action" id="jVo-0Z-Jp3">
+                        <barButtonItem key="rightBarButtonItem" tag="101" style="done" systemItem="action" id="jVo-0Z-Jp3">
                             <connections>
                                 <action selector="showToolsHandler:" destination="rV9-Ve-Kre" id="rN4-Cn-8oN"/>
                             </connections>
@@ -254,7 +254,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="jh8-rP-FzN">
-                        <barButtonItem key="rightBarButtonItem" tag="101" style="plain" systemItem="action" id="56F-7O-kmE">
+                        <barButtonItem key="rightBarButtonItem" tag="101" style="done" systemItem="action" id="56F-7O-kmE">
                             <connections>
                                 <action selector="showToolsHandler:" destination="z6N-nh-OuJ" id="HWR-y1-kiE"/>
                             </connections>

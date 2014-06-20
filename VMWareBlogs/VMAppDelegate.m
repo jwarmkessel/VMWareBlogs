@@ -8,6 +8,7 @@
 
 #import "VMAppDelegate.h"
 #import <Crashlytics/Crashlytics.h>
+#import "VMArticleEntityUpdater.h"
 
 @implementation VMAppDelegate
 
@@ -18,6 +19,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [Crashlytics startWithAPIKey:@"59c371b61d689f5678d0ebe6a0d8db4973125312"];
+    
+    self.updater = [[VMArticleEntityUpdater alloc] init];
+    [self.updater updateList];
 
     return YES;
 }
