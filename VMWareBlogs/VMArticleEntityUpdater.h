@@ -14,13 +14,13 @@
 @property (nonatomic, strong) NSTimer *updateBlogListTimer;
 @property (nonatomic, assign) id delegate;
 
--(void)updateList;
+- (void)updateList;
 @end
 
 @protocol VMArticleEntityUpdaterDelegate
 
 @optional
--(void)articleEntityUpdaterDidFinishUpdating;
--(void)articleEntityUpdaterDidError;
-
+- (void)articleEntityUpdaterDidFinishUpdating;
+- (void)articleEntityUpdaterDidError;
+- (void)articleEntityUpdaterWillDeleteEntity:(id)entity;
 @end

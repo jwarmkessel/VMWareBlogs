@@ -46,6 +46,12 @@
     
     self.updateContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     
+    //Configure notifications to update when there is a save in Core Data.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contextDidSave:)
+                                                 name:NSManagedObjectContextDidSaveNotification
+                                               object:nil];
+    
     [self.updateContext performBlock:^{
         
         //Request data.
@@ -55,6 +61,7 @@
             self.updating = NO;
             NSLog(@"(Developer WARNING) XML string is equal to nil");
             [self.delegate articleEntityUpdaterDidError];
+            
             return;
         }
         
@@ -72,12 +79,6 @@
             
         } else if (!TBXMLError) {
             
-            //Configure notifications to update when there is a save in Core Data.
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(contextDidSave:)
-                                                         name:NSManagedObjectContextDidSaveNotification
-                                                       object:self.updateContext];
-
             //Get the persistentStoreCoordinator
             VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
             NSPersistentStoreCoordinator *coordinator = [appDelegate persistentStoreCoordinator];
@@ -136,23 +137,23 @@
                     Blog *article = [sortedArticleArray objectAtIndex:j];
                     
                     if( ![article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
+
+                        dispatch_sync(dispatch_get_main_queue(), ^{
+                            [self.delegate articleEntityUpdaterWillDeleteEntity:article];
+                        });
                         
                         // Delete the row from the data source
                         [self.updateContext deleteObject:article];
                         
                         //Delete corresponding image in SDWebImage.
-                        NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", [TBXML textForElement:guidElement]];
+                        //NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", [TBXML textForElement:guidElement]];
                         
-                        [[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
+                        //[[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
                         
                         //Just save the articles.
                         blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
 
-                        if (![self.updateContext save:&temporaryMOCError]) {
-                            NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
-                        }
-                        
-                        [self.updateContext refreshObject:article mergeChanges:YES];
+
                     }
                     
                     order++;
@@ -161,6 +162,12 @@
                 }
             
             } while ((itemElement = itemElement->nextSibling));
+            
+            if (![self.updateContext save:&temporaryMOCError]) {
+                NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
+            }
+            
+            //[self.updateContext refreshObject:article mergeChanges:YES];
             
             //Update is complete. Reset the flag.
             self.updating = NO;
@@ -238,6 +245,7 @@
 // Whatever method you registered as an observer to NSManagedObjectContextDidSave
 - (void)contextDidSave:(NSNotification *)notification
 {
+    NSLog(@"context did save");
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
                                                        withObject:notification

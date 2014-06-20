@@ -27,6 +27,7 @@
 
 //TODO TEST CODE
 @property (assign) BOOL toggle;
+@property (strong, nonatomic) UIView *loadingView;
 @end
 
 @implementation VMBlogFeedViewController
@@ -37,6 +38,7 @@
     @synthesize updater;
     @synthesize refreshControl;
     @synthesize toggle;
+    @synthesize loadingView;
 
 - (void)viewDidLoad
 {
@@ -111,13 +113,6 @@
     //[NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(scrollTest) userInfo:nil repeats: YES];
 }
 
-- (void)refreshTest {
-    self.searchBar.text = @"";
-    [self setFilteredList:NO];
-    
-    [self.updater updateList];
-}
-
 - (void)scrollTest {
 
     if(toggle) {
@@ -131,9 +126,18 @@
 
 - (void)refreshTable {
     //TODO: refresh your data
+    [self.tableView setUserInteractionEnabled:NO];
+    self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.tableView.frame.size.width, self.tableView.frame.size.height)];
+    [self.loadingView setBackgroundColor:[UIColor blackColor]];
+    [self.loadingView setAlpha:0];
+    [self.view addSubview:self.loadingView];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.loadingView setAlpha:0.3];
+    }];
+    
     self.searchBar.text = @"";
     [self setFilteredList:NO];
-    
     [self.updater updateList];
 }
 
@@ -146,7 +150,7 @@
     [super viewDidAppear:animated];
 
     //Update the list.
-    [self refreshTable];
+    //[self refreshTable];
     
     [self.scrollToTopTap setEnabled:YES];
 }
@@ -188,6 +192,9 @@
 - (void)appWillEnterForeground:(id)sender {
     if([self isKindOfClass:[VMBlogFeedViewController class]]) {
         NSLog(@"App is entering foreground from Blog feed");
+//        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+//        [imageCache clearMemory];
+//        [imageCache clearDisk];
         [self refreshTable];
     }
 }
@@ -220,11 +227,29 @@
 
 #pragma mark - VMarticleEntityUpdater delegates
 
+- (void)articleEntityUpdaterWillDeleteEntity:(id)entity {
+    Blog *article = (Blog*)entity;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[article.order integerValue] inSection:0];
+    
+    //[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]  withRowAnimation:UITableViewRowAnimationFade];
+}
+
 -(void)articleEntityUpdaterDidFinishUpdating {
+    //[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(refreshTable) userInfo:nil repeats: YES];
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.loadingView setAlpha:0.0];
+    }];
+    [self.loadingView removeFromSuperview];
+    [self.tableView setUserInteractionEnabled:YES];
     [refreshControl endRefreshing];
-    //[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(refreshTest) userInfo:nil repeats: YES];
 }
 -(void)articleEntityUpdaterDidError {
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.loadingView setAlpha:0.0];
+    }];
+    [self.loadingView removeFromSuperview];
+    [self.tableView setUserInteractionEnabled:YES];
     [refreshControl endRefreshing];
 }
 
@@ -404,36 +429,55 @@
         blog = [self.filteredTableData objectAtIndex:indexPath.row];
     }
     
+
     UILabel *orderLbl = (UILabel *)[cell viewWithTag:100];
-    [orderLbl setFont:[UIFont fontWithName:@"futura" size:20]];
+    
+    @autoreleasepool {
+        [orderLbl setFont:[UIFont fontWithName:@"futura" size:20]];
+    }
     
     UITextField *titleLbl = (UITextField *)[cell viewWithTag:101];
+    @autoreleasepool {
+        [titleLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
+        titleLbl.textColor = [UIColor colorWithHexString:@"696566"];
+    }
+    
     [titleLbl setUserInteractionEnabled:NO];
     titleLbl.text = @"text";
-    [titleLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
     [titleLbl setBackgroundColor:[UIColor clearColor]];
-    titleLbl.textColor = [UIColor colorWithHexString:@"696566"];
     
     UITextView *descLbl = (UITextView *)[cell viewWithTag:102];
-    [descLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
-    descLbl.textColor = [UIColor colorWithHexString:@"8D8D8D"];
+    @autoreleasepool {
+        [descLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
+        descLbl.textColor = [UIColor colorWithHexString:@"8D8D8D"];
+    }
+
     descLbl.userInteractionEnabled = NO;
     
     UILabel *dateLbl = (UILabel *)[cell viewWithTag:104];
-    [dateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:17.0f]];
-    dateLbl.textColor = [UIColor colorWithHexString:@"BBBBBB"];
+    @autoreleasepool {
+        [dateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:17.0f]];
+        dateLbl.textColor = [UIColor colorWithHexString:@"BBBBBB"];
+    }
     [dateLbl setBackgroundColor:[UIColor clearColor]];
     
     UILabel *authorLbl = (UILabel *)[cell viewWithTag:105];
-    [authorLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:13.0f]];
-    authorLbl.textColor = [UIColor colorWithHexString:@"8D8D8D"];
-    [authorLbl setBackgroundColor:[UIColor clearColor]];
+    @autoreleasepool {
+        [authorLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:13.0f]];
+        authorLbl.textColor = [UIColor colorWithHexString:@"8D8D8D"];
+    }
     [authorLbl setTextAlignment:NSTextAlignmentRight];
+    [authorLbl setBackgroundColor:[UIColor clearColor]];
     
     __weak UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     
-    orderLbl.text = [NSString stringWithFormat:@"%@", blog.order];
+    NSString *orderString = [[NSString alloc] init];
+    @autoreleasepool {
+        orderString = [NSString stringWithFormat:@"%@", blog.order];
+    }
+
+    orderLbl.text = orderString;
     titleLbl.text = blog.title;
     
     if ([blog.descr isEqualToString:@""]) {
@@ -449,12 +493,18 @@
     //Now you can create the short string
     NSString *shortString = [blog.descr substringWithRange:stringRange];
     
+
     shortString = [NSString stringWithFormat:@"%@...", shortString];
+
 
     descLbl.text = shortString;
     dateLbl.text = blog.pubDate;
     dateLbl.hidden = YES;
-    authorLbl.text = [NSString stringWithFormat:@"%@ - %@", blog.author, blog.pubDate];
+    
+    NSString *textString = [[NSString alloc] init];
+    textString = [NSString stringWithFormat:@"%@ - %@", blog.author, blog.pubDate];
+    
+    authorLbl.text = textString;
 
     __weak UIImage *image = [UIImage imageNamed:@"placeholder.png"];
     imageView.image = image;
@@ -489,6 +539,7 @@
         
         BOOL result = [[blog.guid lowercaseString] hasPrefix:@"http://"];
         if(result) {
+            
             NSLog(@"\t\t\t\t\tDownloading the image again GUID: %@", blog.guid);
             [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
                 
@@ -503,10 +554,25 @@
         }
     }
     
-    url = nil;
-    imageGetter = nil;
-    image = nil;
-    [[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
+    
+
+    
+//    blog = nil;
+//    orderLbl = nil;
+//    titleLbl = nil;
+//    descLbl = nil;
+//    dateLbl = nil;
+//    authorLbl = nil;
+//    imageView = nil;
+//    orderString = nil;
+//    shortString = nil;
+//    image = nil;
+//    [[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
+//    imageGetter = nil;
+//    url = nil;
+//    imageFromCache = nil;
+    
+
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -536,19 +602,22 @@
 }
 */
 
-/*
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"commitEditingStyle");
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSLog(@"UITableViewCellEditingStyleDelete");
         // Delete the row from the data source
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        NSLog(@"UITableViewCellEditingStyleInsert");
     }   
 }
-*/
+
 
 /*
 // Override to support rearranging the table view.
@@ -584,6 +653,7 @@
  Returns the fetched results controller. Creates and configures the controller if necessary.
  */
 - (NSFetchedResultsController *)fetchedResultsController {
+    NSLog(@"fetchedResultsController method");
     self.filteredList = NO;
 
     if (_fetchedResultsController != nil) {
