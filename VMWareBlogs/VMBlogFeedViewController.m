@@ -232,7 +232,7 @@
     [self.tableView setUserInteractionEnabled:YES];
     [refreshControl endRefreshing];
     
-    [self.tableView reloadData];    
+    [self.tableView reloadData];
 }
 -(void)articleEntityUpdaterDidError {
     
@@ -420,7 +420,7 @@
         blog = [self.filteredTableData objectAtIndex:indexPath.row];
     }
     
-
+    NSLog(@"GUID: %@", blog.guid);
     UILabel *orderLbl = (UILabel *)[cell viewWithTag:100];
     
     @autoreleasepool {
@@ -660,6 +660,8 @@
     
     [fetchRequest setReturnsObjectsAsFaults:NO];
     
+    
+    
     NSEntityDescription *entity = [NSEntityDescription
                                               entityForName:@"Blog" inManagedObjectContext:managedObjectContext];
     [fetchRequest setFetchLimit:100];
@@ -667,6 +669,9 @@
     [fetchRequest setEntity:entity];
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
     NSArray *sortDescriptors = @[sort];
+    
+    //http://www.raywenderlich.com/17927/how-to-synchronize-core-data-with-a-web-service-part-2
+    //[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"syncStatus != %d", SDObjectDeleted]];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
     

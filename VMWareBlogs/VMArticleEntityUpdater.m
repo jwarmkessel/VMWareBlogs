@@ -35,6 +35,8 @@
     
     self.updateContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     
+    [self.updateContext reset];
+    
     //Configure notifications to update when there is a save in Core Data.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(contextDidSave:)
@@ -143,7 +145,9 @@
                     j++;
                     articleCount++; 
                 }
-            
+                
+                [self.updateContext reset]; // Here the inserted objects get released in the core data stack
+                
             } while ((itemElement = itemElement->nextSibling));
             
             if (![self.updateContext save:&temporaryMOCError]) {

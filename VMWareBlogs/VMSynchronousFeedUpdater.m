@@ -31,6 +31,8 @@
 }
 - (void)updateList {
     
+    [self.updateContext reset];
+    
     //Request data.
     NSString *xmlString = [VMWareBlogsAPI requestRSS];
     NSLog(@"Finished xmlString");
@@ -58,7 +60,7 @@
         NSEntityDescription *entityDescription = [NSEntityDescription
                                                   entityForName:@"Blog" inManagedObjectContext:self.updateContext];
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        
+
         [fetchRequest setReturnsObjectsAsFaults:NO];
         
         NSError *fetchRequestError;
@@ -106,8 +108,13 @@
                 
                 if( ![article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
                                             
-                    // Delete the row from the data source
+                    // Delete the row from the data source.
                     [self.updateContext deleteObject:article];
+                    
+                    // Force saving the delete.
+                    if (![self.updateContext save:&temporaryMOCError]) {
+                        NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
+                    }
                     
                     //Delete corresponding image in SDWebImage.
                     //NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=640&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", [TBXML textForElement:guidElement]];
@@ -123,6 +130,7 @@
                 articleCount++;
             }
             
+            [self.updateContext reset];
         } while ((itemElement = itemElement->nextSibling));
         
     NSLog(@"Update Context Save after loop");
@@ -130,6 +138,8 @@
             NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
         }
     }
+    
+
     
     return;
 }
