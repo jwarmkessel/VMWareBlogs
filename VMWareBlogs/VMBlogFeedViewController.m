@@ -460,7 +460,7 @@
     [authorLbl setTextAlignment:NSTextAlignmentRight];
     [authorLbl setBackgroundColor:[UIColor clearColor]];
     
-    __weak UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
+    __block UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     
     NSString *orderString = [[NSString alloc] init];
