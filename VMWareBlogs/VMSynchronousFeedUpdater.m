@@ -124,22 +124,22 @@
                     //Just save the articles.
                     blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
                 }
-                
-                order++;
-                j++;
-                articleCount++;
             }
             
-            [self.updateContext reset];
+            order++;
+            j++;
+            articleCount++;
+            
+
         } while ((itemElement = itemElement->nextSibling));
         
-    NSLog(@"Update Context Save after loop");
         if (![self.updateContext save:&temporaryMOCError]) {
             NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
         }
     }
     
 
+    [self.updateContext reset];
     
     return;
 }

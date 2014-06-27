@@ -38,13 +38,6 @@ typedef enum {
 
 - (void)updateList {
     
-    if([self isUpdating]) {
-        NSLog(@"DENY UPDATE REQUEST");
-        return;
-    }
-    
-    self.updating = YES;
-    
     self.updateContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     
     [self.updateContext reset];
@@ -102,8 +95,25 @@ typedef enum {
             
             //Prepare to consume data.
             TBXMLElement * rootXMLElement = tbxml.rootXMLElement;
-            TBXMLElement * channelElement = [TBXML childElementNamed:@"channel" parentElement:rootXMLElement];
+            TBXMLElement * channelElement;
+            
+            if (![TBXML childElementNamed:@"channel" parentElement:rootXMLElement]) {
+                NSLog(@"(Developer WARNING) channel Element not found");
+                [self.delegate articleEntityUpdaterDidError];
+                return;
+            } else {
+                channelElement = [TBXML childElementNamed:@"channel" parentElement:rootXMLElement];
+            }
+            
             TBXMLElement * itemElement = [TBXML childElementNamed:@"item" parentElement:channelElement];
+            
+            if (![TBXML childElementNamed:@"item" parentElement:channelElement]) {
+                NSLog(@"(Developer WARNING) item element not found");
+                [self.delegate articleEntityUpdaterDidError];
+                return;
+            } else {
+                itemElement = [TBXML childElementNamed:@"item" parentElement:channelElement];
+            }
             
             int j = 0;
             int order = 0;
@@ -288,9 +298,6 @@ typedef enum {
             if (![self.updateContext save:&temporaryMOCError]) {
                 NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
             }
-            
-            //Update is complete. Reset the flag.
-            self.updating = NO;
             
             // save parent to disk asynchronously
             dispatch_sync(dispatch_get_main_queue(), ^{

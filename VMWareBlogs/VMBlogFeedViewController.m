@@ -646,7 +646,7 @@
 }
 */
 
-
+/*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -661,7 +661,7 @@
         NSLog(@"UITableViewCellEditingStyleInsert");
     }   
 }
-
+*/
 
 /*
 // Override to support rearranging the table view.
