@@ -19,5 +19,6 @@
 @property (nonatomic, retain) NSString * guid;
 @property (nonatomic, retain) NSString * author;
 @property (nonatomic, assign) NSNumber *order;
+@property (nonatomic, assign) NSNumber *objectSyncStatus;
 
 @end

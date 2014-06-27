@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Justin Warmkessel. All rights reserved.
 //
 #define BASE_URI @"http://www.vmwareblogs.com/"
-
 #import "VMWareBlogsAPI.h"
 #import "VMAppDelegate.h"
 
@@ -21,8 +20,8 @@
 
 + (NSString *)requestRSS {
     
-    NSTimeInterval timeInMilliseconds = [[NSDate date] timeIntervalSince1970];
-    NSString *post = [NSString stringWithFormat:@"timestamp=%f&nocache=true", timeInMilliseconds];
+    //NSTimeInterval timeInMilliseconds = [[NSDate date] timeIntervalSince1970];
+    NSString *post = [NSString stringWithFormat:@"nocache=true"];
     
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];

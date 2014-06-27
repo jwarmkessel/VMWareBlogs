@@ -49,6 +49,7 @@
     [self.searchBar setDelegate:self];
     self.updater = [[VMArticleEntityUpdater alloc] init];
     [self.updater setDelegate:self];
+    [self.fetchedResultsController setDelegate:self];
     
     refreshControl = [[UIRefreshControl alloc]init];
     [refreshControl setTintColor:[UIColor whiteColor]];
@@ -233,7 +234,52 @@
     [refreshControl endRefreshing];
     
     [self.tableView reloadData];
+//    self.fetchedResultsController = nil;
+//    
+//    [self.tableView reloadData];
+//    
+//    NSError *error;
+//    self.fetchedResultsController = nil;
+//    
+//    NSLog(@"Perform fetch");
+//    if (![[self fetchedResultsController] performFetch:&error]) {
+//        /*
+//         Replace this implementation with code to handle the error appropriately.
+//         
+//         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+//         */
+//        //TODO
+//        abort();
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        abort();
+//    }
+//    
+//    [self.tableView beginUpdates];
 }
+
+- (void)articleEntityUpdaterDidInsertArticle:(id)entityId {
+    NSManagedObjectID *objectId = (NSManagedObjectID *)entityId;
+    NSLog(@"Object Id %@", objectId);
+    
+    NSError *error;
+    
+    Blog *article = (Blog*) [self.managedObjectContext existingObjectWithID:objectId error:&error];
+    
+    [self.managedObjectContext insertObject:article];
+}
+- (void)articleEntityDidDeleteArticle:(id)entityId {
+    NSManagedObjectID *objectId = (NSManagedObjectID *)entityId;
+    NSLog(@"Object Id %@", objectId);
+    
+    NSError *error;
+    
+    Blog *article = (Blog*) [self.managedObjectContext existingObjectWithID:objectId error:&error];
+    
+    NSLog(@"Link %@", article.link);
+    
+    [self.managedObjectContext deleteObject:article];
+}
+
 -(void)articleEntityUpdaterDidError {
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -419,8 +465,18 @@
     } else {
         blog = [self.filteredTableData objectAtIndex:indexPath.row];
     }
+
+    UILabel *syncStatus = (UILabel *)[cell viewWithTag:150];
     
-    NSLog(@"GUID: %@", blog.guid);
+    if ([blog.objectSyncStatus intValue] == 2) {
+        NSLog(@"Delete found");
+    } else {
+        NSLog(@"%@", blog.objectSyncStatus);
+    }
+    
+    syncStatus.text = [NSString stringWithFormat:@"%@", blog.order];
+    
+    //NSLog(@"GUID: %@", blog.guid);
     UILabel *orderLbl = (UILabel *)[cell viewWithTag:100];
     
     @autoreleasepool {
@@ -460,7 +516,7 @@
     [authorLbl setTextAlignment:NSTextAlignmentRight];
     [authorLbl setBackgroundColor:[UIColor clearColor]];
     
-    __block UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
+    __block __weak UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     
     NSString *orderString = [[NSString alloc] init];
@@ -523,15 +579,12 @@
     UIImage *imageFromCache = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageGetter];
     
     if (imageFromCache) {
-        NSLog(@"\t\t\t\t\tUsing image from Cache");
         imageView.image = imageFromCache;
         [imageView setAlpha:1.0];
     } else {
         
         BOOL result = [[blog.guid lowercaseString] hasPrefix:@"http://"];
         if(result) {
-            
-            NSLog(@"\t\t\t\t\tDownloading the image again GUID: %@", blog.guid);
             [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
                 
                 if (!error) {
@@ -581,8 +634,8 @@
     }
     
     vc.articleURL = blog.link;
-    vc.articleDescription = blog.descr;
-    vc.articleTitle = blog.title;
+//    vc.articleDescription = blog.descr;
+//    vc.articleTitle = blog.title;
 }
 /*
 // Override to support conditional editing of the table view.
@@ -707,25 +760,25 @@
             
         case NSFetchedResultsChangeInsert:
             NSLog(@"Inserting");
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
             break;
             
         case NSFetchedResultsChangeDelete:
             NSLog(@"Deleting");
             NSLog(@"indexpath %@", indexPath);
             if(indexPath == NULL) break;
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeUpdate:
             NSLog(@"Results Change Update");
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
             NSLog(@"Move?");                        
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationLeft];
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
 

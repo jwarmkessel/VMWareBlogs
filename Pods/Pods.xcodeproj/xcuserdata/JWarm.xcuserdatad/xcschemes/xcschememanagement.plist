@@ -4,11 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-AwesomeMenu.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-BNRSSFeedParser.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,27 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>108C71F21243415BA73F2EDC</key>
+		<key>09D781C4E0EA40D7934B481B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>32A2A2B6C9124362A388515A</key>
+		<key>3BB320963FAE45EB911B748C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>571050BCACE947A8AF8EDA9E</key>
+		<key>5638684DCB7740C9BEDAD122</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DCA5512BA28E48A29551B3DB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F9541ECA879743E98FB83274</key>
+		<key>568928A5CDA541DAA24A8CBE</key>
 		<dict>
 			<key>primary</key>
 			<true/>

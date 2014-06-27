@@ -21,5 +21,10 @@
 
 @optional
 - (void)articleEntityUpdaterDidFinishUpdating;
+
+- (void)articleEntityUpdaterDidInsertArticle:(id)entityId;
+
+- (void)articleEntityDidDeleteArticle:(id)entityId;
+
 - (void)articleEntityUpdaterDidError;
 @end

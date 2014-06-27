@@ -18,5 +18,6 @@
 @dynamic guid;
 @dynamic author;
 @dynamic order;
+@dynamic objectSyncStatus;
 
 @end

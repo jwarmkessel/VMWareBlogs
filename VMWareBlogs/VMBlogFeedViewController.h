@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AwesomeMenu.h>
 #import "VMArticleEntityUpdater.h"
 
 @interface VMBlogFeedViewController : UITableViewController <NSFetchedResultsControllerDelegate, VMArticleEntityUpdaterDelegate, UISearchBarDelegate>

@@ -210,6 +210,7 @@
 		839929AA18EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navBarLogoNoStatusBar@2x.png"; sourceTree = "<group>"; };
 		83B3A71B194BC44200DF6511 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 		83B3A71C194BC44200DF6511 /* placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x.png"; sourceTree = "<group>"; };
+		83BDEE29195B708900123D10 /* BlogModel 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 6.xcdatamodel"; sourceTree = "<group>"; };
 		83C6EC6B1946499F005AE08A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		83E5E5761954B07A0018687F /* NSString+NSString_NSString_stringDecoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NSString_NSString_stringDecoding.h"; sourceTree = "<group>"; };
 		83E5E5771954B07A0018687F /* NSString+NSString_NSString_stringDecoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NSString_NSString_stringDecoding.m"; sourceTree = "<group>"; };
@@ -1068,12 +1069,13 @@
 			isa = XCVersionGroup;
 			children = (
 				837F88EB19412E540011531E /* BlogModel 5.xcdatamodel */,
+				83BDEE29195B708900123D10 /* BlogModel 6.xcdatamodel */,
 				8368D7C8193538CF00EA2140 /* BlogModel 4.xcdatamodel */,
 				83FF03D4190F037B003AF06C /* BlogModel 2.xcdatamodel */,
 				83FF03D519103C92003AF06C /* BlogModel 3.xcdatamodel */,
 				83FE344D18CE75670080C64C /* BlogModel.xcdatamodel */,
 			);
-			currentVersion = 8368D7C8193538CF00EA2140 /* BlogModel 4.xcdatamodel */;
+			currentVersion = 83BDEE29195B708900123D10 /* BlogModel 6.xcdatamodel */;
 			path = BlogModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
