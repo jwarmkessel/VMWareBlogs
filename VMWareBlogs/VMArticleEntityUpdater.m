@@ -218,7 +218,7 @@ typedef enum {
                         Blog *aManagedObject = article;
                         NSManagedObjectContext *context = [aManagedObject managedObjectContext];
                         
-                        [context deleteObject:aManagedObject];
+                        //[context deleteObject:aManagedObject];
                         
                         NSError *error;
                         if (![context save:&error]) {

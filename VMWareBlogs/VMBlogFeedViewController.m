@@ -15,6 +15,8 @@
 #import <dispatch/dispatch.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
+#define DEBUGGER 1
+
 @interface VMBlogFeedViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (atomic, strong) NSManagedObjectContext *moc;
@@ -86,6 +88,11 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:@"UIApplicationWillEnterForegroundNotification" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                            selector:@selector(mergeChanges:)
+                                                name:NSManagedObjectContextDidSaveNotification
+                                              object:(self.managedObjectContext)];
+    
     //Dismiss the keyboard if it's present.
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                   action:@selector(dismissKeyboard)];
@@ -112,6 +119,13 @@
     
     //Make the call to action text animate with blinking.
     //[NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(scrollTest) userInfo:nil repeats: YES];
+}
+
+- (void)mergeChanges:(NSNotification *)notification{
+    // Merge changes into the default context on the main thread
+    [self.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
+                              withObject:notification
+                           waitUntilDone:YES];
 }
 
 - (void)scrollTest {
@@ -267,6 +281,7 @@
     
     [self.managedObjectContext insertObject:article];
 }
+
 - (void)articleEntityDidDeleteArticle:(id)entityId {
     NSManagedObjectID *objectId = (NSManagedObjectID *)entityId;
     NSLog(@"Object Id %@", objectId);
@@ -466,53 +481,35 @@
         blog = [self.filteredTableData objectAtIndex:indexPath.row];
     }
 
+#if DEBUGGER
     UILabel *syncStatus = (UILabel *)[cell viewWithTag:150];
-    
-    if ([blog.objectSyncStatus intValue] == 2) {
-        NSLog(@"Delete found");
-    } else {
-        NSLog(@"%@", blog.objectSyncStatus);
-    }
-    
     syncStatus.text = [NSString stringWithFormat:@"%@", blog.order];
+#endif
     
     //NSLog(@"GUID: %@", blog.guid);
     UILabel *orderLbl = (UILabel *)[cell viewWithTag:100];
-    
-    @autoreleasepool {
-        [orderLbl setFont:[UIFont fontWithName:@"futura" size:20]];
-    }
+    [orderLbl setFont:[UIFont fontWithName:@"futura" size:20]];
     
     UITextField *titleLbl = (UITextField *)[cell viewWithTag:101];
-    @autoreleasepool {
-        [titleLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
-        titleLbl.textColor = [UIColor colorWithHexString:@"696566"];
-    }
-    
+    [titleLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:20.0f]];
+    titleLbl.textColor = [UIColor colorWithHexString:@"696566"];
     [titleLbl setUserInteractionEnabled:NO];
     titleLbl.text = @"text";
     [titleLbl setBackgroundColor:[UIColor clearColor]];
     
     UITextView *descLbl = (UITextView *)[cell viewWithTag:102];
-    @autoreleasepool {
-        [descLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
-        descLbl.textColor = [UIColor colorWithHexString:@"8D8D8D"];
-    }
-
+    [descLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0f]];
+    descLbl.textColor = [UIColor colorWithHexString:@"8D8D8D"];
     descLbl.userInteractionEnabled = NO;
     
     UILabel *dateLbl = (UILabel *)[cell viewWithTag:104];
-    @autoreleasepool {
-        [dateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:17.0f]];
-        dateLbl.textColor = [UIColor colorWithHexString:@"BBBBBB"];
-    }
+    [dateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:17.0f]];
+    dateLbl.textColor = [UIColor colorWithHexString:@"BBBBBB"];
     [dateLbl setBackgroundColor:[UIColor clearColor]];
     
     UILabel *authorLbl = (UILabel *)[cell viewWithTag:105];
-    @autoreleasepool {
-        [authorLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:13.0f]];
-        authorLbl.textColor = [UIColor colorWithHexString:@"8D8D8D"];
-    }
+    [authorLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:13.0f]];
+    authorLbl.textColor = [UIColor colorWithHexString:@"8D8D8D"];
     [authorLbl setTextAlignment:NSTextAlignmentRight];
     [authorLbl setBackgroundColor:[UIColor clearColor]];
     
@@ -520,10 +517,7 @@
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     
     NSString *orderString = [[NSString alloc] init];
-    @autoreleasepool {
-        orderString = [NSString stringWithFormat:@"%@", blog.order];
-    }
-
+    orderString = [NSString stringWithFormat:@"%@", blog.order];
     orderLbl.text = orderString;
     titleLbl.text = blog.title;
     
@@ -539,10 +533,7 @@
     
     //Now you can create the short string
     NSString *shortString = [blog.descr substringWithRange:stringRange];
-    
-
     shortString = [NSString stringWithFormat:@"%@...", shortString];
-
 
     descLbl.text = shortString;
     dateLbl.text = blog.pubDate;
@@ -597,26 +588,6 @@
             }];
         }
     }
-    
-    
-
-    
-//    blog = nil;
-//    orderLbl = nil;
-//    titleLbl = nil;
-//    descLbl = nil;
-//    dateLbl = nil;
-//    authorLbl = nil;
-//    imageView = nil;
-//    orderString = nil;
-//    shortString = nil;
-//    image = nil;
-//    [[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
-//    imageGetter = nil;
-//    url = nil;
-//    imageFromCache = nil;
-    
-
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

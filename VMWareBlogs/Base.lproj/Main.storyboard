@@ -169,7 +169,7 @@
                                             <color key="textColor" red="0.231372565" green="0.21568629149999999" blue="0.2196078598" alpha="1" colorSpace="deviceRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="150" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="syncStatus" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAD-yp-pJw">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="150" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAD-yp-pJw">
                                             <rect key="frame" x="9" y="168" width="300" height="25"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -208,13 +208,6 @@
                     <view key="view" tag="100" contentMode="scaleToFill" id="78U-ev-ggP">
                         <rect key="frame" x="0.0" y="64" width="320" height="936"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUB-D7-ydx" customClass="VMArticlePreviewView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="500"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="ONj-FQ-Bwo">
@@ -227,7 +220,6 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="1000"/>
                     <connections>
-                        <outlet property="articlePreviewView" destination="pUB-D7-ydx" id="ts6-qc-P43"/>
                         <outlet property="toolBarButton" destination="jVo-0Z-Jp3" id="hJk-07-Wzk"/>
                     </connections>
                 </viewController>

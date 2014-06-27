@@ -7,7 +7,6 @@
 //
 
 #import "VMArticleViewController.h"
-#import "VMArticlePreviewView.h"
 #import "VMArticleOptions.h"
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
@@ -60,17 +59,8 @@
         self.edgesForExtendedLayout = UIRectEdgeNone; //layout adjustements
     }
     
-    //Setup Article Preview and segue animations.
-    
-    [self.articlePreviewView setArticleImageURL:self.articleURL];
-    
-    [self.articlePreviewView setDescriptionWithAttributedText:self.articleDescription];
-    [self.articlePreviewView setDelegate:self];
-    self.articlePreviewView.titleTextView.text = self.articleTitle;
     NSLog(@"Set the articlePreviewView GUID %@", self.articleURL);
     
-    
-
     
     //Load the blog article into a webview.
     float visibleWindow = 568 - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height;
@@ -108,40 +98,11 @@
     [self.articleOptionsView setDelegate:self];
     [self.view addSubview:self.articleOptionsView];
     
-    CGRect arrowRect = CGRectMake( ((self.view.frame.size.width/2) - 15), (self.view.frame.size.height - 90), 30.0, 30.0);
-    NSLog(@"Arrow Rect %f", self.view.frame.size.height - 132);
-    arrowRect.origin.y = (self.view.frame.size.height - 132);
-    self.arrowImageView = [[UIImageView alloc] initWithFrame:arrowRect];
-    self.arrowImageView.image = [UIImage imageNamed:@"arrowUp.png"];
-    self.arrowImageView.alpha = 0.3;
-    [self.articlePreviewView addSubview:self.arrowImageView];
-    
-    //Override the back button.
-//    self.backButton = [[UIBarButtonItem alloc] initWithTitle:@"< back"
-//                                                       style:UIBarButtonItemStyleBordered
-//                                                      target:self
-//                                                      action:@selector(handleBack:)];
-//    
-//    [self.backButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-//                                             [UIFont fontWithName:@"ArialMT" size:13], NSFontAttributeName,
-//                                             [UIColor blueColor], NSForegroundColorAttributeName,
-//                                             nil]
-//                                   forState:UIControlStateNormal];
-//    
-//    self.navigationItem.leftBarButtonItem = self.backButton;
+}
 
-//    NSLog(@"HELLOW ORLD");
-//    UIView *asdf = [[UIView alloc] initWithFrame:CGRectMake(0,0,300,300)];
-//    [asdf setBackgroundColor:[UIColor greenColor]];
-//    [self.view addSubview:asdf];
-//    self.view.alpha = 1;
-//    [self.view setBackgroundColor:[UIColor purpleColor]];
-//    [self.parentViewController.view sendSubviewToBack:self.view];
-//    [self.view setBackgroundColor:[UIColor greenColor]];
-//    
-//    [self removeFromParentViewController];
-//    [self.view removeFromSuperview];
-//    [self view].hidden = YES;
+- (void) viewWillDisappear:(BOOL)animated {
+    NSLog(@"view will disappear");
+    [self destroyWebView];
 }
 
 - (IBAction)showToolsHandler:(id)sender {
@@ -257,70 +218,6 @@
             }
         }
     }];
-    
-}
-
-
-#pragma mark VMArticlePreviewView delegate method
--(void)articlePreviewMoved:(float)offset {
-    
-    float asdf = 475 - fabsf(offset);
-    
-    if(asdf < 220) {
-        [UIView animateWithDuration:0.01 animations:^{
-            
-            
-            self.articlePreviewView.alpha = 0;
-        }];
-    }
-    
-    [UIView animateWithDuration:0.01 animations:^{
-
-        
-        self.webView.layer.frame = CGRectMake(0.0, asdf, 320.0, 468.0);
-    }];
-}
-
--(void)articlePreviewFinishedMoving:(float)offset {
-    NSLog(@"articlePreviewFinishedMoving");
-
-    [UIView beginAnimations:nil context:nil];
-    CATransform3D transform = CATransform3DIdentity;
-    transform.m34 = 1.0 / -2000;
-    
-    CATransform3D rotationAndPerspectiveTransform = CATransform3DIdentity;
-    rotationAndPerspectiveTransform.m34 = 1.0 / -500;
-    rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, 20.0f * M_PI / 180.0f, 1.0f, 0.0f, 0.0f);
-
-    
-    self.articlePreviewView.testView.layer.transform = rotationAndPerspectiveTransform;
-    [UIView commitAnimations];
-
-    float visibleWindow = 568 - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height;
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        self.arrowImageView.alpha = 0;
-        
-        self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, visibleWindow);
-        self.articlePreviewView.testView.alpha = 0;
-        [self.indicatorView setCenter:self.view.center];
-    }];
-    
-    
-    
-//    if(offset < -200) {
-//        [UIView animateWithDuration:0.3 animations:^{
-//            self.articlePreviewView.testView.alpha = 0;
-//            
-//            self.webView.layer.frame = CGRectMake(0.0, 0.0, 320.0, 568.0);
-//        }];
-//    } else if(offset > -200) {
-//        [UIView animateWithDuration:0.1 animations:^{
-//            self.articlePreviewView.testView.alpha = 1;
-//            
-//            self.webView.layer.frame = CGRectMake(0.0, 475.0, 320.0, 568.0);
-//        }];
-//    }
 }
 
 - (void)handleBack:(id)sender {
@@ -345,7 +242,24 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
+    [_webView delete:nil];
+    [_webView reload];
+}
+
+// Destroy UIWebView
+- (void)destroyWebView {
+    NSLog(@"view will destroyWebView");
+    [self.webView loadHTMLString:@"" baseURL:nil];
+    [self.webView stopLoading];
+    [self.webView setDelegate:nil];
+    [self.webView removeFromSuperview];
+    [self setWebView:nil];
+    
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
 }
 
 #pragma mark - UIWebViewDelegate protocol methods

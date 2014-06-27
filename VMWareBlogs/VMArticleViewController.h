@@ -7,16 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VMArticlePreviewView.h"
 #import "VMArticleOptions.h"
 
-@interface VMArticleViewController : UIViewController <UIWebViewDelegate, CustomClassDelegate, VMArticleOptionsDelegate, UITextViewDelegate>
+@interface VMArticleViewController : UIViewController <UIWebViewDelegate, VMArticleOptionsDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong)NSString *articleURL;
-@property (nonatomic, strong)NSString *articleTitle;
-@property (nonatomic, strong)NSString *articleDescription;
-@property (nonatomic, strong)UITextView *titleTextView;
-@property (strong, nonatomic) IBOutlet VMArticlePreviewView *articlePreviewView;
 
 - (IBAction)showToolsHandler:(id)sender;
 - (IBAction)toolBarContainerHandler:(id)sender;

@@ -13,9 +13,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <UIImageView+WebCache.h>
 
-#import "VMJunkArticleViewController.h"
-
-
 @interface VMRecentlyReadTableViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @end
@@ -274,10 +271,6 @@
     NSLog(@"Selecting the link %@", recentArticle.link);
     
     vc.articleURL = recentArticle.link;
-    
-    NSLog(@"Selecting the link %@", recentArticle.descr);
-    vc.articleDescription = recentArticle.descr;
-    vc.articleTitle = recentArticle.title;
 
 }
 
