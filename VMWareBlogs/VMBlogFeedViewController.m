@@ -91,7 +91,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                             selector:@selector(mergeChanges:)
                                                 name:NSManagedObjectContextDidSaveNotification
-                                              object:(self.managedObjectContext)];
+                                              object:(self.updater.updateContext)];
     
     //Dismiss the keyboard if it's present.
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -278,6 +278,7 @@
     NSError *error;
     
     Blog *article = (Blog*) [self.managedObjectContext existingObjectWithID:objectId error:&error];
+    NSLog(@"Insert Article Title %@", article.title);
     
     [self.managedObjectContext insertObject:article];
 }
@@ -293,6 +294,32 @@
     NSLog(@"Link %@", article.link);
     
     [self.managedObjectContext deleteObject:article];
+}
+
+- (void)articleEntityWillUpdate:(id)deleteId andInsert:(id)insertId {
+    
+    NSManagedObjectID *objectToDelete = (NSManagedObjectID *)deleteId;
+    NSError *error1;
+    
+    Blog *articleToDelete = (Blog*) [self.managedObjectContext existingObjectWithID:objectToDelete error:&error1];
+    
+    NSLog(@"Link %@", articleToDelete.title);
+    
+    [self.managedObjectContext deleteObject:articleToDelete];
+    
+    [self.managedObjectContext refreshObject:articleToDelete mergeChanges:NO];
+    
+    NSManagedObjectID *objectId = (NSManagedObjectID *)insertId;
+    NSLog(@"Object Id %@", objectId);
+    
+    NSError *error;
+    
+    Blog *article = (Blog*) [self.managedObjectContext existingObjectWithID:objectId error:&error];
+    NSLog(@"Insert Article Title %@", article.title);
+    
+    [self.managedObjectContext insertObject:article];
+
+    [self.managedObjectContext refreshObject:article mergeChanges:YES];
 }
 
 -(void)articleEntityUpdaterDidError {

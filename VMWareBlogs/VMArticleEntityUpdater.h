@@ -26,5 +26,7 @@
 
 - (void)articleEntityDidDeleteArticle:(id)entityId;
 
+- (void)articleEntityWillUpdate:(id)deleteId andInsert:(id)insertId;
+
 - (void)articleEntityUpdaterDidError;
 @end
