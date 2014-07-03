@@ -14,7 +14,20 @@
 @property (nonatomic, strong) NSTimer *updateBlogListTimer;
 @property (nonatomic, assign) id delegate;
 
-- (void)updateList;
+- (BOOL)updateList;
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 @end
 
+@protocol VMSynchronousFeedUpdaterDelegate
+
+@optional
+- (void)articleEntityUpdaterDidFinishUpdating;
+
+- (void)articleEntityUpdaterDidInsertArticle:(id)entityId;
+
+- (void)articleEntityDidDeleteArticle:(id)entityId;
+
+- (void)articleEntityWillUpdate:(id)deleteId andInsert:(id)insertId;
+
+- (void)articleEntityUpdaterDidError;
+@end

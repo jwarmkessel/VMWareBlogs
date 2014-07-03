@@ -187,6 +187,11 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="po2-QX-YMI"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="srq-gW-2zD">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <attributedString key="attributedTitle"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                    </refreshControl>
                     <connections>
                         <outlet property="searchBar" destination="4PS-gl-7Ok" id="5Zh-EK-LzV"/>
                         <outlet property="view" destination="FXG-Lu-cou" id="cUA-ay-vXc"/>

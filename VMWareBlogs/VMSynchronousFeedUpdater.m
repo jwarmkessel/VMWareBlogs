@@ -15,7 +15,7 @@
 
 @interface VMSynchronousFeedUpdater()
 
-- (void)updateList;
+- (BOOL)updateList;
 - (Blog *)createArticleEntityWithTitle:(TBXMLElement *)titleElem articleLink:(TBXMLElement *)linkElem articleDescription:(TBXMLElement *)descElement publishDate:(TBXMLElement *)pubDateElement GUIDElement:(TBXMLElement *)guidElement AuthorElement:(TBXMLElement *)authorElement andOrder:(int)order;
 @end
 
@@ -29,7 +29,7 @@
     }
     return self;
 }
-- (void)updateList {
+- (BOOL)updateList {
     
     [self.updateContext reset];
     
@@ -39,7 +39,7 @@
     if(xmlString == nil) {
         NSLog(@"(Developer WARNING) XML string is equal to nil");
         
-        return;
+        return NO;
     }
     
     NSError *TBXMLError = nil;
@@ -50,7 +50,7 @@
         NSLog(@"(Developer WARNING) THERE WAS A BIG MISTAKE %@", TBXMLError);
         [self performSelectorInBackground:@selector(updateList) withObject:self];
         
-        return;
+        return NO;
         
     } else if (!TBXMLError) {
         NSLog(@"Parsing xmlString");
@@ -138,10 +138,9 @@
         }
     }
     
-
-    [self.updateContext reset];
+    [self.delegate articleEntityUpdaterDidFinishUpdating];
     
-    return;
+    return YES;
 }
 
 - (Blog *)createArticleEntityWithTitle:(TBXMLElement *)titleElem articleLink:(TBXMLElement *)linkElem articleDescription:(TBXMLElement *)descElement publishDate:(TBXMLElement *)pubDateElement GUIDElement:(TBXMLElement *)guidElement AuthorElement:(TBXMLElement *)authorElement andOrder:(int)order {

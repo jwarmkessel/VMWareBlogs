@@ -15,17 +15,22 @@
 #import <dispatch/dispatch.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
+#import "VMSynchronousFeedUpdater.h"
+
 #define DEBUGGER 1
 
 @interface VMBlogFeedViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (atomic, strong) NSManagedObjectContext *moc;
-@property (strong, nonatomic) UIRefreshControl *refreshControl;
+
+
+
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *filteredTableData;
 @property (assign, getter = isFilteredList) BOOL filteredList;
 @property (strong, nonatomic) UITapGestureRecognizer *tap;
 @property (strong, nonatomic) UITapGestureRecognizer *scrollToTopTap;
+@property (strong, nonatomic) VMSynchronousFeedUpdater *SynchronousFeedUpdater;
 
 //TODO TEST CODE
 @property (assign) BOOL toggle;
@@ -37,10 +42,11 @@
     @synthesize blogArray;
     @synthesize moc = _moc;
     @synthesize filteredTableData = _filteredTableData;
-    @synthesize updater;
-    @synthesize refreshControl;
+    //@synthesize updater;
+
     @synthesize toggle;
-    @synthesize loadingView;
+    @synthesize loadingView = _loadingView;
+    @synthesize SynchronousFeedUpdater = _SynchronousFeedUpdater;
 
 - (void)viewDidLoad
 {
@@ -49,14 +55,20 @@
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.searchBar setDelegate:self];
-    self.updater = [[VMArticleEntityUpdater alloc] init];
-    [self.updater setDelegate:self];
+//    self.updater = [[VMArticleEntityUpdater alloc] init];
+//    [self.updater setDelegate:self];
+    
+    VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.managedObjectContext = appDelegate.managedObjectContext;
+    
+    self.SynchronousFeedUpdater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [self.SynchronousFeedUpdater setDelegate:self];
     [self.fetchedResultsController setDelegate:self];
     
-    refreshControl = [[UIRefreshControl alloc]init];
-    [refreshControl setTintColor:[UIColor whiteColor]];
-    [self.tableView addSubview:refreshControl];
-    [refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+    self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.tableView.frame.size.width, self.tableView.frame.size.height)];
+
+    [self.refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
+
 
     self.filteredList = NO;
     
@@ -88,10 +100,10 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:@"UIApplicationWillEnterForegroundNotification" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                            selector:@selector(mergeChanges:)
-                                                name:NSManagedObjectContextDidSaveNotification
-                                              object:(self.updater.updateContext)];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                            selector:@selector(mergeChanges:)
+//                                                name:NSManagedObjectContextDidSaveNotification
+//                                              object:(self.managedObjectContext)];
     
     //Dismiss the keyboard if it's present.
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -139,21 +151,24 @@
     toggle = !toggle;
 }
 
-- (void)refreshTable {
+- (void)refreshTable:(id)sender {
+    
+    [self.refreshControl beginRefreshing];
+    
+    NSLog(@"Refreshing Table Data");
     //TODO: refresh your data
-    [self.tableView setUserInteractionEnabled:NO];
-    self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.tableView.frame.size.width, self.tableView.frame.size.height)];
+    //[self.tableView setUserInteractionEnabled:NO];
     [self.loadingView setBackgroundColor:[UIColor blackColor]];
     [self.loadingView setAlpha:0];
     [self.view addSubview:self.loadingView];
     
     [UIView animateWithDuration:0.3 animations:^{
-        [self.loadingView setAlpha:0.3];
+        [_loadingView setAlpha:0.3];
+    }completion:^(BOOL finished) {
+        self.searchBar.text = @"";
+        [self setFilteredList:NO];
+        [self.SynchronousFeedUpdater updateList];
     }];
-    
-    self.searchBar.text = @"";
-    [self setFilteredList:NO];
-    [self.updater updateList];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -233,7 +248,7 @@
 - (void)updateList:(id)sender {
     NSLog(@"Update Core Manager");
     
-    [self.updater updateList];
+    //[self.updater updateList];
 }
 
 #pragma mark - VMarticleEntityUpdater delegates
@@ -242,58 +257,51 @@
     //[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(refreshTable) userInfo:nil repeats: YES];
     [UIView animateWithDuration:0.3 animations:^{
         [self.loadingView setAlpha:0.0];
+    }completion:^(BOOL finished) {
+        [self.loadingView removeFromSuperview];
+        [self.tableView setUserInteractionEnabled:YES];
+        
+        //[self.tableView reloadData];
+        [self.refreshControl endRefreshing];
     }];
-    [self.loadingView removeFromSuperview];
-    [self.tableView setUserInteractionEnabled:YES];
-    [refreshControl endRefreshing];
-    
-    [self.tableView reloadData];
-//    self.fetchedResultsController = nil;
-//    
-//    [self.tableView reloadData];
-//    
-//    NSError *error;
-//    self.fetchedResultsController = nil;
-//    
-//    NSLog(@"Perform fetch");
-//    if (![[self fetchedResultsController] performFetch:&error]) {
-//        /*
-//         Replace this implementation with code to handle the error appropriately.
-//         
-//         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-//         */
-//        //TODO
-//        abort();
-//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-//        abort();
-//    }
-//    
-//    [self.tableView beginUpdates];
+
 }
 
 - (void)articleEntityUpdaterDidInsertArticle:(id)entityId {
-    NSManagedObjectID *objectId = (NSManagedObjectID *)entityId;
-    NSLog(@"Object Id %@", objectId);
+    NSManagedObjectID *objectToInsert = (NSManagedObjectID *)entityId;
+    NSLog(@"\t\t\t\t\t articleEntityUpdaterDidInsertArticle Object Id %@", objectToInsert);
     
     NSError *error;
     
-    Blog *article = (Blog*) [self.managedObjectContext existingObjectWithID:objectId error:&error];
-    NSLog(@"Insert Article Title %@", article.title);
+    Blog *articleToInsert = (Blog*) [self.managedObjectContext existingObjectWithID:objectToInsert error:&error];
     
-    [self.managedObjectContext insertObject:article];
+    
+    if (articleToInsert) {
+        NSLog(@"Insert Article Title %@", articleToInsert.title);
+        
+        [self.managedObjectContext insertObject:articleToInsert];
+        
+    } else {
+        NSLog(@"unable to find existing object! error: %@ (userInfo: %@)", [error localizedDescription], [error userInfo]);
+    }
 }
 
 - (void)articleEntityDidDeleteArticle:(id)entityId {
     NSManagedObjectID *objectId = (NSManagedObjectID *)entityId;
-    NSLog(@"Object Id %@", objectId);
+    NSLog(@"\t\t\t\t\t articleEntityDidDeleteArticle Object Id %@", objectId);
     
     NSError *error;
     
-    Blog *article = (Blog*) [self.managedObjectContext existingObjectWithID:objectId error:&error];
+    Blog *articleToDelete = (Blog*) [self.managedObjectContext existingObjectWithID:objectId error:&error];
     
-    NSLog(@"Link %@", article.link);
+    if (articleToDelete) {
+        NSLog(@"Link %@", articleToDelete.title);
+        
+        [self.managedObjectContext deleteObject:articleToDelete];
     
-    [self.managedObjectContext deleteObject:article];
+    } else {
+        NSLog(@"unable to find existing object! error: %@ (userInfo: %@)", [error localizedDescription], [error userInfo]);
+    }
 }
 
 - (void)articleEntityWillUpdate:(id)deleteId andInsert:(id)insertId {
@@ -302,24 +310,38 @@
     NSError *error1;
     
     Blog *articleToDelete = (Blog*) [self.managedObjectContext existingObjectWithID:objectToDelete error:&error1];
+
+    if (articleToDelete) {
+        NSLog(@"Link %@", articleToDelete.title);
+        
+        [self.managedObjectContext deleteObject:articleToDelete];
+        
+        [self.managedObjectContext refreshObject:articleToDelete mergeChanges:NO];
+    } else {
+        NSLog(@"unable to find existing object! error: %@ (userInfo: %@)", [error1 localizedDescription], [error1 userInfo]);
+        
+    }
     
-    NSLog(@"Link %@", articleToDelete.title);
-    
-    [self.managedObjectContext deleteObject:articleToDelete];
-    
-    [self.managedObjectContext refreshObject:articleToDelete mergeChanges:NO];
-    
-    NSManagedObjectID *objectId = (NSManagedObjectID *)insertId;
-    NSLog(@"Object Id %@", objectId);
+    NSManagedObjectID *objectToInsert = (NSManagedObjectID *)insertId;
+    NSLog(@"Object Id %@", objectToInsert);
     
     NSError *error;
     
-    Blog *article = (Blog*) [self.managedObjectContext existingObjectWithID:objectId error:&error];
-    NSLog(@"Insert Article Title %@", article.title);
+    Blog *articleToInsert = (Blog*) [self.managedObjectContext existingObjectWithID:objectToInsert error:&error];
     
-    [self.managedObjectContext insertObject:article];
-
-    [self.managedObjectContext refreshObject:article mergeChanges:YES];
+    
+    if (articleToInsert) {
+        NSLog(@"Insert Article Title %@", articleToInsert.title);
+        
+        [self.managedObjectContext insertObject:articleToInsert];
+        
+        [self.managedObjectContext refreshObject:articleToInsert mergeChanges:YES];
+    } else {
+        NSLog(@"unable to find existing object! error: %@ (userInfo: %@)", [error1 localizedDescription], [error1 userInfo]);
+        
+    }
+    
+    
 }
 
 -(void)articleEntityUpdaterDidError {
@@ -329,7 +351,7 @@
     }];
     [self.loadingView removeFromSuperview];
     [self.tableView setUserInteractionEnabled:YES];
-    [refreshControl endRefreshing];
+    [self.refreshControl endRefreshing];
 }
 
 #pragma mark - Table view data source
@@ -751,8 +773,6 @@
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
     NSLog(@"didChangeObject Row %ld", (long)indexPath.row);
-    
-    UITableView *tableView = self.tableView;
     
     switch(type) {
             

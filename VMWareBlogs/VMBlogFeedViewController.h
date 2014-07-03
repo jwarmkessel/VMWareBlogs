@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "VMArticleEntityUpdater.h"
 
-@interface VMBlogFeedViewController : UITableViewController <NSFetchedResultsControllerDelegate, VMArticleEntityUpdaterDelegate, UISearchBarDelegate>
+#import "VMSynchronousFeedUpdater.h"
+
+@interface VMBlogFeedViewController : UITableViewController <NSFetchedResultsControllerDelegate, VMSynchronousFeedUpdaterDelegate, UISearchBarDelegate> //VMArticleEntityUpdaterDelegate
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic, strong) NSMutableArray *blogArray;
-@property (nonatomic, strong) VMArticleEntityUpdater *updater;
+//@property (nonatomic, strong) VMArticleEntityUpdater *updater;
 
 @end

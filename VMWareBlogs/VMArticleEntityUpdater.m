@@ -51,7 +51,12 @@ typedef enum {
         
         [self.updateContext reset];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(contextDidSave:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:(self.updateContext)];
         
+        [self.updateContext setMergePolicy:NSOverwriteMergePolicy];
         
         [self.updateContext performBlockAndWait:^{
             
@@ -128,9 +133,7 @@ typedef enum {
                 int order = 0;
                 int articleCount = 0;
                 int totalArticles = [sortedArticleArray count] == 0 ? 0 : ([sortedArticleArray count] -1);
-                
-                NSLog(@"/t/t/t/t/t/t/t Total Article Count: %d", totalArticles);
-                
+                                
                 do {
                     Blog *blogEntry;
                     
@@ -140,10 +143,6 @@ typedef enum {
                     TBXMLElement * pubDateElement = [TBXML childElementNamed:@"pubDate" parentElement:itemElement];
                     TBXMLElement * guidElement = [TBXML childElementNamed:@"guid" parentElement:itemElement];
                     TBXMLElement * authorElement = [TBXML childElementNamed:@"dc:creator" parentElement:itemElement];
-                    
-                    //Set the title.
-                    NSString *titleStr = [NSString stringByDecodingXMLEntities:[TBXML textForElement:titleElem]];
-                    NSLog(@"TItle String %@", titleStr);
                     
                     //If the input is greater than database...
                     if (articleCount >= totalArticles) {
@@ -203,36 +202,55 @@ typedef enum {
                             NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
                             
                         }
-                        
-                        // save parent to disk asynchronously
-                        dispatch_sync(dispatch_get_main_queue(), ^{
-                            [self.delegate articleEntityUpdaterDidInsertArticle:[blogEntry objectID]];
-                        });
-                        
-                        [blogEntry.managedObjectContext refreshObject:blogEntry mergeChanges:NO];
+//                        else {
+//                            // save parent to disk asynchronously
+//                            dispatch_sync(dispatch_get_main_queue(), ^{
+//                                [self.delegate articleEntityUpdaterDidInsertArticle:[blogEntry objectID]];
+//                            });
+//                        }
                         
                     }else {
+
                         Blog *article = [sortedArticleArray objectAtIndex:j];
                         
-                        NSLog(@"Article Title: %@", article.title);
-                        NSLog(@"Blog Title: %@", [TBXML textForElement:titleElem]);
-                        
-                        if( ![article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
+                        if (![article.link isEqualToString:[TBXML textForElement:linkElem]]) {
                             
-                            // save parent to disk asynchronously
-                            dispatch_sync(dispatch_get_main_queue(), ^{
-                                [self.delegate articleEntityDidDeleteArticle:[article objectID]];
-                            });
+                            NSLog(@"IndexPath %d", order);
+                           
                             
-                            Blog *aManagedObject = article;
-                            NSManagedObjectContext *context = [aManagedObject managedObjectContext];
                             
-                            //[context deleteObject:aManagedObject];
                             
-                            NSError *error;
-                            if (![context save:&error]) {
-                                // Handle the error.
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+//                            dispatch_sync(dispatch_get_main_queue(), ^{
+//                                [self.delegate articleEntityDidDeleteArticle:[article objectID]];
+//                            });
+                            
+                            [self.updateContext deleteObject:article];
+
+                            if (![self.updateContext save:&temporaryMOCError]) {
+                                NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
                             }
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                             
                             //Create an instance of the entity.
                             blogEntry = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
@@ -284,21 +302,94 @@ typedef enum {
                             [blogEntry setValue:myIntNumber forKey:@"order"];
                             
                             
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                             if (![self.updateContext save:&temporaryMOCError]) {
                                 NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
+                                
                             }
                             
-                            // save parent to disk asynchronously
-                            //                        dispatch_sync(dispatch_get_main_queue(), ^{
-                            //                            [self.delegate articleEntityUpdaterDidInsertArticle:[blogEntry objectID]];
-                            //                        });
+//                            else {
+//                                // save parent to disk asynchronously
+//                                dispatch_sync(dispatch_get_main_queue(), ^{
+//                                    [self.delegate articleEntityUpdaterDidInsertArticle:[blogEntry objectID]];
+//                                });
+//                            }
+                        } else {
                             
-                            dispatch_sync(dispatch_get_main_queue(), ^{
-                                [self.delegate articleEntityWillUpdate:[article objectID] andInsert:[blogEntry objectID]];
-                            });
+                            //Create an instance of the entity.
+                            blogEntry = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
+                                                                      inManagedObjectContext:self.updateContext];
+                            //Just save the articles.
+                            //Set sync status
+                            [blogEntry setValue:[NSNumber numberWithInt:objectCreated] forKey:@"objectSyncStatus"];
                             
-                            [self.updateContext refreshObject:article mergeChanges:NO];
-                            [self.updateContext refreshObject:blogEntry mergeChanges:NO];
+                            //Set the title.
+                            NSString *titleStr = [NSString stringByDecodingXMLEntities:[TBXML textForElement:titleElem]];
+                            titleStr = [NSString stringByStrippingTags:titleStr];
+                            
+                            [blogEntry setValue:titleStr forKey:@"title"];
+                            
+                            //Set the link.
+                            [blogEntry setValue:[TBXML textForElement:linkElem] forKey:@"link"];
+                            
+                            NSString *descStr = [TBXML textForElement:descElement];
+                            
+                            descStr = [NSString stringByDecodingXMLEntities:descStr];
+                            descStr = [NSString stringByStrippingTags:descStr];
+                            
+                            [blogEntry setValue:descStr forKey:@"descr"];
+                            
+                            //Set the description.
+                            [blogEntry setValue:[TBXML textForElement:guidElement] forKey:@"guid"];
+                            
+                            //Truncate date string
+                            NSString * pubDateString = [TBXML textForElement:pubDateElement];
+                            NSArray* dateStrArray = [pubDateString componentsSeparatedByString: @" "];
+                            NSString *dayString = (NSString *) [dateStrArray objectAtIndex: 1];
+                            
+                            NSString *ichar = [NSString stringWithFormat:@"%c", [dayString characterAtIndex:0]];
+                            
+                            if([ichar  isEqual: @"0"]) {
+                                dayString = [NSString stringWithFormat:@"%c", [dayString characterAtIndex:1]];
+                            }
+                            
+                            pubDateString = [NSString stringWithFormat:@"%@ %@ %@", dayString, [dateStrArray objectAtIndex: 2], [dateStrArray objectAtIndex: 3]];
+                            
+                            [blogEntry setValue:pubDateString forKey:@"pubDate"];
+                            
+                            [blogEntry setValue:[TBXML textForElement:authorElement] forKey:@"author"];
+                            
+                            NSLog(@"Order %d", order);
+                            
+                            NSNumber *myIntNumber = [NSNumber numberWithInt:order];
+                            
+                            //Set the order to be used for querying an ordered list.
+                            [blogEntry setValue:myIntNumber forKey:@"order"];
+                            
+                            
+                            if (![self.updateContext save:&temporaryMOCError]) {
+                                NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
+                                
+                            }
+//                            else {
+//                                // save parent to disk asynchronously
+//                                dispatch_sync(dispatch_get_main_queue(), ^{
+//                                    [self.delegate articleEntityUpdaterDidInsertArticle:[blogEntry objectID]];
+//                                });
+//                            }
+
+                            
                         }
                     }
                     
@@ -308,16 +399,27 @@ typedef enum {
                     
                 } while ((itemElement = itemElement->nextSibling));
                 
-                if (![self.updateContext save:&temporaryMOCError]) {
-                    NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
-                }
                 
+                //Clean up. If the number of articles are greater than 100 then delete the rest.
+//                if (articleCount > order) {
+//                    NSLog(@"Code clean up");
+//                    //Start from where relevant articles ended and delete the rest.
+//                    for(int i = order + 1; i < [sortedArticleArray count]; i++) {
+//                        
+//                        Blog *deleteArticle = (Blog *)[sortedArticleArray objectAtIndex:i];
+//                        
+//                        dispatch_sync(dispatch_get_main_queue(), ^{
+//                            [self.delegate articleEntityDidDeleteArticle:[deleteArticle objectID]];
+//                        });
+//                        
+//                        [self.updateContext deleteObject:deleteArticle];
+//                    }
+//                }
+ 
                 // save parent to disk asynchronously
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     [self.delegate articleEntityUpdaterDidFinishUpdating];
                 });
-                
-                [self.updateContext reset]; // Here the inserted objects get released in the core data stack
             }
         }];
     });
