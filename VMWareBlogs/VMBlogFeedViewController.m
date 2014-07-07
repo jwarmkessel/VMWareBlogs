@@ -18,6 +18,7 @@
 #import "VMSynchronousFeedUpdater.h"
 
 #define DEBUGGER 1
+#define BASE_URI @"http://www.vmwareblogs.com/"
 
 @interface VMBlogFeedViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -623,21 +624,66 @@
         [imageView setAlpha:1.0];
     } else {
         
-        BOOL result = [[blog.guid lowercaseString] hasPrefix:@"http://"];
-        if(result) {
-            [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                
-                if (!error) {
-                    [imageView setAlpha:0.0];
-                    [UIView animateWithDuration:0.5 animations:^{
-                        imageView.image = image;
-                        [imageView setAlpha:1.0];
+        BOOL isLink = [[blog.guid lowercaseString] hasPrefix:@"http://"];
+        if(isLink) {
+            
+            //NSTimeInterval timeInMilliseconds = [[NSDate date] timeIntervalSince1970];
+            NSString *post = [NSString stringWithFormat:@"stwembed=1&stwxmax=100&stwymax=90&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", blog.guid];
+            
+            NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+            NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/rss.jsp", BASE_URI]]];
+            [request setHTTPMethod:@"POST"];
+            [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+            [request setValue:@"application/x-www-form-urlencoded;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+            [request setHTTPBody:postData];
+            
+            NSLog(@"\t\t\t\t\t\t\t\tRequesting from RSS");
+
+            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+               
+                if (!connectionError) {
+                    [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                        
+                        CGImageRef cgref = [image CGImage];
+                        CIImage *cim = [image CIImage];
+                        
+                        if (cim == nil && cgref == NULL)
+                        {
+                            NSLog(@"no underlying data");
+                        } else {
+                            NSLog(@"There is data");
+                        }
+                        
+                        if (!error) {
+                            [imageView setAlpha:0.0];
+                            [UIView animateWithDuration:0.5 animations:^{
+                                imageView.image = image;
+                                [imageView setAlpha:1.0];
+                            }];
+                        } else {
+                            NSLog(@"Error: %@, Description: %@", error, error.description);
+                            
+                            /*
+                             
+                             Error: Error Domain=NSURLErrorDomain Code=-1100 "The operation couldn’t be completed. (NSURLErrorDomain error -1100.)", Description: Error Domain=NSURLErrorDomain Code=-1100 "The operation couldn’t be completed. (NSURLErrorDomain error -1100.)"
+                             
+                             Your system is configured to download updates from a private server, not from Apple. That server isn't working or isn't reachable. If you're bound to an Open Directory or Active Directory domain, or if you're behind a firewall that doesn't allow downloading updates directly from Apple, your network administrator has to solve the problem. 
+
+                            */
+                        }
                     }];
+                } else {
+                    NSLog(@"Error: %@, Description: %@", connectionError, connectionError.description);
                 }
             }];
         }
     }
 }
+
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

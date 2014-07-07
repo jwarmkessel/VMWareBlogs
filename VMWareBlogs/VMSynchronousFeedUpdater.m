@@ -56,6 +56,14 @@
         NSLog(@"Parsing xmlString");
         NSError *temporaryMOCError;
         
+        if (self.updateContext.persistentStoreCoordinator == nil) {
+
+            //Get the persistentStoreCoordinator
+            VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+            NSPersistentStoreCoordinator *coordinator = [appDelegate persistentStoreCoordinator];
+            [self.updateContext setPersistentStoreCoordinator:coordinator];
+        }
+        
         // Create and configure a fetch request with the Blog entity.
         NSEntityDescription *entityDescription = [NSEntityDescription
                                                   entityForName:@"Blog" inManagedObjectContext:self.updateContext];
