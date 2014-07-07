@@ -56,10 +56,14 @@
         NSLog(@"Parsing xmlString");
         NSError *temporaryMOCError;
         
+        VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        //If either the managed object context or persistent store coordinator are nil set them up.
+        if (self.updateContext == nil) {
+            self.updateContext = appDelegate.managedObjectContext;
+        }
+        
         if (self.updateContext.persistentStoreCoordinator == nil) {
-
-            //Get the persistentStoreCoordinator
-            VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
             NSPersistentStoreCoordinator *coordinator = [appDelegate persistentStoreCoordinator];
             [self.updateContext setPersistentStoreCoordinator:coordinator];
         }
