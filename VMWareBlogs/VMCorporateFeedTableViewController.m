@@ -1,76 +1,73 @@
 //
-//  VMBlogFeedViewController.m
-//  VMWareBlogs
+//  VMCorporateFeedTableViewController.m
+//  VMwareBlogs
 //
-//  Created by Justin Warmkessel on 3/10/14.
+//  Created by Justin Warmkessel on 7/11/14.
 //  Copyright (c) 2014 Justin Warmkessel. All rights reserved.
 //
 
-#import "VMBlogFeedViewController.h"
+#import "VMCorporateFeedTableViewController.h"
 #import "VMAppDelegate.h"
-#import "VMArticleViewController.h"
-#import "VMArticleEntityUpdater.h"
-#import "Blog.h"
+#import "CorporateArticle.h"
 #import "RecentArticle.h"
-#import <dispatch/dispatch.h>
 #import <SDWebImage/UIImageView+WebCache.h>
-
-#import "VMSynchronousFeedUpdater.h"
+#import "VMArticleViewController.h"
 #import "VMSectionHeaderView.h"
+#import "VMCorporateSynchronousFeedUpdater.h"
 
-#define DEBUGGER 1
-#define BASE_URI @"http://www.vmwareblogs.com/"
-#define DEFAULT_ROW_HEIGHT 210
-static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
+@interface VMCorporateFeedTableViewController ()
 
-@interface VMBlogFeedViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (atomic, strong) NSManagedObjectContext *moc;
-
-@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSMutableArray *filteredTableData;
 @property (assign, getter = isFilteredList) BOOL filteredList;
 @property (strong, nonatomic) UITapGestureRecognizer *tap;
 @property (strong, nonatomic) UITapGestureRecognizer *scrollToTopTap;
-@property (strong, nonatomic) VMSynchronousFeedUpdater *SynchronousFeedUpdater;
-
-//TODO TEST CODE
-@property (assign) BOOL toggle;
 @property (strong, nonatomic) UIView *loadingView;
+@property (strong, nonatomic) VMCorporateSynchronousFeedUpdater *synchronousFeedUpdater;
+
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
+
 @end
 
-@implementation VMBlogFeedViewController
-    @synthesize managedObjectContext;
-    @synthesize moc = _moc;
-    @synthesize filteredTableData = _filteredTableData;
-    //@synthesize updater;
+@implementation VMCorporateFeedTableViewController
+@synthesize managedObjectContext = _managedObjectContext;
+@synthesize loadingView = _loadingView;
+@synthesize moc = _moc;
+@synthesize filteredTableData = _filteredTableData;
+@synthesize fetchedResultsController = _fetchedResultsController;
+@synthesize synchronousFeedUpdater = _synchronousFeedUpdater;
 
-    @synthesize toggle;
-    @synthesize loadingView = _loadingView;
-    @synthesize SynchronousFeedUpdater = _SynchronousFeedUpdater;
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.searchBar setDelegate:self];
-//    self.updater = [[VMArticleEntityUpdater alloc] init];
-//    [self.updater setDelegate:self];
+    //    self.updater = [[VMArticleEntityUpdater alloc] init];
+    //    [self.updater setDelegate:self];
     
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.managedObjectContext = appDelegate.managedObjectContext;
     
-    self.SynchronousFeedUpdater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [self.SynchronousFeedUpdater setDelegate:self];
+    self.SynchronousFeedUpdater = [[VMCorporateSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [self.synchronousFeedUpdater setDelegate:self];
     [self.fetchedResultsController setDelegate:self];
     
     self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.tableView.frame.size.width, self.tableView.frame.size.height)];
-
+    
     [self.refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
-
-
+    
+    
     self.filteredList = NO;
     
     [self.tableView setBackgroundColor:[UIColor colorWithHexString:@"696566"]];
@@ -101,20 +98,20 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:@"UIApplicationWillEnterForegroundNotification" object:nil];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                            selector:@selector(mergeChanges:)
-//                                                name:NSManagedObjectContextDidSaveNotification
-//                                              object:(self.managedObjectContext)];
+    //    [[NSNotificationCenter defaultCenter] addObserver:self
+    //                                            selector:@selector(mergeChanges:)
+    //                                                name:NSManagedObjectContextDidSaveNotification
+    //                                              object:(self.managedObjectContext)];
     
     //Dismiss the keyboard if it's present.
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                  action:@selector(dismissKeyboard)];
+                                                       action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:self.tap];
     [self.tap setEnabled:NO];
     
     //Scroll to the top on single tap to the navigatio bar.
     self.scrollToTopTap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                       action:@selector(scrollToTopTapHander)];
+                                                                  action:@selector(scrollToTopTapHander)];
     [self.navigationController.navigationBar addGestureRecognizer:self.scrollToTopTap];
     
     //Change keyboard Search button to Done button.
@@ -129,52 +126,15 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
             }      
         }
     }
-    
-    //Make the call to action text animate with blinking.
-    //[NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(scrollTest) userInfo:nil repeats: YES];
 }
 
-- (void)mergeChanges:(NSNotification *)notification{
-    // Merge changes into the default context on the main thread
-    [self.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
-                              withObject:notification
-                           waitUntilDone:YES];
-}
-
-- (void)scrollTest {
-
-    if(toggle) {
-        [self.tableView scrollRectToVisible:CGRectMake(0, arc4random() % (int)self.tableView.contentSize.height, 1, 1) animated:YES];
-    } else {
-        [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
-    }
+- (void)viewWillAppear:(BOOL)animated {
     
-    toggle = !toggle;
-}
-
-- (void)refreshTable:(id)sender {
+//    UINavigationBar *navBar = [[self navigationController] navigationBar];
+//    UIImage *backgroundImage = [UIImage imageNamed:@"navBarLogoNoStatusBar.png"];
+//    [navBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
     
-    [self.refreshControl beginRefreshing];
-    
-    NSLog(@"Refreshing Table Data");
-    //TODO: refresh your data
-    //[self.tableView setUserInteractionEnabled:NO];
-    [self.loadingView setBackgroundColor:[UIColor blackColor]];
-    [self.loadingView setAlpha:0];
-    [self.view addSubview:self.loadingView];
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        [_loadingView setAlpha:0.3];
-    }completion:^(BOOL finished) {
-        self.searchBar.text = @"";
-        [self setFilteredList:NO];
-        [self.SynchronousFeedUpdater updateList];
-    }];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    NSLog(@"view will disappear");
+    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -183,26 +143,13 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     [self.scrollToTopTap setEnabled:YES];
 }
 
-- (void)scrollToTopTapHander {
-    NSLog(@"Scoll to tap");
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
-}
-- (void)dismissKeyboard {
-    // add self
-    [self.searchBar resignFirstResponder];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    
-    UINavigationBar *navBar = [[self navigationController] navigationBar];
-    UIImage *backgroundImage = [UIImage imageNamed:@"navBarLogoNoStatusBar.png"];
-    [navBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
-    
-    [self.tableView reloadData];
-}
-
 - (BOOL)prefersStatusBarHidden {
     return YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    NSLog(@"view will disappear");
 }
 
 - (void)viewDidUnload {
@@ -217,20 +164,88 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - corporateFeedUpdaterDelegate
+
+- (void)corporateFeedUpdaterDidFinishUpdating {
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.loadingView setAlpha:0.0];
+    }completion:^(BOOL finished) {
+        [self.loadingView removeFromSuperview];
+        [self.tableView setUserInteractionEnabled:YES];
+        
+        //[self.tableView reloadData];
+        [self.refreshControl endRefreshing];
+    }];
+}
+
+- (void)corporateFeedUpdaterDidError {
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.loadingView setAlpha:0.0];
+    }];
+    [self.loadingView removeFromSuperview];
+    [self.tableView setUserInteractionEnabled:YES];
+    [self.refreshControl endRefreshing];
+}
+
+#pragma mark - 
+
+- (void)mergeChanges:(NSNotification *)notification{
+    // Merge changes into the default context on the main thread
+    [self.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
+                                                withObject:notification
+                                             waitUntilDone:YES];
+}
+
+#pragma mark - 
+
+- (void)refreshTable:(id)sender {
+    
+    [self.refreshControl beginRefreshing];
+    
+    NSLog(@"Refreshing Table Data");
+    
+    [self.tableView setUserInteractionEnabled:NO];
+    [self.loadingView setBackgroundColor:[UIColor blackColor]];
+    [self.loadingView setAlpha:0];
+    [self.view addSubview:self.loadingView];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        [_loadingView setAlpha:0.3];
+    }completion:^(BOOL finished) {
+        self.searchBar.text = @"";
+        [self setFilteredList:NO];
+
+        [self.synchronousFeedUpdater updateList];
+    }];
+}
+
+#pragma mark - 
+
+- (void)scrollToTopTapHander {
+    NSLog(@"Scoll to tap");
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+}
+- (void)dismissKeyboard {
+    // add self
+    [self.searchBar resignFirstResponder];
+}
+
+#pragma mark - 
+
 - (void)appWillEnterForeground:(id)sender {
-    if([self isKindOfClass:[VMBlogFeedViewController class]]) {
+    if([self isKindOfClass:[VMCorporateFeedTableViewController class]]) {
         NSLog(@"App is entering foreground from Blog feed");
     }
 }
 
 - (void)appWillEnterBackground:(id)sender {
-    if([self isKindOfClass:[VMBlogFeedViewController class]]) {
+    if([self isKindOfClass:[VMCorporateFeedTableViewController class]]) {
         NSLog(@"App is entering background from Blog feed");
     }
 }
 
 - (void)appWillTerminate:(id)sender {
-    if([self isKindOfClass:[VMBlogFeedViewController class]]) {
+    if([self isKindOfClass:[VMCorporateFeedTableViewController class]]) {
         NSLog(@"App will terminate from Blog feed");
     }
 }
@@ -249,101 +264,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     //[self.updater updateList];
 }
 
-#pragma mark - VMarticleEntityUpdater delegates
-
--(void)articleEntityUpdaterDidFinishUpdating {
-    //[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(refreshTable) userInfo:nil repeats: YES];
-    [UIView animateWithDuration:0.3 animations:^{
-        [self.loadingView setAlpha:0.0];
-    }completion:^(BOOL finished) {
-        [self.loadingView removeFromSuperview];
-        [self.tableView setUserInteractionEnabled:YES];
-        
-        //[self.tableView reloadData];
-        [self.refreshControl endRefreshing];
-    }];
-
-}
-
--(void)articleEntityUpdaterDidError {
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        [self.loadingView setAlpha:0.0];
-    }];
-    [self.loadingView removeFromSuperview];
-    [self.tableView setUserInteractionEnabled:YES];
-    [self.refreshControl endRefreshing];
-}
-
-#pragma mark - Table view data source
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 210;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    NSLog(@"Number of sections %lu", (unsigned long)[[_fetchedResultsController sections] count]);
-    return [[_fetchedResultsController sections] count];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if(![self isFilteredList]) {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-        NSLog(@"Blog TableView Count: %lu", (unsigned long)[sectionInfo numberOfObjects]);
-        return [sectionInfo numberOfObjects];
-    } else {
-        return [self.filteredTableData count];
-    }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    
-    return 30.0;
-}
-
-- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    
-    
-    id <NSFetchedResultsSectionInfo> sectionType = [[self.fetchedResultsController sections] objectAtIndex:section];
-    
-    Blog *article = [[sectionType objects] objectAtIndex:0]; // The first object in this section
-    
-
-    VMSectionHeaderView *headerView = [[VMSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 30.5f)];
-    
-    NSNumber *type = article.community;
-    
-    if (type.intValue == 0) {
-        
-        headerView.titleLabel.text = @"The Latest Posts From All VMware Blogs";
-
-    } else {
-        
-        headerView.titleLabel.text = @"The Latest From VMware test";
-    }
-    
-    return headerView;
-}
-
-#pragma mark - UITableViewDataSource
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-//    NSLog(@"cellForRowAtIndexPath");
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    [self configureCell:cell atIndexPath:indexPath];
-
-    return cell;
-}
+#pragma mark -
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -361,16 +282,16 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
         
         VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        Blog *blog;
+        CorporateArticle *blog;
         
         if(![self isFilteredList]) {
             blog = [_fetchedResultsController objectAtIndexPath:indexPath];
         } else {
             blog = [self.filteredTableData objectAtIndex:indexPath.row];
         }
-
+        
         NSError *temporaryMOCError;
-
+        
         NSPersistentStoreCoordinator *coordinator = [appDelegate persistentStoreCoordinator];
         
         [tempContext setPersistentStoreCoordinator:coordinator];
@@ -396,12 +317,12 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
             //Create an instance of the entity and save.
             recentArticle = [NSEntityDescription insertNewObjectForEntityForName:@"RecentArticle"
                                                           inManagedObjectContext:tempContext];
-
+            
             [recentArticle setValue:blog.link forKey:@"link"];
             [recentArticle setValue:blog.title forKey:@"title"];
             [recentArticle setValue:blog.descr forKey:@"descr"];
             [recentArticle setValue:blog.order forKey:@"order"];
-
+            
             [recentArticle setValue:blog.author forKey:@"author"];
             [recentArticle setValue:blog.guid forKey:@"guid"];
             [recentArticle setValue:blog.pubDate forKey:@"pubDate"];
@@ -427,28 +348,91 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
         }
     }];
     
-    [self performSegueWithIdentifier:@"articleSegue" sender:self];
+    [self performSegueWithIdentifier:@"corporateArticleSegue" sender:self];
 }
 
 - (void)RecentArticleSaved:(NSNotification *)notification {
     NSLog(@"Recent Article Saved Notification");
-
+    
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
                                                        withObject:notification
                                                     waitUntilDone:YES];
 }
 
+#pragma mark - Table view data source
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    
+    return 30.0;
+}
+
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 30)];
+    if (section == 0) {
+        [headerView setBackgroundColor:[UIColor colorWithHexString:@"346633"]];
+        UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(5.0f, 0, self.tableView.bounds.size.width, 21.5)];
+        [sectionTitle setFont:[UIFont fontWithName:@"ArialMT" size:13]];
+        sectionTitle.text = @"The Latest Posts From VMware Corporate";
+        sectionTitle.textColor = [UIColor whiteColor];
+        [headerView addSubview: sectionTitle];
+    }
+    
+    return headerView;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    NSLog(@"Number of sections %lu", (unsigned long)[[_fetchedResultsController sections] count]);
+    return [[_fetchedResultsController sections] count];
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 210;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if(![self isFilteredList]) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+        
+        NSLog(@"Blog TableView Count: %lu", (unsigned long)[sectionInfo numberOfObjects]);
+        
+        return [sectionInfo numberOfObjects];
+        
+    } else {
+        return [self.filteredTableData count];
+    }
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    [self configureCell:cell atIndexPath:indexPath];
+    
+    return cell;
+}
+
 // Customize the appearance of table view cells.
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    Blog *blog;
+     CorporateArticle *blog;
     
     if(![self isFilteredList]) {
         blog = [_fetchedResultsController objectAtIndexPath:indexPath];
     } else {
         blog = [self.filteredTableData objectAtIndex:indexPath.row];
     }
-
+    
 #if DEBUGGER
     UILabel *syncStatus = (UILabel *)[cell viewWithTag:150];
     syncStatus.text = [NSString stringWithFormat:@"%@", blog.order];
@@ -502,7 +486,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     //Now you can create the short string
     NSString *shortString = [blog.descr substringWithRange:stringRange];
     shortString = [NSString stringWithFormat:@"%@...", shortString];
-
+    
     descLbl.text = shortString;
     dateLbl.text = blog.pubDate;
     dateLbl.hidden = YES;
@@ -511,10 +495,10 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     textString = [NSString stringWithFormat:@"%@ - %@", blog.author, blog.pubDate];
     
     authorLbl.text = textString;
-
+    
     __weak UIImage *image = [UIImage imageNamed:@"placeholder.png"];
     imageView.image = image;
-
+    
     /************************************************
      Parameter   	Size             	Dimensions
      xlg	Extra Large	320 x 240
@@ -546,7 +530,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
         if(isLink) {
             
             [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-        
+                
                 CGImageRef cgref = [image CGImage];
                 CIImage *cim = [image CIImage];
                 
@@ -570,31 +554,16 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
                      
                      Error: Error Domain=NSURLErrorDomain Code=-1100 "The operation couldn’t be completed. (NSURLErrorDomain error -1100.)", Description: Error Domain=NSURLErrorDomain Code=-1100 "The operation couldn’t be completed. (NSURLErrorDomain error -1100.)"
                      
-                     Your system is configured to download updates from a private server, not from Apple. That server isn't working or isn't reachable. If you're bound to an Open Directory or Active Directory domain, or if you're behind a firewall that doesn't allow downloading updates directly from Apple, your network administrator has to solve the problem. 
-
-                    */
+                     Your system is configured to download updates from a private server, not from Apple. That server isn't working or isn't reachable. If you're bound to an Open Directory or Active Directory domain, or if you're behind a firewall that doesn't allow downloading updates directly from Apple, your network administrator has to solve the problem.
+                     
+                     */
                 }
             }];
         }
     }
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    
-    NSLog(@"prepareForSegue");
-    VMArticleViewController *vc = (VMArticleViewController *)[segue destinationViewController];
 
-    Blog *blog;
-    
-    if(![self isFilteredList]) {
-        blog = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
-    } else {
-        blog = [self.filteredTableData objectAtIndex:[self.tableView indexPathForSelectedRow].row];
-    }
-    
-    vc.articleURL = blog.link;
-}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -608,15 +577,11 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"commitEditingStyle");
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSLog(@"UITableViewCellEditingStyleDelete");
         // Delete the row from the data source
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        NSLog(@"UITableViewCellEditingStyleInsert");
     }   
 }
 */
@@ -637,17 +602,26 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
-// In a story board-based application, you will often want to do a little preparation before navigation
+// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    NSLog(@"prepareForSegue");
+    VMArticleViewController *vc = (VMArticleViewController *)[segue destinationViewController];
+    
+    CorporateArticle *blog;
+    
+    if(![self isFilteredList]) {
+        blog = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    } else {
+        blog = [self.filteredTableData objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+    }
+    
+    vc.articleURL = blog.link;
 }
 
- */
 
 #pragma mark - FetchedResults controller
 
@@ -656,15 +630,18 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
  */
 - (NSFetchedResultsController *)fetchedResultsController {
     NSLog(@"fetchedResultsController method");
+    
     self.filteredList = NO;
-
+    
     if (_fetchedResultsController != nil) {
+        
         return _fetchedResultsController;
+        
     }
     
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    managedObjectContext = appDelegate.managedObjectContext;
+    _managedObjectContext = appDelegate.managedObjectContext;
     
     // Create and configure a fetch request with the Book entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -672,14 +649,15 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     [fetchRequest setReturnsObjectsAsFaults:NO];
     
     NSEntityDescription *entity = [NSEntityDescription
-                                              entityForName:@"Blog"
-                                     inManagedObjectContext:managedObjectContext];
+                                   entityForName:@"CorporateArticle"
+                                   inManagedObjectContext:_managedObjectContext];
     
     [fetchRequest setFetchLimit:100];
     
     [fetchRequest setEntity:entity];
     
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
+    
     NSArray *sortDescriptors = @[sort];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -730,12 +708,12 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
             break;
             
         case NSFetchedResultsChangeMove:
-            NSLog(@"Move?");                        
+            NSLog(@"Move?");
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationLeft];
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
-
+    
 }
 
 
@@ -756,7 +734,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     NSLog(@"controllerDidChangeContent");
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-
+    
     [self.tableView endUpdates];
 }
 
@@ -764,7 +742,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     NSLog(@"searchBarShouldBeginEditing");
-
+    
     return YES;
 }
 
@@ -789,7 +767,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    managedObjectContext = appDelegate.managedObjectContext;
+    _managedObjectContext = appDelegate.managedObjectContext;
     
     self.filteredTableData = [[NSMutableArray alloc] init];
     
@@ -799,7 +777,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     
     // Define the entity we are looking for
     NSEntityDescription *entity = [NSEntityDescription
-                                   entityForName:@"Blog" inManagedObjectContext:_fetchedResultsController.managedObjectContext];
+                                   entityForName:@"CorporateArticle" inManagedObjectContext:_fetchedResultsController.managedObjectContext];
     [fetchRequest setEntity:entity];
     
     // Define how we want our entities to be sorted
@@ -847,5 +825,6 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar {
     NSLog(@"searchBarCancelButtonClicked");
 }
+
 
 @end

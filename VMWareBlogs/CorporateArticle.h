@@ -1,16 +1,14 @@
 //
-//  Blog.h
-//  VMWareBlogs
+//  CorporateArticle.h
+//  VMwareBlogs
 //
-//  Created by Justin Warmkessel on 3/11/14.
+//  Created by Justin Warmkessel on 7/11/14.
 //  Copyright (c) 2014 Justin Warmkessel. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-
-@interface Blog : NSManagedObject
+@interface CorporateArticle : NSManagedObject
 
 @property (nonatomic, retain) NSString * descr;
 @property (nonatomic, retain) NSString * link;
@@ -21,5 +19,6 @@
 @property (nonatomic, assign) NSNumber *order;
 @property (nonatomic, assign) NSNumber *objectSyncStatus;
 @property (nonatomic, assign) NSNumber *community;
+
 
 @end

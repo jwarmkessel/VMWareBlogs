@@ -16,5 +16,6 @@
 @property (nonatomic, assign) BOOL updateFlag;
 @property (strong, nonatomic) NSString *songID;
 + (NSString *)requestRSS;
++ (NSString *)corporateRequestRSS;
 
 @end

@@ -1,15 +1,14 @@
 //
-//  Entity.m
-//  VMWareBlogs
+//  CorporateArticle.m
+//  VMwareBlogs
 //
-//  Created by Justin Warmkessel on 3/11/14.
+//  Created by Justin Warmkessel on 7/11/14.
 //  Copyright (c) 2014 Justin Warmkessel. All rights reserved.
 //
 
-#import "Blog.h"
+#import "CorporateArticle.h"
 
-
-@implementation Blog
+@implementation CorporateArticle
 
 @dynamic descr;
 @dynamic link;

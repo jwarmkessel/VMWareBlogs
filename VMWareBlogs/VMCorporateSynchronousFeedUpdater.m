@@ -1,25 +1,25 @@
 //
-//  VMSynchronousFeedUpdater.m
+//  VMCorporateSynchronousFeedUpdater.m
 //  VMwareBlogs
 //
 //  Created by Justin Warmkessel on 6/20/14.
 //  Copyright (c) 2014 Justin Warmkessel. All rights reserved.
 //
 
-#import "VMSynchronousFeedUpdater.h"
+#import "VMCorporateSynchronousFeedUpdater.h"
 #import "VMAppDelegate.h"
-#import "Blog.h"
+#import "CorporateArticle.h"
 #import "VMWareBlogsAPI.h"
 #import <TBXML.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface VMSynchronousFeedUpdater()
+@interface VMCorporateSynchronousFeedUpdater()
 
 - (BOOL)updateList;
-- (Blog *)createArticleEntityWithTitle:(TBXMLElement *)titleElem articleLink:(TBXMLElement *)linkElem articleDescription:(TBXMLElement *)descElement publishDate:(TBXMLElement *)pubDateElement GUIDElement:(TBXMLElement *)guidElement AuthorElement:(TBXMLElement *)authorElement andOrder:(int)order;
+- (CorporateArticle *)createArticleEntityWithTitle:(TBXMLElement *)titleElem articleLink:(TBXMLElement *)linkElem articleDescription:(TBXMLElement *)descElement publishDate:(TBXMLElement *)pubDateElement GUIDElement:(TBXMLElement *)guidElement AuthorElement:(TBXMLElement *)authorElement andOrder:(int)order;
 @end
 
-@implementation VMSynchronousFeedUpdater
+@implementation VMCorporateSynchronousFeedUpdater
 @synthesize updateContext;
 @synthesize updateBlogListTimer;
 
@@ -34,7 +34,7 @@
     [self.updateContext reset];
     
     //Request data.
-    NSString *xmlString = [VMWareBlogsAPI requestRSS];
+    NSString *xmlString = [VMWareBlogsAPI corporateRequestRSS];
     NSLog(@"Finished xmlString");
     if(xmlString == nil) {
         NSLog(@"(Developer WARNING) XML string is equal to nil");
@@ -70,7 +70,7 @@
         
         // Create and configure a fetch request with the Blog entity.
         NSEntityDescription *entityDescription = [NSEntityDescription
-                                                  entityForName:@"Blog" inManagedObjectContext:self.updateContext];
+                                                  entityForName:@"CorporateArticle" inManagedObjectContext:self.updateContext];
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 
         [fetchRequest setReturnsObjectsAsFaults:NO];
@@ -93,7 +93,7 @@
         int totalArticles = [sortedArticleArray count] == 0 ? 0 : (int)([sortedArticleArray count] -1);
         
         do {
-            Blog *blogEntry;
+            CorporateArticle *blogEntry;
             
             TBXMLElement * titleElem = [TBXML childElementNamed:@"title" parentElement:itemElement];
             TBXMLElement * linkElem = [TBXML childElementNamed:@"link" parentElement:itemElement];
@@ -116,7 +116,7 @@
                 [blogEntry.managedObjectContext refreshObject:blogEntry mergeChanges:YES];
                 
             } else {
-                Blog *article = [sortedArticleArray objectAtIndex:j];
+                CorporateArticle *article = [sortedArticleArray objectAtIndex:j];
                 
                 if( ![article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
                                             
@@ -145,18 +145,18 @@
         }
     }
     
-    [self.delegate articleEntityUpdaterDidFinishUpdating];
+    [self.delegate corporateFeedUpdaterDidFinishUpdating];
     
     return YES;
 }
 
-- (Blog *)createArticleEntityWithTitle:(TBXMLElement *)titleElem articleLink:(TBXMLElement *)linkElem articleDescription:(TBXMLElement *)descElement publishDate:(TBXMLElement *)pubDateElement GUIDElement:(TBXMLElement *)guidElement AuthorElement:(TBXMLElement *)authorElement andOrder:(int)order {
+- (CorporateArticle *)createArticleEntityWithTitle:(TBXMLElement *)titleElem articleLink:(TBXMLElement *)linkElem articleDescription:(TBXMLElement *)descElement publishDate:(TBXMLElement *)pubDateElement GUIDElement:(TBXMLElement *)guidElement AuthorElement:(TBXMLElement *)authorElement andOrder:(int)order {
     
     //Initialize Blog Entity.
-    Blog *blogEntry;
+    CorporateArticle *blogEntry;
     
     //Create an instance of the entity.
-    blogEntry = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
+    blogEntry = [NSEntityDescription insertNewObjectForEntityForName:@"CorporateArticle"
                                               inManagedObjectContext:self.updateContext];
     
     //Set the title.

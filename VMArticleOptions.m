@@ -31,7 +31,7 @@
         rect.origin.y = -1 * height;
         rect.size.height = height;
         _dropDownView = [[UIView alloc] initWithFrame:rect];
-
+        
         [_dropDownView setBackgroundColor:[UIColor colorWithHexString:@"8A8D91"]];
         [self addSubview:_dropDownView];
         
@@ -43,6 +43,7 @@
         UITapGestureRecognizer *singleFingerTap =
         [[UITapGestureRecognizer alloc] initWithTarget:self
                                                 action:@selector(handleSingleTap:)];
+        
         [self addGestureRecognizer:singleFingerTap];
         
         [self configureDropDownButtons];
@@ -83,27 +84,28 @@
 */
 
 - (void)toggleDropDown {
+    
     [UIView animateWithDuration:0.6 animations:^{
-        CGRect rect = _dropDownView.layer.frame;
-        
         if([self isHidden]) {
+            CGRect rect = _dropDownView.layer.frame;
             rect.origin.y = 0;
             _dropDownView.layer.frame = rect;
             isHidden = NO;
             self.userInteractionEnabled = YES;
         } else {
+            CGRect rect = _dropDownView.layer.frame;
             rect.origin.y = -1 * _dropDownView.layer.frame.size.height;
             _dropDownView.layer.frame = rect;
             isHidden = YES;
         }
     } completion:^(BOOL finished) {
-        NSLog(@"Animation completed");
+        NSLog(@"toggleDropDown Animation completed");
     }];
 }
 
 //The event handling method
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer {
-    //CGPoint location = [recognizer locationInView:[recognizer.view superview]];
+   
     [UIView animateWithDuration:0.3 animations:^{
         CGRect rect = _dropDownView.layer.frame;
         rect.origin.y = -1 * _dropDownView.layer.frame.size.height;
@@ -111,7 +113,7 @@
         isHidden = YES;
         
     } completion:^(BOOL finished) {
-        NSLog(@"Animation completed");
+        NSLog(@"handleSingleTap Animation completed");
         self.userInteractionEnabled = NO;
     }];
 }

@@ -132,8 +132,8 @@ typedef enum {
                 int j = 0;
                 int order = 0;
                 int articleCount = 0;
-                int totalArticles = [sortedArticleArray count] == 0 ? 0 : ([sortedArticleArray count] -1);
-                                
+                int totalArticles = [sortedArticleArray count] == 0 ? 0 : (int)([sortedArticleArray count] -1);
+                
                 do {
                     Blog *blogEntry;
                     

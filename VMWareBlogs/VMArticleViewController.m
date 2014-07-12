@@ -21,7 +21,6 @@
 @property (strong, nonatomic) ACAccountStore *accountStore;
 @property (strong, nonatomic) ACAccount *fbAccount;
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
-@property (strong, nonatomic) UIImageView *arrowImageView;
 
 @end
 
@@ -50,8 +49,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Do any additional setup after loading the view.
+    
 //    self.navigationController.navigationBarHidden = NO;
     self.navigationController.navigationBar.tintColor = [UIColor colorWithHexString:@"346633"];
 
@@ -61,12 +59,9 @@
     
     NSLog(@"Set the articlePreviewView GUID %@", self.articleURL);
     
+    CGRect mainScreenRect = [[UIScreen mainScreen] bounds];
     
-    //Load the blog article into a webview.
-    float visibleWindow = 568 - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height;
-    
-    NSLog(@"VISIBLE WINODW %f", visibleWindow);
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0,0.0, 320.0, visibleWindow)];
+    self.webView = [[UIWebView alloc] initWithFrame:mainScreenRect];
     [self.webView setDelegate:self];
     NSURL *url = [NSURL URLWithString:self.articleURL];
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url];
@@ -93,8 +88,8 @@
     [self.view addSubview:self.indicatorView];
     
     //Setup the optional tools view.
-    CGRect rect = CGRectMake(0.0, 0.0, 320.0, 568.0);
-    self.articleOptionsView = [[VMArticleOptions alloc] initWithFrame:rect viewController:self height:100.0f];
+    self.articleOptionsView = [[VMArticleOptions alloc] initWithFrame:mainScreenRect viewController:self height:100.0f];
+        
     [self.articleOptionsView setDelegate:self];
     [self.view addSubview:self.articleOptionsView];
     
@@ -103,10 +98,6 @@
 - (void) viewWillDisappear:(BOOL)animated {
     NSLog(@"view will disappear");
     [self destroyWebView];
-}
-
-- (IBAction)showToolsHandler:(id)sender {
-    [self.articleOptionsView toggleDropDown];
 }
 
 #pragma mark VMArticleOptions delegate methods
@@ -122,9 +113,6 @@
             
         } else {
             NSLog(@"Posting to twitter.");
-            
-            //request update user participation
-            NSLog(@"The result %d", result);
         }
         
         [sharingComposer dismissViewControllerAnimated:YES completion:nil];
@@ -274,22 +262,16 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"webViewDidFinishLoad %hhd", webView.loading);
+    NSLog(@"webViewDidFinishLoad %d", webView.loading);
     [self.indicatorView stopAnimating];
-    if(webView.loading < 1) {
-        NSLog(@"FINISHED LOADING");
-
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            [self.arrowImageView setAlpha:0.8];
-        }];
-    }
-    
-    [_indicator stopAnimating];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     
+}
+
+- (IBAction)showToolsHandler:(id)sender {
+    [self.articleOptionsView toggleDropDown];
 }
 
 - (IBAction)toolBarContainerHandler:(id)sender {
