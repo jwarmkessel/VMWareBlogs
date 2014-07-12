@@ -66,7 +66,7 @@
     self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.tableView.frame.size.width, self.tableView.frame.size.height)];
     
     [self.refreshControl addTarget:self action:@selector(refreshTable:) forControlEvents:UIControlEventValueChanged];
-    
+    [self.refreshControl setTintColor:[UIColor whiteColor]];
     
     self.filteredList = NO;
     
