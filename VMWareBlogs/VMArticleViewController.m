@@ -37,15 +37,6 @@
     return self;
 }
 
-- (BOOL)prefersStatusBarHidden {
-    return YES;
-}
-
-//- (void)viewDidLayoutSubviews {
-//
-//    self.scrollView.contentSize = CGSizeMake(320, 504);
-//}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

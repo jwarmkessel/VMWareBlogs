@@ -38,15 +38,6 @@
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize synchronousFeedUpdater = _synchronousFeedUpdater;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -130,9 +121,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     
-//    UINavigationBar *navBar = [[self navigationController] navigationBar];
-//    UIImage *backgroundImage = [UIImage imageNamed:@"navBarLogoNoStatusBar.png"];
-//    [navBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+    if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)] )
+    {
+        
+        UIImage *backgroundImage = [UIImage imageNamed:@"VMware_logo_88.png"];
+        [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+        [self.navigationController.navigationBar setTranslucent:NO];
+    }
     
     [self.tableView reloadData];
 }
@@ -143,9 +138,9 @@
     [self.scrollToTopTap setEnabled:YES];
 }
 
-- (BOOL)prefersStatusBarHidden {
-    return YES;
-}
+//- (BOOL)prefersStatusBarHidden {
+//    return YES;
+//}
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -369,14 +364,12 @@
 
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 30)];
+    
+    VMSectionHeaderView *headerView = [[VMSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 30)];
+    
     if (section == 0) {
-        [headerView setBackgroundColor:[UIColor colorWithHexString:@"346633"]];
-        UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(5.0f, 0, self.tableView.bounds.size.width, 21.5)];
-        [sectionTitle setFont:[UIFont fontWithName:@"ArialMT" size:13]];
-        sectionTitle.text = @"The Latest Posts From VMware Corporate";
-        sectionTitle.textColor = [UIColor whiteColor];
-        [headerView addSubview: sectionTitle];
+        headerView.titleLabel.text = @"The Latest Posts From VMware Corporate";
+        [headerView.titleLabel setTextAlignment:NSTextAlignmentCenter];
     }
     
     return headerView;

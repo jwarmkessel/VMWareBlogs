@@ -54,19 +54,18 @@
 - (void)configureDropDownButtons {
     
     UIButton *facebookBtn = [[UIButton alloc] initWithFrame:CGRectMake(87.0, 21.0, 58.0, 58.0)];
-    [facebookBtn setImage:[UIImage imageNamed:@"facebook.png"] forState:UIControlStateNormal];
-    [facebookBtn setImage:[UIImage imageNamed:@"facebook.png"] forState:UIControlStateSelected];
+    [facebookBtn setImage:[UIImage imageNamed:@"social-media-facebook.png"] forState:UIControlStateNormal];
+    [facebookBtn setImage:[UIImage imageNamed:@"social-media-facebook.png"] forState:UIControlStateSelected];
     
     [facebookBtn addTarget:self
                     action:@selector(fbParticipationBtnHandler)
           forControlEvents:UIControlEventTouchUpInside];
 
-    
     [_dropDownView addSubview:facebookBtn];
     
     UIButton *twitterBtn = [[UIButton alloc] initWithFrame:CGRectMake(175.0, 21.0, 58.0, 58.0)];
-    [twitterBtn setImage:[UIImage imageNamed:@"twitter.png"] forState:UIControlStateNormal];
-    [twitterBtn setImage:[UIImage imageNamed:@"twitter.png"] forState:UIControlStateSelected];
+    [twitterBtn setImage:[UIImage imageNamed:@"social-media-twitter.png"] forState:UIControlStateNormal];
+    [twitterBtn setImage:[UIImage imageNamed:@"social-media-twitter.png"] forState:UIControlStateSelected];
     
     [twitterBtn addTarget:self
                    action:@selector(twitterParticipationBtnHandler)
@@ -74,14 +73,6 @@
     
     [_dropDownView addSubview:twitterBtn];
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 - (void)toggleDropDown {
     

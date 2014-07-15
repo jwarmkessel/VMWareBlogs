@@ -195,15 +195,15 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 - (void)viewWillAppear:(BOOL)animated {
     
     UINavigationBar *navBar = [[self navigationController] navigationBar];
-    UIImage *backgroundImage = [UIImage imageNamed:@"navBarLogoNoStatusBar.png"];
+    UIImage *backgroundImage = [UIImage imageNamed:@"VMware_logo_88.png"];
     [navBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
     
     [self.tableView reloadData];
 }
 
-- (BOOL)prefersStatusBarHidden {
-    return YES;
-}
+//- (BOOL)prefersStatusBarHidden {
+//    return YES;
+//}
 
 - (void)viewDidUnload {
     
@@ -306,23 +306,11 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     
+    VMSectionHeaderView *headerView = [[VMSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 30)];
     
-    id <NSFetchedResultsSectionInfo> sectionType = [[self.fetchedResultsController sections] objectAtIndex:section];
-    
-    Blog *article = [[sectionType objects] objectAtIndex:0]; // The first object in this section
-    
-
-    VMSectionHeaderView *headerView = [[VMSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 30.5f)];
-    
-    NSNumber *type = article.community;
-    
-    if (type.intValue == 0) {
-        
+    if (section == 0) {
         headerView.titleLabel.text = @"The Latest Posts From All VMware Blogs";
-
-    } else {
-        
-        headerView.titleLabel.text = @"The Latest From VMware test";
+        [headerView.titleLabel setTextAlignment:NSTextAlignmentCenter];
     }
     
     return headerView;
