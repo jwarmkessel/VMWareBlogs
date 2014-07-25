@@ -105,19 +105,6 @@
 		83E5E57C1954B63E0018687F /* VMware-splashPage.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5791954B63E0018687F /* VMware-splashPage.png */; };
 		83E5E57D1954B63E0018687F /* VMware-splashPage@2x-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E57A1954B63E0018687F /* VMware-splashPage@2x-568h.png */; };
 		83E5E57E1954B63E0018687F /* VMware-splashPage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E57B1954B63E0018687F /* VMware-splashPage@2x.png */; };
-		83E5E5801954BAD00018687F /* VMware-appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E57F1954BAD00018687F /* VMware-appIcon.png */; };
-		83E5E5821954BB400018687F /* VMware-spotlightIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5811954BB400018687F /* VMware-spotlightIcon@2x.png */; };
-		83E5E5861954BEEF0018687F /* VMware-smallIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5851954BEEF0018687F /* VMware-smallIcon.png */; };
-		83E5E5881954BF2E0018687F /* VMware_Icon29.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5871954BF2E0018687F /* VMware_Icon29.png */; };
-		83E5E5931954C2360018687F /* VMware_Icon40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5911954C2360018687F /* VMware_Icon40@2x.png */; };
-		83E5E5961954C5B70018687F /* VMware_icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5951954C5B70018687F /* VMware_icon57.png */; };
-		83E5E5981954C5FD0018687F /* VMware_icon57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5971954C5FD0018687F /* VMware_icon57@2x.png */; };
-		83E5E59E1954C7F30018687F /* VMware_Icon80.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E59D1954C7F30018687F /* VMware_Icon80.png */; };
-		83E5E5A41954C8B90018687F /* VMware_Icon58.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5A31954C8B90018687F /* VMware_Icon58.png */; };
-		83E5E5A81954CA540018687F /* VMware_Icon40.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5A71954CA540018687F /* VMware_Icon40.png */; };
-		83E5E5AA1954CACF0018687F /* VMware_Icon29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5A91954CACF0018687F /* VMware_Icon29@2x.png */; };
-		83E5E5AD1954CF290018687F /* VMware_icon60.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5AB1954CF290018687F /* VMware_icon60.png */; };
-		83E5E5AE1954CF290018687F /* VMware_icon60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E5E5AC1954CF290018687F /* VMware_icon60@2x.png */; };
 		83E5E5B11954D3940018687F /* VMSynchronousFeedUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 83E5E5B01954D3940018687F /* VMSynchronousFeedUpdater.m */; };
 		83FE341518CE6F450080C64C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FE341418CE6F450080C64C /* Foundation.framework */; };
 		83FE341718CE6F450080C64C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FE341618CE6F450080C64C /* CoreGraphics.framework */; };
@@ -140,6 +127,21 @@
 		83FF03D819103D8C003AF06C /* RecentArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FF03D719103D8C003AF06C /* RecentArticle.m */; };
 		83FF03DB19106519003AF06C /* VMRecentlyReadTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FF03DA19106519003AF06C /* VMRecentlyReadTableViewController.m */; };
 		83FF03DE1911A984003AF06C /* VMTestScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FF03DD1911A984003AF06C /* VMTestScrollViewController.m */; };
+		B8BC6E671982F69D00FEE0D8 /* facebook-circular-64@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8BC6E651982F69D00FEE0D8 /* facebook-circular-64@2x.png */; };
+		B8BC6E681982F69D00FEE0D8 /* twitter-circular-64@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8BC6E661982F69D00FEE0D8 /* twitter-circular-64@2x.png */; };
+		B8D55CF81982E3BF0070E732 /* vmware-blog-icon-1024x1024.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55CEE1982E3BF0070E732 /* vmware-blog-icon-1024x1024.png */; };
+		B8D55CF91982E3BF0070E732 /* vmware-blog-icon-120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55CEF1982E3BF0070E732 /* vmware-blog-icon-120x120.png */; };
+		B8D55CFA1982E3BF0070E732 /* vmware-blog-icon-152x152.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55CF01982E3BF0070E732 /* vmware-blog-icon-152x152.png */; };
+		B8D55CFB1982E3BF0070E732 /* vmware-blog-icon-29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55CF11982E3BF0070E732 /* vmware-blog-icon-29x29.png */; };
+		B8D55CFC1982E3BF0070E732 /* vmware-blog-icon-40x40.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55CF21982E3BF0070E732 /* vmware-blog-icon-40x40.png */; };
+		B8D55CFD1982E3BF0070E732 /* vmware-blog-icon-512x512.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55CF31982E3BF0070E732 /* vmware-blog-icon-512x512.png */; };
+		B8D55CFE1982E3BF0070E732 /* vmware-blog-icon-60x60.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55CF41982E3BF0070E732 /* vmware-blog-icon-60x60.png */; };
+		B8D55CFF1982E3BF0070E732 /* vmware-blog-icon-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55CF51982E3BF0070E732 /* vmware-blog-icon-76x76.png */; };
+		B8D55D001982E3BF0070E732 /* vmware-blog-icon-80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55CF61982E3BF0070E732 /* vmware-blog-icon-80x80.png */; };
+		B8D55D011982E3BF0070E732 /* vmware-icon-branding.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55CF71982E3BF0070E732 /* vmware-icon-branding.png */; };
+		B8D55D031982E6DB0070E732 /* vmware-blog-icon-57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55D021982E6DB0070E732 /* vmware-blog-icon-57x57.png */; };
+		B8D55D091982EAD10070E732 /* vmware-blog-icon-28@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55D081982EAD10070E732 /* vmware-blog-icon-28@2x.png */; };
+		B8D55D0B1982EB410070E732 /* vmware-blog-icon-57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D55D0A1982EB410070E732 /* vmware-blog-icon-57@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -244,19 +246,6 @@
 		83E5E5791954B63E0018687F /* VMware-splashPage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VMware-splashPage.png"; sourceTree = "<group>"; };
 		83E5E57A1954B63E0018687F /* VMware-splashPage@2x-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VMware-splashPage@2x-568h.png"; sourceTree = "<group>"; };
 		83E5E57B1954B63E0018687F /* VMware-splashPage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VMware-splashPage@2x.png"; sourceTree = "<group>"; };
-		83E5E57F1954BAD00018687F /* VMware-appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VMware-appIcon.png"; sourceTree = "<group>"; };
-		83E5E5811954BB400018687F /* VMware-spotlightIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VMware-spotlightIcon@2x.png"; sourceTree = "<group>"; };
-		83E5E5851954BEEF0018687F /* VMware-smallIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VMware-smallIcon.png"; sourceTree = "<group>"; };
-		83E5E5871954BF2E0018687F /* VMware_Icon29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VMware_Icon29.png; sourceTree = "<group>"; };
-		83E5E5911954C2360018687F /* VMware_Icon40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VMware_Icon40@2x.png"; sourceTree = "<group>"; };
-		83E5E5951954C5B70018687F /* VMware_icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VMware_icon57.png; sourceTree = "<group>"; };
-		83E5E5971954C5FD0018687F /* VMware_icon57@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VMware_icon57@2x.png"; sourceTree = "<group>"; };
-		83E5E59D1954C7F30018687F /* VMware_Icon80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VMware_Icon80.png; sourceTree = "<group>"; };
-		83E5E5A31954C8B90018687F /* VMware_Icon58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VMware_Icon58.png; sourceTree = "<group>"; };
-		83E5E5A71954CA540018687F /* VMware_Icon40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VMware_Icon40.png; sourceTree = "<group>"; };
-		83E5E5A91954CACF0018687F /* VMware_Icon29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VMware_Icon29@2x.png"; sourceTree = "<group>"; };
-		83E5E5AB1954CF290018687F /* VMware_icon60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VMware_icon60.png; sourceTree = "<group>"; };
-		83E5E5AC1954CF290018687F /* VMware_icon60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VMware_icon60@2x.png"; sourceTree = "<group>"; };
 		83E5E5AF1954D3940018687F /* VMSynchronousFeedUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMSynchronousFeedUpdater.h; sourceTree = "<group>"; };
 		83E5E5B01954D3940018687F /* VMSynchronousFeedUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMSynchronousFeedUpdater.m; sourceTree = "<group>"; };
 		83FE341118CE6F450080C64C /* VMwareBlogs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VMwareBlogs.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -292,6 +281,21 @@
 		83FF03DA19106519003AF06C /* VMRecentlyReadTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMRecentlyReadTableViewController.m; path = VMWareBlogs/VMRecentlyReadTableViewController.m; sourceTree = "<group>"; };
 		83FF03DC1911A984003AF06C /* VMTestScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMTestScrollViewController.h; path = VMWareBlogs/VMTestScrollViewController.h; sourceTree = "<group>"; };
 		83FF03DD1911A984003AF06C /* VMTestScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMTestScrollViewController.m; path = VMWareBlogs/VMTestScrollViewController.m; sourceTree = "<group>"; };
+		B8BC6E651982F69D00FEE0D8 /* facebook-circular-64@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-circular-64@2x.png"; sourceTree = "<group>"; };
+		B8BC6E661982F69D00FEE0D8 /* twitter-circular-64@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-circular-64@2x.png"; sourceTree = "<group>"; };
+		B8D55CEE1982E3BF0070E732 /* vmware-blog-icon-1024x1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-1024x1024.png"; sourceTree = "<group>"; };
+		B8D55CEF1982E3BF0070E732 /* vmware-blog-icon-120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-120x120.png"; sourceTree = "<group>"; };
+		B8D55CF01982E3BF0070E732 /* vmware-blog-icon-152x152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-152x152.png"; sourceTree = "<group>"; };
+		B8D55CF11982E3BF0070E732 /* vmware-blog-icon-29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-29x29.png"; sourceTree = "<group>"; };
+		B8D55CF21982E3BF0070E732 /* vmware-blog-icon-40x40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-40x40.png"; sourceTree = "<group>"; };
+		B8D55CF31982E3BF0070E732 /* vmware-blog-icon-512x512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-512x512.png"; sourceTree = "<group>"; };
+		B8D55CF41982E3BF0070E732 /* vmware-blog-icon-60x60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-60x60.png"; sourceTree = "<group>"; };
+		B8D55CF51982E3BF0070E732 /* vmware-blog-icon-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-76x76.png"; sourceTree = "<group>"; };
+		B8D55CF61982E3BF0070E732 /* vmware-blog-icon-80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-80x80.png"; sourceTree = "<group>"; };
+		B8D55CF71982E3BF0070E732 /* vmware-icon-branding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-icon-branding.png"; sourceTree = "<group>"; };
+		B8D55D021982E6DB0070E732 /* vmware-blog-icon-57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-57x57.png"; sourceTree = "<group>"; };
+		B8D55D081982EAD10070E732 /* vmware-blog-icon-28@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-28@2x.png"; sourceTree = "<group>"; };
+		B8D55D0A1982EB410070E732 /* vmware-blog-icon-57@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vmware-blog-icon-57@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -337,19 +341,6 @@
 		7BDE9F5A1974C83C00F9C9AE /* appIcon */ = {
 			isa = PBXGroup;
 			children = (
-				83E5E5AB1954CF290018687F /* VMware_icon60.png */,
-				83E5E5AC1954CF290018687F /* VMware_icon60@2x.png */,
-				83E5E5A31954C8B90018687F /* VMware_Icon58.png */,
-				83E5E59D1954C7F30018687F /* VMware_Icon80.png */,
-				83E5E5971954C5FD0018687F /* VMware_icon57@2x.png */,
-				83E5E5951954C5B70018687F /* VMware_icon57.png */,
-				83E5E5A71954CA540018687F /* VMware_Icon40.png */,
-				83E5E5911954C2360018687F /* VMware_Icon40@2x.png */,
-				83E5E5871954BF2E0018687F /* VMware_Icon29.png */,
-				83E5E5A91954CACF0018687F /* VMware_Icon29@2x.png */,
-				83E5E5851954BEEF0018687F /* VMware-smallIcon.png */,
-				83E5E5811954BB400018687F /* VMware-spotlightIcon@2x.png */,
-				83E5E57F1954BAD00018687F /* VMware-appIcon.png */,
 			);
 			name = appIcon;
 			sourceTree = "<group>";
@@ -379,6 +370,8 @@
 		7BDE9F6F1974DF7700F9C9AE /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				B8BC6E651982F69D00FEE0D8 /* facebook-circular-64@2x.png */,
+				B8BC6E661982F69D00FEE0D8 /* twitter-circular-64@2x.png */,
 				7BDE9F741974E07F00F9C9AE /* social-media-facebook@2x.png */,
 				7BDE9F701974DFC400F9C9AE /* social-media-twitter@2x.png */,
 			);
@@ -541,6 +534,7 @@
 		83B3A71A194BC42800DF6511 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B8D55CED1982E3BF0070E732 /* VMware-blogs-icon */,
 				7BDE9F6F1974DF7700F9C9AE /* Buttons */,
 				7BDE9F641974DACF00F9C9AE /* tabBar */,
 				7BDE9F5B1974C86100F9C9AE /* SplashPage */,
@@ -649,6 +643,26 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		B8D55CED1982E3BF0070E732 /* VMware-blogs-icon */ = {
+			isa = PBXGroup;
+			children = (
+				B8D55D0A1982EB410070E732 /* vmware-blog-icon-57@2x.png */,
+				B8D55D081982EAD10070E732 /* vmware-blog-icon-28@2x.png */,
+				B8D55D021982E6DB0070E732 /* vmware-blog-icon-57x57.png */,
+				B8D55CEE1982E3BF0070E732 /* vmware-blog-icon-1024x1024.png */,
+				B8D55CEF1982E3BF0070E732 /* vmware-blog-icon-120x120.png */,
+				B8D55CF01982E3BF0070E732 /* vmware-blog-icon-152x152.png */,
+				B8D55CF11982E3BF0070E732 /* vmware-blog-icon-29x29.png */,
+				B8D55CF21982E3BF0070E732 /* vmware-blog-icon-40x40.png */,
+				B8D55CF31982E3BF0070E732 /* vmware-blog-icon-512x512.png */,
+				B8D55CF41982E3BF0070E732 /* vmware-blog-icon-60x60.png */,
+				B8D55CF51982E3BF0070E732 /* vmware-blog-icon-76x76.png */,
+				B8D55CF61982E3BF0070E732 /* vmware-blog-icon-80x80.png */,
+				B8D55CF71982E3BF0070E732 /* vmware-icon-branding.png */,
+			);
+			path = "VMware-blogs-icon";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -735,72 +749,74 @@
 				83E5E57E1954B63E0018687F /* VMware-splashPage@2x.png in Resources */,
 				833253E119205F1700A3F5EF /* twitter@2x.png in Resources */,
 				7BDE9F681974DAE700F9C9AE /* bookmark@2x.png in Resources */,
-				83E5E5A81954CA540018687F /* VMware_Icon40.png in Resources */,
 				7BDE9F711974DFC400F9C9AE /* social-media-twitter@2x.png in Resources */,
 				8359B0001919676200CAD9B9 /* CloseX.png in Resources */,
-				83E5E5AD1954CF290018687F /* VMware_icon60.png in Resources */,
 				8399299118EA04B800F3D713 /* VmWareNavBarImg@2x.png in Resources */,
 				7BDE9F751974E07F00F9C9AE /* social-media-facebook@2x.png in Resources */,
+				B8D55CF91982E3BF0070E732 /* vmware-blog-icon-120x120.png in Resources */,
 				8359B0021919676200CAD9B9 /* Damion-Regular.ttf in Resources */,
+				B8D55CFE1982E3BF0070E732 /* vmware-blog-icon-60x60.png in Resources */,
 				7BDE9F661974DADD00F9C9AE /* blog@2x.png in Resources */,
+				B8D55CFB1982E3BF0070E732 /* vmware-blog-icon-29x29.png in Resources */,
 				83B3A71E194BC44200DF6511 /* placeholder@2x.png in Resources */,
 				8359B0011919676200CAD9B9 /* CloseXPressed.png in Resources */,
 				8311E33118F52FAE0053B4D6 /* markAsReadIcon.png in Resources */,
 				83255999192C4EFE00E357B1 /* book.png in Resources */,
 				83FE342D18CE6F450080C64C /* Images.xcassets in Resources */,
+				B8BC6E671982F69D00FEE0D8 /* facebook-circular-64@2x.png in Resources */,
 				832559B3192C508800E357B1 /* articles.png in Resources */,
 				832559A3192C4EFE00E357B1 /* floppy-disk@2x.png in Resources */,
 				839929AF18EA12AA00F3D713 /* navBarLogoNoStatusBar@2x.png in Resources */,
 				832559A5192C4EFE00E357B1 /* upArrow.png in Resources */,
+				B8D55CFA1982E3BF0070E732 /* vmware-blog-icon-152x152.png in Resources */,
 				832559A9192C4EFE00E357B1 /* upArrow@2x.png in Resources */,
 				8359AFFF1919676200CAD9B9 /* blue-arrow2.png in Resources */,
 				8399298D18EA04B800F3D713 /* VmWareNavBarImg-568h@2x.png in Resources */,
 				8325598E192C4D1E00E357B1 /* book 4.png in Resources */,
+				B8D55CFC1982E3BF0070E732 /* vmware-blog-icon-40x40.png in Resources */,
 				8325598B192C4D0500E357B1 /* arrow 5.png in Resources */,
 				839929AD18EA12AA00F3D713 /* navBarLogoNoStatusBar.png in Resources */,
 				8359AFFE1919676200CAD9B9 /* blue-arrow-right.png in Resources */,
 				83255988192C4BD000E357B1 /* align_justify-128.png in Resources */,
+				B8D55D091982EAD10070E732 /* vmware-blog-icon-28@2x.png in Resources */,
 				832559BB192C50FF00E357B1 /* arrowUp@2x.png in Resources */,
-				83E5E5AA1954CACF0018687F /* VMware_Icon29@2x.png in Resources */,
+				B8D55D031982E6DB0070E732 /* vmware-blog-icon-57x57.png in Resources */,
 				8399298F18EA04B800F3D713 /* VmWareNavBarImg.png in Resources */,
-				83E5E5801954BAD00018687F /* VMware-appIcon.png in Resources */,
 				7BDE9F601974C8E200F9C9AE /* VMware_logo_64.png in Resources */,
+				B8BC6E681982F69D00FEE0D8 /* twitter-circular-64@2x.png in Resources */,
 				7BDE9F611974C8E200F9C9AE /* VMware_logo_64@2x.png in Resources */,
 				8311E32E18F52CC40053B4D6 /* folderIcon.png in Resources */,
 				8359AFFD1919676200CAD9B9 /* blue-arrow-left.png in Resources */,
 				83B3A71D194BC44200DF6511 /* placeholder.png in Resources */,
 				832559A7192C4EFE00E357B1 /* upArrow@2x-568h.png in Resources */,
 				7BDE9F621974C8E200F9C9AE /* VMware_logo_88.png in Resources */,
-				83E5E5981954C5FD0018687F /* VMware_icon57@2x.png in Resources */,
 				83E5E57D1954B63E0018687F /* VMware-splashPage@2x-568h.png in Resources */,
-				83E5E5961954C5B70018687F /* VMware_icon57.png in Resources */,
 				832559AF192C500C00E357B1 /* save@2x.png in Resources */,
+				B8D55CF81982E3BF0070E732 /* vmware-blog-icon-1024x1024.png in Resources */,
 				832559B5192C508800E357B1 /* articles@2x.png in Resources */,
-				83E5E5821954BB400018687F /* VMware-spotlightIcon@2x.png in Resources */,
 				7BDE9F631974C8E200F9C9AE /* VMware_logo_88@2x.png in Resources */,
 				8325599B192C4EFE00E357B1 /* book@2x-568h.png in Resources */,
+				B8D55D001982E3BF0070E732 /* vmware-blog-icon-80x80.png in Resources */,
 				833253DF19205F1700A3F5EF /* facebook@2x.png in Resources */,
-				83E5E5AE1954CF290018687F /* VMware_icon60@2x.png in Resources */,
 				833253E019205F1700A3F5EF /* twitter.png in Resources */,
 				832559B9192C50FF00E357B1 /* arrowUp.png in Resources */,
 				839929AB18EA12AA00F3D713 /* navBarLogoNoStatusBar-568h@2x.png in Resources */,
 				8325599F192C4EFE00E357B1 /* floppy-disk.png in Resources */,
+				B8D55D011982E3BF0070E732 /* vmware-icon-branding.png in Resources */,
 				832559AD192C500C00E357B1 /* save.png in Resources */,
+				B8D55D0B1982EB410070E732 /* vmware-blog-icon-57@2x.png in Resources */,
 				833253DE19205F1700A3F5EF /* facebook.png in Resources */,
 				83FE341F18CE6F450080C64C /* InfoPlist.strings in Resources */,
-				83E5E59E1954C7F30018687F /* VMware_Icon80.png in Resources */,
 				7BDE9F6C1974DBEA00F9C9AE /* facebook-alt@2x.png in Resources */,
-				83E5E5881954BF2E0018687F /* VMware_Icon29.png in Resources */,
 				83FE342818CE6F450080C64C /* Main.storyboard in Resources */,
+				B8D55CFF1982E3BF0070E732 /* vmware-blog-icon-76x76.png in Resources */,
 				7BDE9F6D1974DBEA00F9C9AE /* layout-content@2x.png in Resources */,
 				83255985192C4B9E00E357B1 /* up4-128.png in Resources */,
-				83E5E5931954C2360018687F /* VMware_Icon40@2x.png in Resources */,
+				B8D55CFD1982E3BF0070E732 /* vmware-blog-icon-512x512.png in Resources */,
 				832559A1192C4EFE00E357B1 /* floppy-disk@2x-568h.png in Resources */,
 				8325599D192C4EFE00E357B1 /* book@2x.png in Resources */,
-				83E5E5861954BEEF0018687F /* VMware-smallIcon.png in Resources */,
 				83E5E57C1954B63E0018687F /* VMware-splashPage.png in Resources */,
 				7BDE9F6E1974DBEA00F9C9AE /* twitter@2x.png in Resources */,
-				83E5E5A41954C8B90018687F /* VMware_Icon58.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1040,7 +1056,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2510EC6ACFD44C4787D61132 /* Pods.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1062,7 +1077,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2510EC6ACFD44C4787D61132 /* Pods.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

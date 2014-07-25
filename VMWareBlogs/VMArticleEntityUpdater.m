@@ -202,13 +202,6 @@ typedef enum {
                             NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
                             
                         }
-//                        else {
-//                            // save parent to disk asynchronously
-//                            dispatch_sync(dispatch_get_main_queue(), ^{
-//                                [self.delegate articleEntityUpdaterDidInsertArticle:[blogEntry objectID]];
-//                            });
-//                        }
-                        
                     }else {
 
                         Blog *article = [sortedArticleArray objectAtIndex:j];
@@ -216,41 +209,12 @@ typedef enum {
                         if (![article.link isEqualToString:[TBXML textForElement:linkElem]]) {
                             
                             NSLog(@"IndexPath %d", order);
-                           
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-//                            dispatch_sync(dispatch_get_main_queue(), ^{
-//                                [self.delegate articleEntityDidDeleteArticle:[article objectID]];
-//                            });
                             
                             [self.updateContext deleteObject:article];
 
                             if (![self.updateContext save:&temporaryMOCError]) {
                                 NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
                             }
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
                             
                             //Create an instance of the entity.
                             blogEntry = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
@@ -301,30 +265,10 @@ typedef enum {
                             //Set the order to be used for querying an ordered list.
                             [blogEntry setValue:myIntNumber forKey:@"order"];
                             
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
                             if (![self.updateContext save:&temporaryMOCError]) {
                                 NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
                                 
                             }
-                            
-//                            else {
-//                                // save parent to disk asynchronously
-//                                dispatch_sync(dispatch_get_main_queue(), ^{
-//                                    [self.delegate articleEntityUpdaterDidInsertArticle:[blogEntry objectID]];
-//                                });
-//                            }
                         } else {
                             
                             //Create an instance of the entity.
@@ -382,14 +326,6 @@ typedef enum {
                                 NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
                                 
                             }
-//                            else {
-//                                // save parent to disk asynchronously
-//                                dispatch_sync(dispatch_get_main_queue(), ^{
-//                                    [self.delegate articleEntityUpdaterDidInsertArticle:[blogEntry objectID]];
-//                                });
-//                            }
-
-                            
                         }
                     }
                     
@@ -407,10 +343,7 @@ typedef enum {
 //                    for(int i = order + 1; i < [sortedArticleArray count]; i++) {
 //                        
 //                        Blog *deleteArticle = (Blog *)[sortedArticleArray objectAtIndex:i];
-//                        
-//                        dispatch_sync(dispatch_get_main_queue(), ^{
-//                            [self.delegate articleEntityDidDeleteArticle:[deleteArticle objectID]];
-//                        });
+//
 //                        
 //                        [self.updateContext deleteObject:deleteArticle];
 //                    }

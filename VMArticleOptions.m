@@ -53,9 +53,9 @@
 
 - (void)configureDropDownButtons {
     
-    UIButton *facebookBtn = [[UIButton alloc] initWithFrame:CGRectMake(87.0, 21.0, 58.0, 58.0)];
-    [facebookBtn setImage:[UIImage imageNamed:@"social-media-facebook.png"] forState:UIControlStateNormal];
-    [facebookBtn setImage:[UIImage imageNamed:@"social-media-facebook.png"] forState:UIControlStateSelected];
+    UIButton *facebookBtn = [[UIButton alloc] initWithFrame:CGRectMake(87.0, 21.0, 64.0, 64.0)];
+    [facebookBtn setImage:[UIImage imageNamed:@"facebook-circular-64.png"] forState:UIControlStateNormal];
+    [facebookBtn setImage:[UIImage imageNamed:@"facebook-circular-64.png"] forState:UIControlStateSelected];
     
     [facebookBtn addTarget:self
                     action:@selector(fbParticipationBtnHandler)
@@ -63,9 +63,9 @@
 
     [_dropDownView addSubview:facebookBtn];
     
-    UIButton *twitterBtn = [[UIButton alloc] initWithFrame:CGRectMake(175.0, 21.0, 58.0, 58.0)];
-    [twitterBtn setImage:[UIImage imageNamed:@"social-media-twitter.png"] forState:UIControlStateNormal];
-    [twitterBtn setImage:[UIImage imageNamed:@"social-media-twitter.png"] forState:UIControlStateSelected];
+    UIButton *twitterBtn = [[UIButton alloc] initWithFrame:CGRectMake(175.0, 21.0, 64.0, 64.0)];
+    [twitterBtn setImage:[UIImage imageNamed:@"twitter-circular-64.png"] forState:UIControlStateNormal];
+    [twitterBtn setImage:[UIImage imageNamed:@"twitter-circular-64.png"] forState:UIControlStateSelected];
     
     [twitterBtn addTarget:self
                    action:@selector(twitterParticipationBtnHandler)

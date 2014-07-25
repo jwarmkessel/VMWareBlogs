@@ -9,6 +9,7 @@
 #import "VMAppDelegate.h"
 #import <Crashlytics/Crashlytics.h>
 #import "VMSynchronousFeedUpdater.h"
+#import "VMCorporateSynchronousFeedUpdater.h"
 
 @implementation VMAppDelegate
 
@@ -20,9 +21,12 @@
 {
     [Crashlytics startWithAPIKey:@"59c371b61d689f5678d0ebe6a0d8db4973125312"];
     
-//    self.updater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext];
-//    [self.updater updateList];
-
+    self.updater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [self.updater updateList];
+    
+    self.corporateUpdater = [[VMCorporateSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [self.corporateUpdater updateList];
+    
     return YES;
 }
 							

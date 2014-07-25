@@ -162,6 +162,7 @@
 #pragma mark - corporateFeedUpdaterDelegate
 
 - (void)corporateFeedUpdaterDidFinishUpdating {
+    [self.tableView reloadData];
     [UIView animateWithDuration:0.3 animations:^{
         [self.loadingView setAlpha:0.0];
     }completion:^(BOOL finished) {

@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>BF872F1C-7EA5-4553-9479-F81DD1ECA7A0</string>
+	<string>FD69E667-8C53-4549-B50B-1371E34A9536</string>
 	<key>IDESourceControlProjectName</key>
 	<string>VMWareBlogs</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>FD884054-1836-42BA-8797-AAA93B5DF18C</key>
-		<string>https://github.com/jwarmkessel/VMWareBlogs</string>
+		<key>823DD3C9-4F06-43A9-AA2E-C7B7C5FAD91F</key>
+		<string>ssh://github.com/jwarmkessel/VMWareBlogs.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>VMWareBlogs.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>FD884054-1836-42BA-8797-AAA93B5DF18C</key>
+		<key>823DD3C9-4F06-43A9-AA2E-C7B7C5FAD91F</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/jwarmkessel/VMWareBlogs</string>
+	<string>ssh://github.com/jwarmkessel/VMWareBlogs.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>FD884054-1836-42BA-8797-AAA93B5DF18C</string>
+	<string>823DD3C9-4F06-43A9-AA2E-C7B7C5FAD91F</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>FD884054-1836-42BA-8797-AAA93B5DF18C</string>
+			<string>823DD3C9-4F06-43A9-AA2E-C7B7C5FAD91F</string>
 			<key>IDESourceControlWCCName</key>
 			<string>VMWareBlogs</string>
 		</dict>
