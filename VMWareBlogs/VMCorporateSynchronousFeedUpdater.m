@@ -91,7 +91,7 @@
         int order = 1;
         int articleCount = 0;
         int totalArticles = [sortedArticleArray count] == 0 ? 0 : (int)([sortedArticleArray count] -1);
-        
+                
         do {
             CorporateArticle *blogEntry;
             
@@ -139,10 +139,19 @@
             
 
         } while ((itemElement = itemElement->nextSibling));
-                
-        if (![self.updateContext save:&temporaryMOCError]) {
-            NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
-        }
+        
+//        NSArray *coreDataArticleArray = [self.updateContext executeFetchRequest:fetchRequest error:&fetchRequestError];
+//        
+//        if ([coreDataArticleArray count] > 0) {
+//            int deleteIndex = [coreDataArticleArray count] -1;
+//            CorporateArticle *deleteArticle = (CorporateArticle *)[coreDataArticleArray objectAtIndex:deleteIndex];
+//            
+//            [self.updateContext deleteObject:deleteArticle];
+//        }
+
+//        if (![self.updateContext save:&temporaryMOCError]) {
+//            NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
+//        }
     }
     
     [self.delegate corporateFeedUpdaterDidFinishUpdating];

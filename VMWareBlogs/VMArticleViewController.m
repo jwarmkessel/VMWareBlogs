@@ -255,6 +255,8 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"webViewDidFinishLoad %d", webView.loading);
     [self.indicatorView stopAnimating];
+    [_indicator stopAnimating];
+
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
