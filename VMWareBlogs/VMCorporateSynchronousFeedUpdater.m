@@ -140,6 +140,18 @@
 
         } while ((itemElement = itemElement->nextSibling));
         
+        //If the count of new articles is less than what's in the database...
+        if (order < [sortedArticleArray count]) {
+            
+            //Get the index of the article we want to begin deleting from.
+            int lastIndex = order;
+            
+            for (int i = lastIndex; i < [sortedArticleArray count]; i++) {
+                CorporateArticle *deleteArticle = (CorporateArticle *)[sortedArticleArray objectAtIndex:i];
+                [self.updateContext deleteObject:deleteArticle];
+            }
+        }
+        
 //        NSArray *coreDataArticleArray = [self.updateContext executeFetchRequest:fetchRequest error:&fetchRequestError];
 //        
 //        if ([coreDataArticleArray count] > 0) {

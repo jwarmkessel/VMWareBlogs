@@ -336,18 +336,17 @@ typedef enum {
                 } while ((itemElement = itemElement->nextSibling));
                 
                 
-                //Clean up. If the number of articles are greater than 100 then delete the rest.
-//                if (articleCount > order) {
-//                    NSLog(@"Code clean up");
-//                    //Start from where relevant articles ended and delete the rest.
-//                    for(int i = order + 1; i < [sortedArticleArray count]; i++) {
-//                        
-//                        Blog *deleteArticle = (Blog *)[sortedArticleArray objectAtIndex:i];
-//
-//                        
-//                        [self.updateContext deleteObject:deleteArticle];
-//                    }
-//                }
+                //If the count of new articles is less than what's in the database...
+                if (order < [sortedArticleArray count]) {
+                    
+                    //Get the index of the article we want to begin deleting from.
+                    int lastIndex = order;
+                    
+                    for (int i = lastIndex; i < [sortedArticleArray count]; i++) {
+                        Blog *deleteArticle = (Blog *)[sortedArticleArray objectAtIndex:i];
+                        [self.updateContext deleteObject:deleteArticle];
+                    }
+                }
  
                 // save parent to disk asynchronously
                 dispatch_sync(dispatch_get_main_queue(), ^{
