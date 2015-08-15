@@ -74,7 +74,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     self.filteredList = NO;
     
     [self.tableView setBackgroundColor:[UIColor colorWithHexString:@"696566"]];
-    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    
     [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithHexString:@"346633"]];
     [self.tabBarController.tabBar setTintColor:[UIColor colorWithHexString:@"346633"]];
     
@@ -132,6 +132,21 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     
     //Make the call to action text animate with blinking.
     //[NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(scrollTest) userInfo:nil repeats: YES];
+    
+    
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
+    else
+    {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
 }
 
 - (void)mergeChanges:(NSNotification *)notification{
@@ -329,6 +344,10 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     }
     
     [self configureCell:cell atIndexPath:indexPath];
+    
+    if ([cell respondsToSelector:@selector(layoutMargins)]) {
+        cell.layoutMargins = UIEdgeInsetsZero;
+    }
 
     return cell;
 }

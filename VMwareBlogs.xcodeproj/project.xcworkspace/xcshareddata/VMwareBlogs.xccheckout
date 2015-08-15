@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D70778F3-2035-481F-82DE-22DF2216BFE0</string>
+	<key>IDESourceControlProjectName</key>
+	<string>VMwareBlogs</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>ECA6C9D067613F3E45D5A35D8C230FD7216E922D</key>
+		<string>github.com:jwarmkessel/VMWareBlogs.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>VMwareBlogs.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>ECA6C9D067613F3E45D5A35D8C230FD7216E922D</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:jwarmkessel/VMWareBlogs.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>ECA6C9D067613F3E45D5A35D8C230FD7216E922D</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>ECA6C9D067613F3E45D5A35D8C230FD7216E922D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>VMWareBlogs</string>
+		</dict>
+	</array>
+</dict>
+</plist>

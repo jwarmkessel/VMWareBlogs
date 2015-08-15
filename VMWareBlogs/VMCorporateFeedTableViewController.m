@@ -119,6 +119,19 @@
     }
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    if ([self.tableView respondsToSelector:@selector(layoutMargins)]) {
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
+    else
+    {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     
     if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)] )
@@ -413,6 +426,10 @@
     }
     
     [self configureCell:cell atIndexPath:indexPath];
+
+    if ([cell respondsToSelector:@selector(layoutMargins)]) {
+        cell.layoutMargins = UIEdgeInsetsZero;
+    }
     
     return cell;
 }
