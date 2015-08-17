@@ -1,14 +1,16 @@
 //
 //  Entity.m
-//  VMwareBlogs
+//  
 //
-//  Created by Justin Warmkessel on 8/17/15.
-//  Copyright (c) 2015 Justin Warmkessel. All rights reserved.
+//  Created by Justin Warmkessel on 8/16/15.
+//
 //
 
-#import "Blog.h"
+#import "Entity.h"
+#import "NSManagedObject.h"
 
-@implementation Blog
+
+@implementation Entity
 
 @dynamic author;
 @dynamic community;

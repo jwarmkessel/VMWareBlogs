@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3206DCAE407843F6B88CF0CF /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6853D35B6BC3472F91A23ABD /* libPods.a */; };
 		7B20CC4B1B7EDA52007FF5D2 /* VMTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B20CC4A1B7EDA52007FF5D2 /* VMTabBarController.m */; };
+		7B20CC5B1B81B5B3007FF5D2 /* VMRootItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B20CC5A1B81B5B3007FF5D2 /* VMRootItem.m */; };
+		7B20CC5F1B81BE1F007FF5D2 /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B20CC5E1B81BE1F007FF5D2 /* Blog.m */; };
 		7B5C84B3196CC77F00EB3BA4 /* APLSectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B5C84B2196CC77F00EB3BA4 /* APLSectionInfo.m */; };
 		7B5C84BC196DDEF700EB3BA4 /* VMSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B5C84BB196DDEF700EB3BA4 /* VMSectionHeaderView.m */; };
 		7BA93AFC19707FD1008AA1F0 /* VMCorporateFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA93AFB19707FD1008AA1F0 /* VMCorporateFeedTableViewController.m */; };
@@ -123,7 +125,6 @@
 		83FE344B18CE6FC90080C64C /* VMBlogFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE344A18CE6FC90080C64C /* VMBlogFeedViewController.m */; };
 		83FE344E18CE75670080C64C /* BlogModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 83FE344C18CE75670080C64C /* BlogModel.xcdatamodeld */; };
 		83FE34DE18CFCCA10080C64C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FE34DD18CFCCA10080C64C /* CoreData.framework */; };
-		83FE34E718D0199A0080C64C /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE34E618D0199A0080C64C /* Blog.m */; };
 		83FE34ED18D912770080C64C /* VMNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE34EC18D912770080C64C /* VMNavigationViewController.m */; };
 		83FF03D819103D8C003AF06C /* RecentArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FF03D719103D8C003AF06C /* RecentArticle.m */; };
 		83FF03DB19106519003AF06C /* VMRecentlyReadTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FF03DA19106519003AF06C /* VMRecentlyReadTableViewController.m */; };
@@ -160,6 +161,11 @@
 		6853D35B6BC3472F91A23ABD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B20CC491B7EDA52007FF5D2 /* VMTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMTabBarController.h; sourceTree = "<group>"; };
 		7B20CC4A1B7EDA52007FF5D2 /* VMTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMTabBarController.m; sourceTree = "<group>"; };
+		7B20CC591B81B5B3007FF5D2 /* VMRootItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMRootItem.h; sourceTree = "<group>"; };
+		7B20CC5A1B81B5B3007FF5D2 /* VMRootItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMRootItem.m; sourceTree = "<group>"; };
+		7B20CC5C1B81B770007FF5D2 /* BlogModel 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 9.xcdatamodel"; sourceTree = "<group>"; };
+		7B20CC5D1B81BE1F007FF5D2 /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
+		7B20CC5E1B81BE1F007FF5D2 /* Blog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Blog.m; sourceTree = "<group>"; };
 		7B5C84AD196CB08600EB3BA4 /* BlogModel 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 7.xcdatamodel"; sourceTree = "<group>"; };
 		7B5C84B1196CC77F00EB3BA4 /* APLSectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APLSectionInfo.h; sourceTree = "<group>"; };
 		7B5C84B2196CC77F00EB3BA4 /* APLSectionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APLSectionInfo.m; sourceTree = "<group>"; };
@@ -272,8 +278,6 @@
 		83FE344A18CE6FC90080C64C /* VMBlogFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMBlogFeedViewController.m; sourceTree = "<group>"; };
 		83FE344D18CE75670080C64C /* BlogModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BlogModel.xcdatamodel; sourceTree = "<group>"; };
 		83FE34DD18CFCCA10080C64C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		83FE34E518D0199A0080C64C /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
-		83FE34E618D0199A0080C64C /* Blog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Blog.m; sourceTree = "<group>"; };
 		83FE34EB18D912770080C64C /* VMNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMNavigationViewController.h; sourceTree = "<group>"; };
 		83FE34EC18D912770080C64C /* VMNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMNavigationViewController.m; sourceTree = "<group>"; };
 		83FF03D4190F037B003AF06C /* BlogModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -495,14 +499,16 @@
 				8360925A19007A7F00C8EA13 /* VMArticleEntityUpdater.h */,
 				8360925B19007A7F00C8EA13 /* VMArticleEntityUpdater.m */,
 				83FE344C18CE75670080C64C /* BlogModel.xcdatamodeld */,
-				83FE34E518D0199A0080C64C /* Blog.h */,
-				83FE34E618D0199A0080C64C /* Blog.m */,
 				83FF03D619103D8C003AF06C /* RecentArticle.h */,
 				83FF03D719103D8C003AF06C /* RecentArticle.m */,
+				7B20CC5D1B81BE1F007FF5D2 /* Blog.h */,
+				7B20CC5E1B81BE1F007FF5D2 /* Blog.m */,
 				83E5E5AF1954D3940018687F /* VMSynchronousFeedUpdater.h */,
 				83E5E5B01954D3940018687F /* VMSynchronousFeedUpdater.m */,
 				7BA93B0119708996008AA1F0 /* CorporateArticle.h */,
 				7BA93B0219708996008AA1F0 /* CorporateArticle.m */,
+				7B20CC591B81B5B3007FF5D2 /* VMRootItem.h */,
+				7B20CC5A1B81B5B3007FF5D2 /* VMRootItem.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -928,7 +934,6 @@
 			files = (
 				7BA93AFC19707FD1008AA1F0 /* VMCorporateFeedTableViewController.m in Sources */,
 				83FF03D819103D8C003AF06C /* RecentArticle.m in Sources */,
-				83FE34E718D0199A0080C64C /* Blog.m in Sources */,
 				8359AFE81919630400CAD9B9 /* VMOverlayView.m in Sources */,
 				7B20CC4B1B7EDA52007FF5D2 /* VMTabBarController.m in Sources */,
 				83FE342118CE6F450080C64C /* main.m in Sources */,
@@ -937,11 +942,13 @@
 				83FE342518CE6F450080C64C /* VMAppDelegate.m in Sources */,
 				7B5C84B3196CC77F00EB3BA4 /* APLSectionInfo.m in Sources */,
 				83E5E5781954B07A0018687F /* NSString+NSString_NSString_stringDecoding.m in Sources */,
+				7B20CC5B1B81B5B3007FF5D2 /* VMRootItem.m in Sources */,
 				83FE344E18CE75670080C64C /* BlogModel.xcdatamodeld in Sources */,
 				83585EAA19122ED8001D5275 /* VMArticePreviewScrollView.m in Sources */,
 				83FF03DE1911A984003AF06C /* VMTestScrollViewController.m in Sources */,
 				8311E32C18F33F850053B4D6 /* VMArticleViewController.m in Sources */,
 				8360925C19007A7F00C8EA13 /* VMArticleEntityUpdater.m in Sources */,
+				7B20CC5F1B81BE1F007FF5D2 /* Blog.m in Sources */,
 				83FF03DB19106519003AF06C /* VMRecentlyReadTableViewController.m in Sources */,
 				7BA93B0319708996008AA1F0 /* CorporateArticle.m in Sources */,
 				7B5C84BC196DDEF700EB3BA4 /* VMSectionHeaderView.m in Sources */,
@@ -1189,6 +1196,7 @@
 		83FE344C18CE75670080C64C /* BlogModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7B20CC5C1B81B770007FF5D2 /* BlogModel 9.xcdatamodel */,
 				7BA93AFD19708767008AA1F0 /* BlogModel 8.xcdatamodel */,
 				7B5C84AD196CB08600EB3BA4 /* BlogModel 7.xcdatamodel */,
 				837F88EB19412E540011531E /* BlogModel 5.xcdatamodel */,
@@ -1198,7 +1206,7 @@
 				83FF03D519103C92003AF06C /* BlogModel 3.xcdatamodel */,
 				83FE344D18CE75670080C64C /* BlogModel.xcdatamodel */,
 			);
-			currentVersion = 7BA93AFD19708767008AA1F0 /* BlogModel 8.xcdatamodel */;
+			currentVersion = 7B20CC5C1B81B770007FF5D2 /* BlogModel 9.xcdatamodel */;
 			path = BlogModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

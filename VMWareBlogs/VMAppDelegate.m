@@ -10,6 +10,7 @@
 #import <Crashlytics/Crashlytics.h>
 #import "VMSynchronousFeedUpdater.h"
 #import "VMCorporateSynchronousFeedUpdater.h"
+#import "VMRootItem.h"
 
 @implementation VMAppDelegate
 
@@ -20,6 +21,19 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [Crashlytics startWithAPIKey:@"59c371b61d689f5678d0ebe6a0d8db4973125312"];
+
+    VMRootItem *rootItem = [VMRootItem insertNewObjectInManagedObjectContext:self.managedObjectContext];
+    
+    NSError *error = nil;
+    if (! [self.managedObjectContext save:&error]) {
+        // Uh, oh. An error happened. :(
+    }
+    
+    VMRootItem *item = [VMRootItem insertNewObjectInManagedObjectContext:self.managedObjectContext];
+
+    item.lastUpdated = [NSDate date];
+    
+    
     
     self.updater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext];
     [self.updater updateList];

@@ -1,9 +1,9 @@
 //
 //  Entity.h
-//  VMwareBlogs
+//  
 //
-//  Created by Justin Warmkessel on 8/17/15.
-//  Copyright (c) 2015 Justin Warmkessel. All rights reserved.
+//  Created by Justin Warmkessel on 8/16/15.
+//
 //
 
 #import <Foundation/Foundation.h>
@@ -11,7 +11,7 @@
 
 @class NSManagedObject;
 
-@interface Blog : NSManagedObject
+@interface Entity : NSManagedObject
 
 @property (nonatomic, retain) NSString * author;
 @property (nonatomic, retain) NSNumber * community;
