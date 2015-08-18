@@ -9,13 +9,17 @@
 #import <Foundation/Foundation.h>
 
 @interface VMSynchronousFeedUpdater : NSObject
-@property (atomic, strong) NSManagedObjectContext *updateContext;
-@property (nonatomic, getter = isUpdating) BOOL updating;
-@property (nonatomic, strong) NSTimer *updateBlogListTimer;
-@property (nonatomic, assign) id delegate;
 
+@property (nonatomic, strong)               NSManagedObjectContext* updateContext;
+@property (nonatomic, getter = isUpdating)  BOOL                    updating;
+@property (nonatomic, strong)               NSTimer*                updateBlogListTimer;
+@property (nonatomic, assign)               id                      delegate;
+@property (nonatomic, strong)               NSMutableSet*           blogSet;
+@property (nonatomic, assign)               BOOL                    internal;
+
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext internal:(BOOL)internal;
 - (BOOL)updateList;
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+
 @end
 
 @protocol VMSynchronousFeedUpdaterDelegate

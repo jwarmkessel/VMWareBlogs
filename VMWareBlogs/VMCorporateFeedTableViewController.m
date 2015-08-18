@@ -8,12 +8,12 @@
 
 #import "VMCorporateFeedTableViewController.h"
 #import "VMAppDelegate.h"
-#import "CorporateArticle.h"
+#import "Blog.h"
 #import "RecentArticle.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VMArticleViewController.h"
 #import "VMSectionHeaderView.h"
-#import "VMCorporateSynchronousFeedUpdater.h"
+#import "VMSynchronousFeedUpdater.h"
 
 @interface VMCorporateFeedTableViewController ()
 
@@ -24,7 +24,7 @@
 @property (strong, nonatomic) UITapGestureRecognizer *tap;
 @property (strong, nonatomic) UITapGestureRecognizer *scrollToTopTap;
 @property (strong, nonatomic) UIView *loadingView;
-@property (strong, nonatomic) VMCorporateSynchronousFeedUpdater *synchronousFeedUpdater;
+@property (strong, nonatomic) VMSynchronousFeedUpdater *synchronousFeedUpdater;
 
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
@@ -50,7 +50,7 @@
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.managedObjectContext = appDelegate.managedObjectContext;
     
-    self.SynchronousFeedUpdater = [[VMCorporateSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext];
+    self.SynchronousFeedUpdater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext internal:YES];
     [self.synchronousFeedUpdater setDelegate:self];
     [self.fetchedResultsController setDelegate:self];
     
@@ -291,7 +291,7 @@
         
         VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        CorporateArticle *blog;
+        Blog *blog;
         
         if(![self isFilteredList]) {
             blog = [_fetchedResultsController objectAtIndexPath:indexPath];
@@ -436,7 +436,7 @@
 
 // Customize the appearance of table view cells.
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-     CorporateArticle *blog;
+     Blog *blog;
     
     if(![self isFilteredList]) {
         blog = [_fetchedResultsController objectAtIndexPath:indexPath];
@@ -622,7 +622,7 @@
     NSLog(@"prepareForSegue");
     VMArticleViewController *vc = (VMArticleViewController *)[segue destinationViewController];
     
-    CorporateArticle *blog;
+    Blog *blog;
     
     if(![self isFilteredList]) {
         blog = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
@@ -656,11 +656,14 @@
     
     // Create and configure a fetch request with the Book entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"internal == %@", @(1)];
+    
+    fetchRequest.predicate = predicate;
     
     [fetchRequest setReturnsObjectsAsFaults:NO];
     
     NSEntityDescription *entity = [NSEntityDescription
-                                   entityForName:@"CorporateArticle"
+                                   entityForName:@"Blog"
                                    inManagedObjectContext:_managedObjectContext];
     
     [fetchRequest setFetchLimit:100];
@@ -788,7 +791,7 @@
     
     // Define the entity we are looking for
     NSEntityDescription *entity = [NSEntityDescription
-                                   entityForName:@"CorporateArticle" inManagedObjectContext:_fetchedResultsController.managedObjectContext];
+                                   entityForName:@"Blog" inManagedObjectContext:_fetchedResultsController.managedObjectContext];
     [fetchRequest setEntity:entity];
     
     // Define how we want our entities to be sorted

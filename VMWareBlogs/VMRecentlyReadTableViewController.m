@@ -8,10 +8,11 @@
 
 #import "VMRecentlyReadTableViewController.h"
 #import "VMAppDelegate.h"
-#import "RecentArticle.h"
+#import "Blog.h"
 #import "VMArticleViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <UIImageView+WebCache.h>
+#import "NSDate+Helper.h"
 
 @interface VMRecentlyReadTableViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -98,7 +99,7 @@
     
     // Configure the cell to show the book's title
     NSLog(@"Configuring Cell");
-    RecentArticle *recentArticle = [_fetchedResultsController objectAtIndexPath:indexPath];
+    Blog *recentArticle = [_fetchedResultsController objectAtIndexPath:indexPath];
     
     UITextView *titleTextView = (UITextView *)[cell viewWithTag:101];
     titleTextView.editable = NO;
@@ -266,7 +267,7 @@
     // Pass the selected object to the new view controller.
     VMArticleViewController *vc = (VMArticleViewController *)[segue destinationViewController];
     
-    RecentArticle *recentArticle = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    Blog *recentArticle = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
     
     NSLog(@"Selecting the link %@", recentArticle.link);
     
@@ -292,15 +293,16 @@
     
     // Create and configure a fetch request with the Book entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    [fetchRequest setReturnsObjectsAsFaults:NO];
-    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastRead >= %@", [[NSDate date] beginningOfDay] ];
+
+    fetchRequest.predicate = predicate;
+        
     NSLog(@"alloc FetchedResultsController");
     //Retrieve the entity description
     
     NSLog(@"get RecentArticle entity");
     NSEntityDescription *entity = [NSEntityDescription
-                                   entityForName:@"RecentArticle" inManagedObjectContext:managedObjectContext];
+                                   entityForName:@"Blog" inManagedObjectContext:managedObjectContext];
     
     [fetchRequest setEntity:entity];
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
@@ -313,7 +315,7 @@
     _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                     managedObjectContext:appDelegate.managedObjectContext
                                                                       sectionNameKeyPath:nil
-                                                                               cacheName:@"Root"];
+                                                                               cacheName:nil];
     
     _fetchedResultsController.delegate = self;
     

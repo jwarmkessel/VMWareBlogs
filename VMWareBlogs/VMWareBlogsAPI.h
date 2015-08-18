@@ -8,14 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VMWareBlogsAPI : NSObject {
-    
-}
+@interface VMWareBlogsAPI : NSObject
 
-@property (atomic, strong) NSManagedObjectContext *moc;
-@property (nonatomic, assign) BOOL updateFlag;
-@property (strong, nonatomic) NSString *songID;
-+ (NSString *)requestRSS;
-+ (NSString *)corporateRequestRSS;
+@property (atomic, strong)      NSManagedObjectContext* moc;
+@property (nonatomic, assign)   BOOL                    updateFlag;
+@property (strong, nonatomic)   NSString*               songID;
+
++ (NSString *)requestRSS:(NSString*)urlString;
 
 @end

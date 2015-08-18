@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VMCorporateSynchronousFeedUpdater.h"
 
-@interface VMCorporateFeedTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, VMCorporateSynchronousFeedUpdaterDelegate, UISearchBarDelegate>
+@interface VMCorporateFeedTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
 

@@ -12,29 +12,52 @@
 #import "VMWareBlogsAPI.h"
 #import <TBXML.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "VMRootItem.h"
+
+static const NSString* kBaseURI             = @"http://www.vmwareblogs.com";
+static const NSString* kCorporateRSSFeed    = @"rss.jsp?feed=2";
+static const NSString* kCommunityRSSFeed    = @"rss.jsp";
 
 @interface VMSynchronousFeedUpdater()
 
 - (BOOL)updateList;
-- (Blog *)createArticleEntityWithTitle:(TBXMLElement *)titleElem articleLink:(TBXMLElement *)linkElem articleDescription:(TBXMLElement *)descElement publishDate:(TBXMLElement *)pubDateElement GUIDElement:(TBXMLElement *)guidElement AuthorElement:(TBXMLElement *)authorElement andOrder:(int)order;
+- (Blog *)createArticleEntityWithTitle:(TBXMLElement *)titleElem
+                           articleLink:(TBXMLElement *)linkElem
+                    articleDescription:(TBXMLElement *)descElement
+                           publishDate:(TBXMLElement *)pubDateElement
+                           GUIDElement:(TBXMLElement *)guidElement
+                         AuthorElement:(TBXMLElement *)authorElement
+                              andOrder:(int)order;
+
 @end
 
 @implementation VMSynchronousFeedUpdater
-@synthesize updateContext;
-@synthesize updateBlogListTimer;
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
-    if (self) {
-        self.updateContext = managedObjectContext;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+                          internal:(BOOL)internal
+{
+    self = [super init];
+    
+    if (self)
+    {
+        _updateContext      = managedObjectContext;
+        _internal           = internal;
     }
     return self;
 }
-- (BOOL)updateList {
-    
+- (BOOL)updateList
+{
     [self.updateContext reset];
     
     //Request data.
-    NSString *xmlString = [VMWareBlogsAPI requestRSS];
+    NSString* urlString = [NSString stringWithFormat:@"%@/%@", kBaseURI, kCommunityRSSFeed];
+    
+    if (self.internal)
+    {
+        urlString = [NSString stringWithFormat:@"%@/%@", kBaseURI, kCorporateRSSFeed];
+    }
+    
+    NSString *xmlString = [VMWareBlogsAPI requestRSS:urlString];
     NSLog(@"Finished xmlString");
     if(xmlString == nil) {
         NSLog(@"(Developer WARNING) XML string is equal to nil");
@@ -114,6 +137,19 @@
                 }
                 
                 [blogEntry.managedObjectContext refreshObject:blogEntry mergeChanges:YES];
+
+                if (blogEntry)
+                {
+                    VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+                    
+                    NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
+                    NSURL*              uri         = [defaults URLForKey:@"rootItem"];
+                    NSManagedObjectID*  moid        = [appDelegate.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+                    NSError*            error       = nil;
+                    VMRootItem*         rootItem    = (id) [appDelegate.managedObjectContext existingObjectWithID:moid error:&error];
+                    
+                    [rootItem addBlogObject:blogEntry];
+                }
                 
             } else {
                 Blog *article = [sortedArticleArray objectAtIndex:j];
@@ -130,6 +166,19 @@
                                         
                     //Just save the articles.
                     blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
+                    
+                    if (blogEntry)
+                    {
+                        VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+                        
+                        NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
+                        NSURL*              uri         = [defaults URLForKey:@"rootItem"];
+                        NSManagedObjectID*  moid        = [appDelegate.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+                        NSError*            error       = nil;
+                        VMRootItem*         rootItem    = (id) [appDelegate.managedObjectContext existingObjectWithID:moid error:&error];
+                        
+                        [rootItem addBlogObject:blogEntry];
+                    }
                 }
             }
             
@@ -139,6 +188,11 @@
             
 
         } while ((itemElement = itemElement->nextSibling));
+        
+        NSError* error = nil;
+        
+        [appDelegate.managedObjectContext save:&error];
+        
         
         if (![self.updateContext save:&temporaryMOCError]) {
             NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
@@ -158,6 +212,15 @@
     //Create an instance of the entity.
     blogEntry = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
                                               inManagedObjectContext:self.updateContext];
+    
+    NSNumber* internal = @(0);
+    
+    if (self.internal)
+    {
+        internal = @(1);
+    }
+    
+    [blogEntry setInternal:internal];
     
     //Set the title.
     NSString *titleStr = [NSString stringByDecodingXMLEntities:[TBXML textForElement:titleElem]];

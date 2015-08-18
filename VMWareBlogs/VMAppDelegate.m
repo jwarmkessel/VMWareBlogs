@@ -9,8 +9,10 @@
 #import "VMAppDelegate.h"
 #import <Crashlytics/Crashlytics.h>
 #import "VMSynchronousFeedUpdater.h"
-#import "VMCorporateSynchronousFeedUpdater.h"
 #import "VMRootItem.h"
+#import "Blog.h"
+
+static NSString* kCrashlyticsKey = @"59c371b61d689f5678d0ebe6a0d8db4973125312";
 
 @implementation VMAppDelegate
 
@@ -20,30 +22,75 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Crashlytics startWithAPIKey:@"59c371b61d689f5678d0ebe6a0d8db4973125312"];
-
-    VMRootItem *rootItem = [VMRootItem insertNewObjectInManagedObjectContext:self.managedObjectContext];
+    [self configureRootItemForCoreData];
+ 
+    [Crashlytics startWithAPIKey:kCrashlyticsKey];
     
-    NSError *error = nil;
-    if (! [self.managedObjectContext save:&error]) {
-        // Uh, oh. An error happened. :(
-    }
-    
-    VMRootItem *item = [VMRootItem insertNewObjectInManagedObjectContext:self.managedObjectContext];
-
-    item.lastUpdated = [NSDate date];
-    
-    
-    
-    self.updater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext];
+    self.updater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext internal:NO];
     [self.updater updateList];
     
-    self.corporateUpdater = [[VMCorporateSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext];
+    self.corporateUpdater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext internal:YES];
+
     [self.corporateUpdater updateList];
+
     
     return YES;
 }
-							
+
+- (void)configureRootItemForCoreData
+{
+    
+#if DEBUG
+    NSLog(@"%@",[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
+#endif
+    
+    if (![self determineIfPeresistentStoreExists])
+    {
+        NSError*    error       = nil;
+        VMRootItem* rootItem    = [VMRootItem insertNewObjectInManagedObjectContext:self.managedObjectContext];
+        
+        rootItem.lastUpdated    = [NSDate date];
+        
+        if (![self.managedObjectContext save:&error])
+        {
+            NSLog(@"Error occurred");
+        }
+        else
+        {
+            NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setURL:rootItem.objectID.URIRepresentation forKey:@"rootItem"];
+        }
+    }
+
+//    else
+//    {
+//        //  Access ID
+//        NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
+//        NSURL*              uri         = [defaults URLForKey:@"rootItem"];
+//        NSManagedObjectID*  moid        = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+//        NSError*            error       = nil;
+//        VMRootItem*         rootItem    = (id) [self.managedObjectContext existingObjectWithID:moid error:&error];
+//        
+//        Blog* blog = [[rootItem.blog allObjects] objectAtIndex:0];
+//        
+//        
+//    }
+}
+
+- (BOOL)determineIfPeresistentStoreExists
+{
+    BOOL    persistenStoreExists    = NO;
+    NSURL*  url                     = [[self applicationDocumentsURLDirectory] URLByAppendingPathComponent:@"BlogModel.sqlite"];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:url.relativePath])
+    {
+        persistenStoreExists = YES;
+    }
+    return persistenStoreExists;
+}
+         
+#pragma mark - Private Helper Methods
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -146,7 +193,7 @@ Important note: Don’t run your project after making these modifications yet. T
         return _persistentStoreCoordinator;
     }
     
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"BlogModel.sqlite"];
+    NSURL *storeURL = [[self applicationDocumentsURLDirectory] URLByAppendingPathComponent:@"BlogModel.sqlite"];
     
     NSError *error = nil;
     
@@ -203,10 +250,16 @@ Important note: Don’t run your project after making these modifications yet. T
 
 #pragma mark - Application's Documents directory
 
-// Returns the URL to the application's Documents directory.
-- (NSURL *)applicationDocumentsDirectory
+- (NSURL *)applicationDocumentsURLDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+- (NSString *) applicationDocumentsDirectory
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *basePath = ([paths count] > 0) ? paths[0] : nil;
+    return basePath;
 }
 
 

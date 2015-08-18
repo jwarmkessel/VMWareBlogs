@@ -11,7 +11,6 @@
 #import "VMArticleViewController.h"
 #import "VMArticleEntityUpdater.h"
 #import "Blog.h"
-#import "RecentArticle.h"
 #import <dispatch/dispatch.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -62,7 +61,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.managedObjectContext = appDelegate.managedObjectContext;
     
-    self.SynchronousFeedUpdater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext];
+    self.SynchronousFeedUpdater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext internal:NO];
     [self.SynchronousFeedUpdater setDelegate:self];
     [self.fetchedResultsController setDelegate:self];
     
@@ -226,12 +225,6 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     self.fetchedResultsController = nil;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)appWillEnterForeground:(id)sender {
     if([self isKindOfClass:[VMBlogFeedViewController class]]) {
         NSLog(@"App is entering foreground from Blog feed");
@@ -357,93 +350,17 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     NSLog(@"didSelectRowAtIndexPath");
     [self.scrollToTopTap setEnabled:NO];
     
-    NSManagedObjectContext *tempContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    Blog* blog = [self.fetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
+    blog.lastRead = [NSDate date];
     
-    [tempContext performBlock:^{
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(RecentArticleSaved:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:tempContext];
-        
-        VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        Blog *blog;
-        
-        if(![self isFilteredList]) {
-            blog = [_fetchedResultsController objectAtIndexPath:indexPath];
-        } else {
-            blog = [self.filteredTableData objectAtIndex:indexPath.row];
-        }
-
-        NSError *temporaryMOCError;
-
-        NSPersistentStoreCoordinator *coordinator = [appDelegate persistentStoreCoordinator];
-        
-        [tempContext setPersistentStoreCoordinator:coordinator];
-        //Retrieve the entity description
-        RecentArticle *recentArticle;
-        
-        //Check if entity already exists.
-        //Retrieve the entity description
-        NSEntityDescription *entityDescription = [NSEntityDescription
-                                                  entityForName:@"RecentArticle" inManagedObjectContext:tempContext];
-        
-        // Create and configure a fetch request with the Book entity.
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSError *fetchRequestError;
-        
-        [fetchRequest setReturnsObjectsAsFaults:NO];
-        [fetchRequest setEntity:entityDescription];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"guid = %@", blog.guid]];
-        [fetchRequest setFetchLimit:1];
-        NSArray *recentlyReadArticle = [tempContext executeFetchRequest:fetchRequest error:&fetchRequestError];
-        
-        if([recentlyReadArticle count] == 0) {
-            //Create an instance of the entity and save.
-            recentArticle = [NSEntityDescription insertNewObjectForEntityForName:@"RecentArticle"
-                                                          inManagedObjectContext:tempContext];
-
-            [recentArticle setValue:blog.link forKey:@"link"];
-            [recentArticle setValue:blog.title forKey:@"title"];
-            [recentArticle setValue:blog.descr forKey:@"descr"];
-            [recentArticle setValue:blog.order forKey:@"order"];
-
-            [recentArticle setValue:blog.author forKey:@"author"];
-            [recentArticle setValue:blog.guid forKey:@"guid"];
-            [recentArticle setValue:blog.pubDate forKey:@"pubDate"];
-            
-            NSLog(@"Saving to recently read");
-            if (![tempContext save:&temporaryMOCError]) {
-                NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
-                
-            }
-            
-            // save parent to disk asynchronously
-            [appDelegate.managedObjectContext performBlock:^{
-                NSLog(@"Perform save to the parent context");
-                
-                NSError *error;
-                if (![appDelegate.managedObjectContext save:&error])
-                {
-                    // handle error
-                }
-            }];
-            
-            [tempContext refreshObject:recentArticle mergeChanges:YES];
-        }
-    }];
+    NSError* error = nil;
+    
+    if (![self.managedObjectContext save:&error])
+    {
+        NSLog(@"Error occurred");
+    }
     
     [self performSegueWithIdentifier:@"articleSegue" sender:self];
-}
-
-- (void)RecentArticleSaved:(NSNotification *)notification {
-    NSLog(@"Recent Article Saved Notification");
-
-    VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
-                                                       withObject:notification
-                                                    waitUntilDone:YES];
 }
 
 // Customize the appearance of table view cells.
@@ -675,7 +592,9 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     
     // Create and configure a fetch request with the Book entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"internal == %@", @(0)];
     
+    fetchRequest.predicate = predicate;
     [fetchRequest setReturnsObjectsAsFaults:NO];
     
     NSEntityDescription *entity = [NSEntityDescription

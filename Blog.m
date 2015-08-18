@@ -1,5 +1,5 @@
 //
-//  Entity.m
+//  Blog.m
 //  VMwareBlogs
 //
 //  Created by Justin Warmkessel on 8/17/15.
@@ -7,6 +7,8 @@
 //
 
 #import "Blog.h"
+#import "VMRootItem.h"
+
 
 @implementation Blog
 
@@ -22,5 +24,17 @@
 @dynamic pubDate;
 @dynamic title;
 @dynamic vmRootItem;
+
++ (NSString *)entityName
+{
+    return @"VMRootItem";
+}
+
++ (instancetype)insertNewObjectInManagedObjectContext:(NSManagedObjectContext *)moc;
+{
+    return [NSEntityDescription insertNewObjectForEntityForName:[self entityName]
+                                         inManagedObjectContext:moc];
+}
+
 
 @end

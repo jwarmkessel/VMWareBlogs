@@ -16,6 +16,10 @@
 
 #import <dispatch/dispatch.h>
 
+static const NSString* kBaseURI             = @"http://www.vmwareblogs.com";
+//static const NSString* kCorporateRSSFeed    = @"%@/rss.jsp?feed=2";
+static const NSString* kCommunityRSSFeed    = @"rss.jsp";
+
 // Add new instance variable
 dispatch_queue_t backgroundQueue;
 
@@ -62,7 +66,8 @@ typedef enum {
             
             
             //Request data.
-            NSString *xmlString = [VMWareBlogsAPI requestRSS];
+            NSString* urlString = [NSString stringWithFormat:@"%@/%@", kBaseURI, kCommunityRSSFeed];
+            NSString *xmlString = [VMWareBlogsAPI requestRSS:urlString];
             
             if(xmlString == nil) {
                 self.updating = NO;

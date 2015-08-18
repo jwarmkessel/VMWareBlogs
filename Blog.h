@@ -1,5 +1,5 @@
 //
-//  Entity.h
+//  Blog.h
 //  VMwareBlogs
 //
 //  Created by Justin Warmkessel on 8/17/15.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NSManagedObject;
+@class VMRootItem;
 
 @interface Blog : NSManagedObject
 
@@ -24,6 +24,9 @@
 @property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) NSString * pubDate;
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSManagedObject *vmRootItem;
+@property (nonatomic, retain) VMRootItem *vmRootItem;
+
++ (NSString *)entityName;
++ (instancetype)insertNewObjectInManagedObjectContext:(NSManagedObjectContext *)moc;
 
 @end
