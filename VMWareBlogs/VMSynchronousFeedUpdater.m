@@ -153,31 +153,33 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
                 
             } else {
                 Blog *article = [sortedArticleArray objectAtIndex:j];
-                
-                if( ![article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
+                if (linkElem)
+                {
+                    if( ![article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
+                                                
+                        // Delete the row from the data source.
+                        [self.updateContext deleteObject:article];
+                        
+                        // Force saving the delete.
+                        if (![self.updateContext save:&temporaryMOCError]) {
+                            NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
+                        }
                                             
-                    // Delete the row from the data source.
-                    [self.updateContext deleteObject:article];
-                    
-                    // Force saving the delete.
-                    if (![self.updateContext save:&temporaryMOCError]) {
-                        NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
-                    }
-                                        
-                    //Just save the articles.
-                    blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
-                    
-                    if (blogEntry)
-                    {
-                        VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+                        //Just save the articles.
+                        blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
                         
-                        NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
-                        NSURL*              uri         = [defaults URLForKey:@"rootItem"];
-                        NSManagedObjectID*  moid        = [appDelegate.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-                        NSError*            error       = nil;
-                        VMRootItem*         rootItem    = (id) [appDelegate.managedObjectContext existingObjectWithID:moid error:&error];
-                        
-                        [rootItem addBlogObject:blogEntry];
+                        if (blogEntry)
+                        {
+                            VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+                            
+                            NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
+                            NSURL*              uri         = [defaults URLForKey:@"rootItem"];
+                            NSManagedObjectID*  moid        = [appDelegate.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+                            NSError*            error       = nil;
+                            VMRootItem*         rootItem    = (id) [appDelegate.managedObjectContext existingObjectWithID:moid error:&error];
+                            
+                            [rootItem addBlogObject:blogEntry];
+                        }
                     }
                 }
             }
@@ -222,54 +224,72 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
     
     [blogEntry setInternal:internal];
     
-    //Set the title.
-    NSString *titleStr = [NSString stringByDecodingXMLEntities:[TBXML textForElement:titleElem]];
-    titleStr = [NSString stringByStrippingTags:titleStr];
-    
-    [blogEntry setValue:titleStr forKey:@"title"];
-    
-    //Set the link.
-    [blogEntry setValue:[TBXML textForElement:linkElem] forKey:@"link"];
-    
-    NSString *descStr = [TBXML textForElement:descElement];
-    
-    descStr = [NSString stringByDecodingXMLEntities:descStr];
-    descStr = [NSString stringByStrippingTags:descStr];
-    
-    [blogEntry setValue:descStr forKey:@"descr"];
-    
-    //Set the description.
-    [blogEntry setValue:[TBXML textForElement:guidElement] forKey:@"guid"];
-    
-    //TODO set the integer value of the community attribute 0 for public and 1 for VMWare community blogs
-    NSString *articleLink = [TBXML textForElement:guidElement];
-    
-    int communityFlag = 0;
-    
-    if ([articleLink hasPrefix:@"http://vmblog.com"] || [articleLink hasPrefix:@"https://vmblog.com"]) {
-        communityFlag = 1;
+    if (titleElem)
+    {
+        //Set the title.
+        NSString *titleStr = [NSString stringByDecodingXMLEntities:[TBXML textForElement:titleElem]];
+        titleStr = [NSString stringByStrippingTags:titleStr];
+        
+        [blogEntry setValue:titleStr forKey:@"title"];
     }
     
-    NSNumber *communityType = [NSNumber numberWithInt:communityFlag];
-    
-    [blogEntry setValue:communityType forKey:@"community"];
-    
-    //Truncate date string
-    NSString * pubDateString = [TBXML textForElement:pubDateElement];
-    NSArray* dateStrArray = [pubDateString componentsSeparatedByString: @" "];
-    NSString *dayString = (NSString *) [dateStrArray objectAtIndex: 1];
-    
-    NSString *ichar = [NSString stringWithFormat:@"%c", [dayString characterAtIndex:0]];
-    
-    if([ichar  isEqual: @"0"]) {
-        dayString = [NSString stringWithFormat:@"%c", [dayString characterAtIndex:1]];
+    if (linkElem)
+    {
+        //Set the link.
+        [blogEntry setValue:[TBXML textForElement:linkElem] forKey:@"link"];
     }
     
-    pubDateString = [NSString stringWithFormat:@"%@ %@ %@", dayString, [dateStrArray objectAtIndex: 2], [dateStrArray objectAtIndex: 3]];
+    if (descElement)
+    {
+        NSString *descStr = [TBXML textForElement:descElement];
+        
+        descStr = [NSString stringByDecodingXMLEntities:descStr];
+        descStr = [NSString stringByStrippingTags:descStr];
+        
+        [blogEntry setValue:descStr forKey:@"descr"];
+    }
     
-    [blogEntry setValue:pubDateString forKey:@"pubDate"];
+    if (guidElement)
+    {
+        //Set the description.
+        [blogEntry setValue:[TBXML textForElement:guidElement] forKey:@"guid"];
+        
+        //TODO set the integer value of the community attribute 0 for public and 1 for VMWare community blogs
+        NSString *articleLink = [TBXML textForElement:guidElement];
+        
+        int communityFlag = 0;
+        
+        if ([articleLink hasPrefix:@"http://vmblog.com"] || [articleLink hasPrefix:@"https://vmblog.com"]) {
+            communityFlag = 1;
+        }
+        
+        NSNumber *communityType = [NSNumber numberWithInt:communityFlag];
+        
+        [blogEntry setValue:communityType forKey:@"community"];
+    }
+
+    if (pubDateElement)
+    {
+        //Truncate date string
+        NSString * pubDateString = [TBXML textForElement:pubDateElement];
+        NSArray* dateStrArray = [pubDateString componentsSeparatedByString: @" "];
+        NSString *dayString = (NSString *) [dateStrArray objectAtIndex: 1];
+        
+        NSString *ichar = [NSString stringWithFormat:@"%c", [dayString characterAtIndex:0]];
+        
+        if([ichar  isEqual: @"0"]) {
+            dayString = [NSString stringWithFormat:@"%c", [dayString characterAtIndex:1]];
+        }
+        
+        pubDateString = [NSString stringWithFormat:@"%@ %@ %@", dayString, [dateStrArray objectAtIndex: 2], [dateStrArray objectAtIndex: 3]];
+        
+        [blogEntry setValue:pubDateString forKey:@"pubDate"];
+    }
     
-    [blogEntry setValue:[TBXML textForElement:authorElement] forKey:@"author"];
+    if (authorElement)
+    {
+        [blogEntry setValue:[TBXML textForElement:authorElement] forKey:@"author"];
+    }
     
     NSNumber *myIntNumber = [NSNumber numberWithInt:order];
     
@@ -277,7 +297,6 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
     [blogEntry setValue:myIntNumber forKey:@"order"];
     
     return blogEntry;
-    
 }
 
 @end

@@ -9,7 +9,6 @@
 #import "VMBlogFeedViewController.h"
 #import "VMAppDelegate.h"
 #import "VMArticleViewController.h"
-#import "VMArticleEntityUpdater.h"
 #import "Blog.h"
 #import <dispatch/dispatch.h>
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -55,8 +54,6 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.searchBar setDelegate:self];
-//    self.updater = [[VMArticleEntityUpdater alloc] init];
-//    [self.updater setDelegate:self];
     
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.managedObjectContext = appDelegate.managedObjectContext;

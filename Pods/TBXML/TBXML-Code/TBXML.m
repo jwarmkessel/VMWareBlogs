@@ -375,14 +375,22 @@
 
 + (TBXMLElement*) childElementNamed:(NSString*)aName parentElement:(TBXMLElement*)aParentXMLElement{
     
-	TBXMLElement * xmlElement = aParentXMLElement->firstChild;
-	const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
-	while (xmlElement) {
-		if (strlen(xmlElement->name) == strlen(name) && memcmp(xmlElement->name,name,strlen(name)) == 0) {
-			return xmlElement;
-		}
-		xmlElement = xmlElement->nextSibling;
-	}
+    if (aParentXMLElement != nil && aName != nil)
+    {
+        if (aParentXMLElement->firstChild != nil)
+        {
+            TBXMLElement * xmlElement = aParentXMLElement->firstChild;
+            
+            const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
+            while (xmlElement) {
+                if (strlen(xmlElement->name) == strlen(name) && memcmp(xmlElement->name,name,strlen(name)) == 0) {
+                    return xmlElement;
+                }
+                xmlElement = xmlElement->nextSibling;
+            }
+        }
+    }
+    
 	return nil;
 }
 
