@@ -47,6 +47,17 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     @synthesize loadingView = _loadingView;
     @synthesize SynchronousFeedUpdater = _SynchronousFeedUpdater;
 
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    
+    if (self)
+    {
+    
+    }
+    
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -77,7 +88,6 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     NSError *error;
     self.fetchedResultsController = nil;
     
-    NSLog(@"Perform fetch");
     if (![[self fetchedResultsController] performFetch:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
@@ -183,11 +193,6 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     }];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    NSLog(@"view will disappear");
-}
-
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -288,7 +293,6 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSLog(@"Number of sections %lu", (unsigned long)[[_fetchedResultsController sections] count]);
     return [[_fetchedResultsController sections] count];
 }
 
@@ -296,7 +300,6 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 {
     if(![self isFilteredList]) {
         id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-        NSLog(@"Blog TableView Count: %lu", (unsigned long)[sectionInfo numberOfObjects]);
         return [sectionInfo numberOfObjects];
     } else {
         return [self.filteredTableData count];
@@ -344,7 +347,6 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didSelectRowAtIndexPath");
     [self.scrollToTopTap setEnabled:NO];
     
     Blog* blog = [self.fetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
@@ -458,42 +460,32 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     // request image.
     UIImage *imageFromCache = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageGetter];
     
-    if (imageFromCache) {
+    if (imageFromCache)
+    {
         imageView.image = imageFromCache;
         [imageView setAlpha:1.0];
-    } else {
-        
+    }
+    else
+    {
         BOOL isLink = [[blog.guid lowercaseString] hasPrefix:@"http://"];
-        if(isLink) {
-            
-            [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
         
-                CGImageRef cgref = [image CGImage];
-                CIImage *cim = [image CIImage];
-                
-                if (cim == nil && cgref == NULL)
+        if (isLink)
+        {
+            [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
+            {
+                if (image == nil || error)
                 {
-                    NSLog(@"no underlying data");
-                } else {
-                    NSLog(@"There is data");
+                    NSLog(@"Error: %@, Description: %@", error, error.description);
                 }
-                
-                if (!error) {
+                else
+                {
                     [imageView setAlpha:0.0];
-                    [UIView animateWithDuration:0.5 animations:^{
+                    
+                    [UIView animateWithDuration:0.5 animations:^
+                    {
                         imageView.image = image;
                         [imageView setAlpha:1.0];
                     }];
-                } else {
-                    NSLog(@"Error: %@, Description: %@", error, error.description);
-                    
-                    /*
-                     
-                     Error: Error Domain=NSURLErrorDomain Code=-1100 "The operation couldn’t be completed. (NSURLErrorDomain error -1100.)", Description: Error Domain=NSURLErrorDomain Code=-1100 "The operation couldn’t be completed. (NSURLErrorDomain error -1100.)"
-                     
-                     Your system is configured to download updates from a private server, not from Apple. That server isn't working or isn't reachable. If you're bound to an Open Directory or Active Directory domain, or if you're behind a firewall that doesn't allow downloading updates directly from Apple, your network administrator has to solve the problem. 
-
-                    */
                 }
             }];
         }
@@ -575,11 +567,12 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 /*
  Returns the fetched results controller. Creates and configures the controller if necessary.
  */
-- (NSFetchedResultsController *)fetchedResultsController {
-    NSLog(@"fetchedResultsController method");
+- (NSFetchedResultsController *)fetchedResultsController
+{
     self.filteredList = NO;
 
-    if (_fetchedResultsController != nil) {
+    if (_fetchedResultsController != nil)
+    {
         return _fetchedResultsController;
     }
     
@@ -589,7 +582,9 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     
     // Create and configure a fetch request with the Book entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"internal == %@", @(0)];
+    
+    NSNumber* internal = self.internalBlog ? self.internalBlog : @(0);
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"internal == %@", internal];
     
     fetchRequest.predicate = predicate;
     [fetchRequest setReturnsObjectsAsFaults:NO];
@@ -662,10 +657,13 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 }
 
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    NSLog(@"didChangeSection");
-    switch(type) {
-            
+- (void)controller:(NSFetchedResultsController *)controller
+  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex
+     forChangeType:(NSFetchedResultsChangeType)type
+{
+    switch ((int)type)
+    {        
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;

@@ -58,8 +58,9 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
     }
     
     NSString *xmlString = [VMWareBlogsAPI requestRSS:urlString];
-    NSLog(@"Finished xmlString");
-    if(xmlString == nil) {
+    
+    if(xmlString == nil)
+    {
         NSLog(@"(Developer WARNING) XML string is equal to nil");
         
         return NO;
@@ -76,7 +77,6 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
         return NO;
         
     } else if (!TBXMLError) {
-        NSLog(@"Parsing xmlString");
         NSError *temporaryMOCError;
         
         VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];

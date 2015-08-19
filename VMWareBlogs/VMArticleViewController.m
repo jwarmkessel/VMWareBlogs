@@ -86,8 +86,8 @@
     
 }
 
-- (void) viewWillDisappear:(BOOL)animated {
-    NSLog(@"view will disappear");
+- (void) viewWillDisappear:(BOOL)animated
+{
     [self destroyWebView];
 }
 

@@ -47,7 +47,6 @@
     NSError *error;
     self.fetchedResultsController = nil;
     
-    NSLog(@"Perform fetch");
     if (![[self fetchedResultsController] performFetch:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
@@ -87,18 +86,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
     // Return the number of rows in the section.
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    NSLog(@"%lu", (unsigned long)[sectionInfo numberOfObjects]);
     return [sectionInfo numberOfObjects];
 }
 
 // Customize the appearance of table view cells.
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    
-    // Configure the cell to show the book's title
-    NSLog(@"Configuring Cell");
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
     Blog *recentArticle = [_fetchedResultsController objectAtIndexPath:indexPath];
     
     UITextView *titleTextView = (UITextView *)[cell viewWithTag:101];
@@ -107,7 +102,6 @@
     titleTextView.userInteractionEnabled = NO;
 
     [titleTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:18.0f]];
-    NSLog(@"Cell title %@", recentArticle.title);
     titleTextView.text = recentArticle.title;
     [titleTextView setTextColor:[UIColor colorWithHexString:@"696566"]];
     [titleTextView setBackgroundColor:[UIColor clearColor]];
@@ -227,10 +221,8 @@
     }   
 }
 
-- (void)RecentArticleDeleted:(NSNotification *)notification {
-    NSLog(@"Recent Article Did Delete Notification");
-    // Whatever method you registered as an observer to NSManagedObjectContextDidSave
-    
+- (void)RecentArticleDeleted:(NSNotification *)notification
+{
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     NSLog(@"The notification from DELETE changes %@", notification.name);
@@ -296,11 +288,7 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastRead >= %@", [[NSDate date] beginningOfDay] ];
 
     fetchRequest.predicate = predicate;
-        
-    NSLog(@"alloc FetchedResultsController");
-    //Retrieve the entity description
     
-    NSLog(@"get RecentArticle entity");
     NSEntityDescription *entity = [NSEntityDescription
                                    entityForName:@"Blog" inManagedObjectContext:managedObjectContext];
     
@@ -310,7 +298,6 @@
     
     [fetchRequest setSortDescriptors:sortDescriptors];
     
-    NSLog(@"Create and initialize the fetch results controller.");
     // Create and initialize the fetch results controller.
     _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                     managedObjectContext:appDelegate.managedObjectContext
@@ -326,43 +313,35 @@
 /*
  NSFetchedResultsController delegate methods to respond to additions, removals and so on.
  */
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    NSLog(@"controllerWillChangeContent");
-    
-    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-    
-    
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
     [self.tableView beginUpdates];
-    
 }
 
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    NSLog(@"didChangeObject");
-    
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
     UITableView *tableView = self.tableView;
     
     switch(type) {
             
         case NSFetchedResultsChangeInsert:
-            NSLog(@"Inserting");
             [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
             break;
             
         case NSFetchedResultsChangeDelete:
-            NSLog(@"Deleting");
-            NSLog(@"indexpath %@", indexPath);
             if(indexPath == NULL) break;
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeUpdate:
-            NSLog(@"Results Change Update");
             [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
-            NSLog(@"Move?");
             [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
@@ -373,9 +352,8 @@
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
-    NSLog(@"didChangeSection");
-    switch(type) {
-            
+    switch((int)type)
+    {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
@@ -386,12 +364,9 @@
     }
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    NSLog(@"controllerDidChangeContent");
-    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-    
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
     [self.tableView endUpdates];
-    
 }
 
 @end

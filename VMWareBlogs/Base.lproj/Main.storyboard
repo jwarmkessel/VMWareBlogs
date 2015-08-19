@@ -199,10 +199,10 @@
             </objects>
             <point key="canvasLocation" x="564" y="922"/>
         </scene>
-        <!--Corporate Feed Table View Controller-->
+        <!--Corp Blog View Controller-->
         <scene sceneID="qkM-re-kWP">
             <objects>
-                <tableViewController id="9ai-Hl-qQo" customClass="VMCorporateFeedTableViewController" sceneMemberID="viewController">
+                <tableViewController id="9ai-Hl-qQo" customClass="VMCorpBlogViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Nfb-DD-qbe">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -290,7 +290,7 @@
             <objects>
                 <navigationController definesPresentationContext="YES" id="1UJ-d7-zvK" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Corporate" image="blog.png" id="R9y-7Z-UbM"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ggd-Aa-e2g">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" backIndicatorImage="VMware_logo_88.png" id="ggd-Aa-e2g">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -310,7 +310,7 @@
                         <viewControllerLayoutGuide type="bottom" id="SR3-ns-45v"/>
                     </layoutGuides>
                     <view key="view" tag="100" contentMode="scaleToFill" id="78U-ev-ggP">
-                        <rect key="frame" x="0.0" y="64" width="320" height="1000"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="936"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -338,6 +338,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="VMware_logo_88.png" width="320" height="88"/>
         <image name="blog.png" width="16" height="16"/>
         <image name="bookmark.png" width="16" height="16"/>
         <image name="layout-content.png" width="16" height="16"/>
@@ -349,6 +350,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="2b1-7S-I8w"/>
+        <segue reference="8Z5-CJ-5Y7"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -12,6 +12,7 @@
 
 @interface VMBlogFeedViewController : UITableViewController <NSFetchedResultsControllerDelegate, VMSynchronousFeedUpdaterDelegate, UISearchBarDelegate>
 
-@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
+@property (nonatomic, strong)   NSManagedObjectContext* managedObjectContext;
+@property (nonatomic)           NSNumber*               internalBlog;
 
 @end
