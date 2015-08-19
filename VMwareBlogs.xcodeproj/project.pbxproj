@@ -175,6 +175,7 @@
 		7B5C84BB196DDEF700EB3BA4 /* VMSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMSectionHeaderView.m; sourceTree = "<group>"; };
 		7B81EBEF1B8426790089B1DD /* VMCorpBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMCorpBlogViewController.h; path = VMWareBlogs/VMCorpBlogViewController.h; sourceTree = "<group>"; };
 		7B81EBF01B8426790089B1DD /* VMCorpBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMCorpBlogViewController.m; path = VMWareBlogs/VMCorpBlogViewController.m; sourceTree = "<group>"; };
+		7B81EBF51B842D220089B1DD /* BlogModel 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 11.xcdatamodel"; sourceTree = "<group>"; };
 		7BA93AFD19708767008AA1F0 /* BlogModel 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "BlogModel 8.xcdatamodel"; sourceTree = "<group>"; };
 		7BA93B0119708996008AA1F0 /* CorporateArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CorporateArticle.h; sourceTree = "<group>"; };
 		7BA93B0219708996008AA1F0 /* CorporateArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CorporateArticle.m; sourceTree = "<group>"; };
@@ -1192,6 +1193,7 @@
 		83FE344C18CE75670080C64C /* BlogModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7B81EBF51B842D220089B1DD /* BlogModel 11.xcdatamodel */,
 				7B20CC661B8265DF007FF5D2 /* BlogModel 10.xcdatamodel */,
 				7B20CC5C1B81B770007FF5D2 /* BlogModel 9.xcdatamodel */,
 				7BA93AFD19708767008AA1F0 /* BlogModel 8.xcdatamodel */,
@@ -1203,7 +1205,7 @@
 				83FF03D519103C92003AF06C /* BlogModel 3.xcdatamodel */,
 				83FE344D18CE75670080C64C /* BlogModel.xcdatamodel */,
 			);
-			currentVersion = 7B20CC661B8265DF007FF5D2 /* BlogModel 10.xcdatamodel */;
+			currentVersion = 7B81EBF51B842D220089B1DD /* BlogModel 11.xcdatamodel */;
 			path = BlogModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

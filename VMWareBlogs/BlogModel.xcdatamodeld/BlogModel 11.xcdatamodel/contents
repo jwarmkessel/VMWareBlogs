@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F6a" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Blog" representedClassName="Blog" syncable="YES">
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="community" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="descr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="internal" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastRead" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="objectSyncStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="pubDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="vmRootItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VMRootItem" inverseName="blog" inverseEntity="VMRootItem" syncable="YES"/>
+    </entity>
+    <entity name="VMRootItem" representedClassName="VMRootItem" syncable="YES">
+        <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="blog" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="vmRootItem" inverseEntity="Blog" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Blog" positionX="-128" positionY="-45" width="128" height="223"/>
+        <element name="VMRootItem" positionX="-324" positionY="-27" width="128" height="73"/>
+    </elements>
+</model>
