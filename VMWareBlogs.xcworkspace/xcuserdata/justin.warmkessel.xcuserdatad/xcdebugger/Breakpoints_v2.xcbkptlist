@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VMWareBlogs/VMBlogFeedViewController.m"
-            timestampString = "461644645.386905"
+            timestampString = "462608006.562335"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "356"
-            endingLineNumber = "356"
+            startingLineNumber = "354"
+            endingLineNumber = "354"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -35,13 +35,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "VMWareBlogs/VMBlogFeedViewController.m"
-            timestampString = "461645550.829986"
+            filePath = "VMWareBlogs/VMSynchronousFeedUpdater.m"
+            timestampString = "462653390.58248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "585"
-            endingLineNumber = "585"
-            landmarkName = "-fetchedResultsController"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "-updateList"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VMWareBlogs/VMSynchronousFeedUpdater.m"
+            timestampString = "462653413.2976"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "-updateList"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

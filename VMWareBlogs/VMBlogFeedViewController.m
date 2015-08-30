@@ -38,14 +38,6 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 @end
 
 @implementation VMBlogFeedViewController
-    @synthesize managedObjectContext;
-    @synthesize moc = _moc;
-    @synthesize filteredTableData = _filteredTableData;
-    //@synthesize updater;
-
-    @synthesize toggle;
-    @synthesize loadingView = _loadingView;
-    @synthesize SynchronousFeedUpdater = _SynchronousFeedUpdater;
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
@@ -164,13 +156,13 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
 
 - (void)scrollTest {
 
-    if(toggle) {
+    if(self.toggle) {
         [self.tableView scrollRectToVisible:CGRectMake(0, arc4random() % (int)self.tableView.contentSize.height, 1, 1) animated:YES];
     } else {
         [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
     }
     
-    toggle = !toggle;
+    self.toggle = !self.toggle;
 }
 
 - (void)refreshTable:(id)sender {
@@ -178,15 +170,21 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     [self.refreshControl beginRefreshing];
     
     NSLog(@"Refreshing Table Data");
+
     //TODO: refresh your data
     //[self.tableView setUserInteractionEnabled:NO];
+    
     [self.loadingView setBackgroundColor:[UIColor blackColor]];
     [self.loadingView setAlpha:0];
     [self.view addSubview:self.loadingView];
     
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.3
+                     animations:^
+    {
         [_loadingView setAlpha:0.3];
-    }completion:^(BOOL finished) {
+    }
+                     completion:^(BOOL finished)
+    {
         self.searchBar.text = @"";
         [self setFilteredList:NO];
         [self.SynchronousFeedUpdater updateList];
@@ -508,59 +506,6 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     
     vc.articleURL = blog.link;
 }
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"commitEditingStyle");
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSLog(@"UITableViewCellEditingStyleDelete");
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        NSLog(@"UITableViewCellEditingStyleInsert");
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 #pragma mark - FetchedResults controller
 
@@ -578,7 +523,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    managedObjectContext = appDelegate.managedObjectContext;
+    self.managedObjectContext = appDelegate.managedObjectContext;
     
     // Create and configure a fetch request with the Book entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -591,7 +536,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     
     NSEntityDescription *entity = [NSEntityDescription
                                               entityForName:@"Blog"
-                                     inManagedObjectContext:managedObjectContext];
+                                     inManagedObjectContext:self.managedObjectContext];
     
     [fetchRequest setFetchLimit:100];
     
@@ -710,7 +655,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     
     VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    managedObjectContext = appDelegate.managedObjectContext;
+    self.managedObjectContext = appDelegate.managedObjectContext;
     
     self.filteredTableData = [[NSMutableArray alloc] init];
     

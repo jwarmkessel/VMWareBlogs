@@ -43,10 +43,40 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
         _updateContext      = managedObjectContext;
         _internal           = internal;
     }
+    
     return self;
 }
+
+- (NSArray*)fetchPersistedBlog
+{
+    VMAppDelegate*              appDelegate             = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    NSFetchRequest*             request                 = [[NSFetchRequest alloc] initWithEntityName:@"Blog"];
+//    NSManagedObjectContext*     context                 = appDelegate.managedObjectContext;
+//    NSSortDescriptor*           sort                    = [NSSortDescriptor sortDescriptorWithKey:@"link"
+//                                                                                        ascending:YES
+//                                                                                         selector:@selector(caseInsensitiveCompare:)];
+//    NSArray*                    sortDescriptors         = @[sort];
+//    
+//    [request setSortDescriptors:sortDescriptors];
+//    
+//    NSError*                    error                   = nil;
+//    NSArray*                    blogs                   = [context executeFetchRequest:request error:&error];
+    
+    NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
+    NSURL*              uri         = [defaults URLForKey:@"rootItem"];
+    NSManagedObjectID*  moid        = [appDelegate.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+    NSError*            error       = nil;
+    VMRootItem*         rootItem    = (id) [appDelegate.managedObjectContext existingObjectWithID:moid error:&error];
+    
+    return [rootItem.blog allObjects];;
+}
+
 - (BOOL)updateList
 {
+    BOOL            somethingToUpdate   = NO;
+    VMAppDelegate*  appDelegate         = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSArray*        sortedBlogs         = [self fetchPersistedBlog];
+
     [self.updateContext reset];
     
     //Request data.
@@ -57,159 +87,92 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
         urlString = [NSString stringWithFormat:@"%@/%@", kBaseURI, kCorporateRSSFeed];
     }
     
-    NSString *xmlString = [VMWareBlogsAPI requestRSS:urlString];
+    NSString* xmlString = [VMWareBlogsAPI requestRSS:urlString];
     
-    if(xmlString == nil)
+    if(xmlString)
     {
-        NSLog(@"(Developer WARNING) XML string is equal to nil");
+        somethingToUpdate = YES;
         
-        return NO;
-    }
-    
-    NSError *TBXMLError = nil;
-    
-    //initiate tbxml frameworks to consume xml data.
-    TBXML *tbxml = [[TBXML alloc] initWithXMLString:xmlString error:&TBXMLError];
-    if (TBXMLError) {
-        NSLog(@"(Developer WARNING) THERE WAS A BIG MISTAKE %@", TBXMLError);
-        [self performSelectorInBackground:@selector(updateList) withObject:self];
+        NSError*    TBXMLError  = nil;
+        TBXML*      tbxml       = [[TBXML alloc] initWithXMLString:xmlString
+                                                             error:&TBXMLError];
         
-        return NO;
-        
-    } else if (!TBXMLError) {
-        NSError *temporaryMOCError;
-        
-        VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        //If either the managed object context or persistent store coordinator are nil set them up.
-        if (self.updateContext == nil) {
-            self.updateContext = appDelegate.managedObjectContext;
-        }
-        
-        if (self.updateContext.persistentStoreCoordinator == nil) {
-            NSPersistentStoreCoordinator *coordinator = [appDelegate persistentStoreCoordinator];
-            [self.updateContext setPersistentStoreCoordinator:coordinator];
-        }
-        
-        // Create and configure a fetch request with the Blog entity.
-        NSEntityDescription *entityDescription = [NSEntityDescription
-                                                  entityForName:@"Blog" inManagedObjectContext:self.updateContext];
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-
-        [fetchRequest setReturnsObjectsAsFaults:NO];
-        
-        NSError *fetchRequestError;
-        [fetchRequest setEntity:entityDescription];
-        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
-        NSArray *sortDescriptors = @[sort];
-        [fetchRequest setSortDescriptors:sortDescriptors];
-        NSArray *sortedArticleArray = [self.updateContext executeFetchRequest:fetchRequest error:&fetchRequestError];
-        
-        //Prepare to consume data.
-        TBXMLElement * rootXMLElement = tbxml.rootXMLElement;
-        TBXMLElement * channelElement = [TBXML childElementNamed:@"channel" parentElement:rootXMLElement];
-        TBXMLElement * itemElement = [TBXML childElementNamed:@"item" parentElement:channelElement];
-        
-        int j = 0;
-        int order = 1;
-        int articleCount = 0;
-        int totalArticles = [sortedArticleArray count] == 0 ? 0 : (int)([sortedArticleArray count] -1);
-        
-        do {
-            Blog *blogEntry;
+        if (TBXMLError)
+        {
+            NSLog(@"TBXML Error : %@", TBXMLError);
             
-            TBXMLElement * titleElem = [TBXML childElementNamed:@"title" parentElement:itemElement];
-            TBXMLElement * linkElem = [TBXML childElementNamed:@"link" parentElement:itemElement];
-            TBXMLElement * descElement = [TBXML childElementNamed:@"description" parentElement:itemElement];
-            TBXMLElement * pubDateElement = [TBXML childElementNamed:@"pubDate" parentElement:itemElement];
-            TBXMLElement * guidElement = [TBXML childElementNamed:@"guid" parentElement:itemElement];
-            TBXMLElement * authorElement = [TBXML childElementNamed:@"dc:creator" parentElement:itemElement];
+            [self performSelectorInBackground:@selector(updateList) withObject:self];
+        }
+        else if (!TBXMLError)
+        {
+            TBXMLElement*           rootXMLElement          = tbxml.rootXMLElement;
+            TBXMLElement*           channelElement          = [TBXML childElementNamed:@"channel" parentElement:rootXMLElement];
+            TBXMLElement*           itemElement             = [TBXML childElementNamed:@"item" parentElement:channelElement];
             
-            //If the input is greater than database...
-            if(articleCount >= totalArticles) {
-                
-                //Just save the articles.
-                blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
-                
-                if (![self.updateContext save:&temporaryMOCError]) {
-                    NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
-                    
-                }
-                
-                [blogEntry.managedObjectContext refreshObject:blogEntry mergeChanges:YES];
-
-                if (blogEntry)
+            if (!itemElement)
+            {
+                NSLog(@"Item element from XML download is nil.");
+            }
+            else if (itemElement)
+            {
+                do
                 {
-                    VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+                    Blog* blog = [self createBlog:*itemElement];
                     
-                    NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
-                    NSURL*              uri         = [defaults URLForKey:@"rootItem"];
-                    NSManagedObjectID*  moid        = [appDelegate.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-                    NSError*            error       = nil;
-                    VMRootItem*         rootItem    = (id) [appDelegate.managedObjectContext existingObjectWithID:moid error:&error];
+                    NSString*       predicateFormat = @"link == %@";
+                    NSArray*        existingBlog    = [sortedBlogs filteredArrayUsingPredicate: [NSPredicate predicateWithFormat:predicateFormat,
+                                                                                                 blog.link]];
                     
-                    [rootItem addBlogObject:blogEntry];
-                }
-                
-            } else {
-                Blog *article = [sortedArticleArray objectAtIndex:j];
-                if (linkElem)
-                {
-                    if( ![article.link isEqualToString:[TBXML textForElement:linkElem]] ) {
-                                                
-                        // Delete the row from the data source.
-                        [self.updateContext deleteObject:article];
+                    if (existingBlog.count == 0)
+                    {
+                        NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
+                        NSURL*              uri         = [defaults URLForKey:@"rootItem"];
+                        NSManagedObjectID*  moid        = [appDelegate.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+                        NSError*            error       = nil;
+                        VMRootItem*         rootItem    = (id) [appDelegate.managedObjectContext existingObjectWithID:moid error:&error];
                         
-                        // Force saving the delete.
-                        if (![self.updateContext save:&temporaryMOCError]) {
-                            NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
-                        }
-                                            
-                        //Just save the articles.
-                        blogEntry = [self createArticleEntityWithTitle:titleElem articleLink:linkElem articleDescription:descElement publishDate:pubDateElement GUIDElement:guidElement AuthorElement:authorElement andOrder:order];
-                        
-                        if (blogEntry)
+                        if (error)
                         {
-                            VMAppDelegate *appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
-                            
-                            NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
-                            NSURL*              uri         = [defaults URLForKey:@"rootItem"];
-                            NSManagedObjectID*  moid        = [appDelegate.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
-                            NSError*            error       = nil;
-                            VMRootItem*         rootItem    = (id) [appDelegate.managedObjectContext existingObjectWithID:moid error:&error];
-                            
-                            [rootItem addBlogObject:blogEntry];
+                            NSLog(@"Error retrieving VMRootItem : %@", error);
+                        }
+                        else
+                        {
+                            [rootItem addBlogObject:blog];
                         }
                     }
-                }
+                    else
+                    {
+                        NSLog(@"Object already exists");
+                    }
+                    
+                } while ((itemElement = itemElement->nextSibling));
             }
             
-            order++;
-            j++;
-            articleCount++;
+            NSError* error = nil;
             
-
-        } while ((itemElement = itemElement->nextSibling));
-        
-        NSError* error = nil;
-        
-        [appDelegate.managedObjectContext save:&error];
-        
-        
-        if (![self.updateContext save:&temporaryMOCError]) {
-            NSLog(@"Failed to save - error: %@", [temporaryMOCError localizedDescription]);
+            [appDelegate.managedObjectContext save:&error];
+            
+            if (![self.updateContext save:&error]) {
+                NSLog(@"Failed to save - error: %@", [error localizedDescription]);
+            }
         }
     }
     
     [self.delegate articleEntityUpdaterDidFinishUpdating];
     
-    return YES;
+    return somethingToUpdate;
 }
 
-- (Blog *)createArticleEntityWithTitle:(TBXMLElement *)titleElem articleLink:(TBXMLElement *)linkElem articleDescription:(TBXMLElement *)descElement publishDate:(TBXMLElement *)pubDateElement GUIDElement:(TBXMLElement *)guidElement AuthorElement:(TBXMLElement *)authorElement andOrder:(int)order {
-    
-    //Initialize Blog Entity.
+- (Blog*)createBlog:(TBXMLElement)itemElement
+{
     Blog *blogEntry;
+    
+    TBXMLElement* titleElem         = [TBXML childElementNamed:@"title"         parentElement:&itemElement];
+    TBXMLElement* linkElem          = [TBXML childElementNamed:@"link"          parentElement:&itemElement];
+    TBXMLElement* descElement       = [TBXML childElementNamed:@"description"   parentElement:&itemElement];
+    TBXMLElement* pubDateElement    = [TBXML childElementNamed:@"pubDate"       parentElement:&itemElement];
+    TBXMLElement* guidElement       = [TBXML childElementNamed:@"guid"          parentElement:&itemElement];
+    TBXMLElement* authorElement     = [TBXML childElementNamed:@"dc:creator"    parentElement:&itemElement];
     
     //Create an instance of the entity.
     blogEntry = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
@@ -267,7 +230,7 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
         
         [blogEntry setValue:communityType forKey:@"community"];
     }
-
+    
     if (pubDateElement)
     {
         //Truncate date string
@@ -291,12 +254,8 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
         [blogEntry setValue:[TBXML textForElement:authorElement] forKey:@"author"];
     }
     
-    NSNumber *myIntNumber = [NSNumber numberWithInt:order];
-    
-    //Set the order to be used for querying an ordered list.
-    [blogEntry setValue:myIntNumber forKey:@"order"];
-    
     return blogEntry;
+
 }
 
 @end
