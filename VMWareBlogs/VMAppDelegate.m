@@ -14,6 +14,12 @@
 
 static NSString* kCrashlyticsKey = @"59c371b61d689f5678d0ebe6a0d8db4973125312";
 
+@interface VMAppDelegate ()
+
+@property (nonatomic, strong) NSManagedObjectContext* asynchronousContext;
+
+@end
+
 @implementation VMAppDelegate
 
 @synthesize managedObjectContext = _managedObjectContext;
@@ -25,13 +31,23 @@ static NSString* kCrashlyticsKey = @"59c371b61d689f5678d0ebe6a0d8db4973125312";
     [self configureRootItemForCoreData];
  
     [Crashlytics startWithAPIKey:kCrashlyticsKey];
-    
-    self.updater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext internal:NO];
-    [self.updater updateList];
-    
-    self.corporateUpdater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.managedObjectContext internal:YES];
 
-    [self.corporateUpdater updateList];
+    NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+
+    self.asynchronousContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    
+    [self.asynchronousContext setParentContext:self.managedObjectContext];
+    
+    [operationQueue addOperationWithBlock:^
+    {
+        self.updater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.asynchronousContext internal:NO];
+        [self.updater updateList];
+
+        self.corporateUpdater = [[VMSynchronousFeedUpdater alloc] initWithManagedObjectContext:self.asynchronousContext internal:YES];
+
+        [self.corporateUpdater updateList];
+    }];
+    
 
     
     return YES;

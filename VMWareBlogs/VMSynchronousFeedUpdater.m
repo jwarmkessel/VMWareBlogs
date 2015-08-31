@@ -49,12 +49,13 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
 
 - (NSArray*)fetchPersistedBlog
 {
-    VMAppDelegate*      appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    //VMAppDelegate*      appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
     NSURL*              uri         = [defaults URLForKey:@"rootItem"];
-    NSManagedObjectID*  moid        = [appDelegate.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+    NSManagedObjectID*  moid        = [self.updateContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
     NSError*            error       = nil;
-    VMRootItem*         rootItem    = (id) [appDelegate.managedObjectContext existingObjectWithID:moid error:&error];
+    VMRootItem*         rootItem    = (id) [self.updateContext existingObjectWithID:moid error:&error];
     
     return [rootItem.blog allObjects];;
 }
@@ -112,9 +113,9 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
                     {
                         NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
                         NSURL*              uri         = [defaults URLForKey:@"rootItem"];
-                        NSManagedObjectID*  moid        = [appDelegate.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
+                        NSManagedObjectID*  moid        = [self.updateContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
                         NSError*            error       = nil;
-                        VMRootItem*         rootItem    = (id) [appDelegate.managedObjectContext existingObjectWithID:moid error:&error];
+                        VMRootItem*         rootItem    = (id) [self.updateContext existingObjectWithID:moid error:&error];
                         
                         if (error)
                         {
@@ -135,10 +136,19 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
             
             NSError* error = nil;
             
-            [appDelegate.managedObjectContext save:&error];
+            [self.updateContext save:&error];
             
             if (![self.updateContext save:&error]) {
                 NSLog(@"Failed to save - error: %@", [error localizedDescription]);
+            }
+            else
+            {
+                [appDelegate.managedObjectContext performBlock:^{
+                    NSError *parentError = nil;
+                    if (![appDelegate.managedObjectContext save:&parentError]) {
+                        NSLog(@"Error saving parent");
+                    }
+                }];
             }
         }
     }
