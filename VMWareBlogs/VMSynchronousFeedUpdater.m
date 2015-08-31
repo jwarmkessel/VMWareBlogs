@@ -21,13 +21,6 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
 @interface VMSynchronousFeedUpdater()
 
 - (BOOL)updateList;
-- (Blog *)createArticleEntityWithTitle:(TBXMLElement *)titleElem
-                           articleLink:(TBXMLElement *)linkElem
-                    articleDescription:(TBXMLElement *)descElement
-                           publishDate:(TBXMLElement *)pubDateElement
-                           GUIDElement:(TBXMLElement *)guidElement
-                         AuthorElement:(TBXMLElement *)authorElement
-                              andOrder:(int)order;
 
 @end
 
@@ -92,9 +85,9 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
         }
         else if (!TBXMLError)
         {
-            TBXMLElement*           rootXMLElement          = tbxml.rootXMLElement;
-            TBXMLElement*           channelElement          = [TBXML childElementNamed:@"channel" parentElement:rootXMLElement];
-            TBXMLElement*           itemElement             = [TBXML childElementNamed:@"item" parentElement:channelElement];
+            TBXMLElement*           rootXMLElement  = tbxml.rootXMLElement;
+            TBXMLElement*           channelElement  = [TBXML childElementNamed:@"channel" parentElement:rootXMLElement];
+            TBXMLElement*           itemElement     = [TBXML childElementNamed:@"item" parentElement:channelElement];
             
             if (!itemElement)
             {
@@ -160,8 +153,7 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
 
 - (Blog*)createBlog:(TBXMLElement)itemElement
 {
-    Blog *blogEntry;
-    
+    Blog*         blogEntry         = nil;
     TBXMLElement* titleElem         = [TBXML childElementNamed:@"title"         parentElement:&itemElement];
     TBXMLElement* linkElem          = [TBXML childElementNamed:@"link"          parentElement:&itemElement];
     TBXMLElement* descElement       = [TBXML childElementNamed:@"description"   parentElement:&itemElement];
@@ -169,11 +161,10 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
     TBXMLElement* guidElement       = [TBXML childElementNamed:@"guid"          parentElement:&itemElement];
     TBXMLElement* authorElement     = [TBXML childElementNamed:@"dc:creator"    parentElement:&itemElement];
     
-    //Create an instance of the entity.
     blogEntry = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
                                               inManagedObjectContext:self.updateContext];
     
-    NSNumber* internal = @(0);
+    NSNumber*     internal          = @(0);
     
     if (self.internal)
     {
@@ -184,7 +175,6 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
     
     if (titleElem)
     {
-        //Set the title.
         NSString *titleStr = [NSString stringByDecodingXMLEntities:[TBXML textForElement:titleElem]];
         titleStr = [NSString stringByStrippingTags:titleStr];
         
@@ -193,7 +183,6 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
     
     if (linkElem)
     {
-        //Set the link.
         [blogEntry setValue:[TBXML textForElement:linkElem] forKey:@"link"];
     }
     
@@ -209,10 +198,8 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
     
     if (guidElement)
     {
-        //Set the description.
         [blogEntry setValue:[TBXML textForElement:guidElement] forKey:@"guid"];
         
-        //TODO set the integer value of the community attribute 0 for public and 1 for VMWare community blogs
         NSString *articleLink = [TBXML textForElement:guidElement];
         
         int communityFlag = 0;
@@ -228,7 +215,6 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
     
     if (pubDateElement)
     {
-        //Truncate date string
         NSString * pubDateString = [TBXML textForElement:pubDateElement];
         NSArray* dateStrArray = [pubDateString componentsSeparatedByString: @" "];
         NSString *dayString = (NSString *) [dateStrArray objectAtIndex: 1];

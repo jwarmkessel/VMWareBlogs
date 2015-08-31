@@ -402,7 +402,7 @@ static NSString *SectionHeaderViewIdentifier = @"SectionHeaderViewIdentifier";
     [authorLbl setTextAlignment:NSTextAlignmentRight];
     [authorLbl setBackgroundColor:[UIColor clearColor]];
     
-    __block __weak UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
+    __weak UIImageView *imageView = (UIImageView *)[cell viewWithTag:103];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     
     NSString *orderString = [[NSString alloc] init];

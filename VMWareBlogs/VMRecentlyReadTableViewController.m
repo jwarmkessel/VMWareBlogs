@@ -92,9 +92,62 @@
     return [sectionInfo numberOfObjects];
 }
 
-// Customize the appearance of table view cells.
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
+//// Customize the appearance of table view cells.
+//- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+//{
+//    Blog *recentArticle = [_fetchedResultsController objectAtIndexPath:indexPath];
+//    
+//    UITextView *titleTextView = (UITextView *)[cell viewWithTag:101];
+//    titleTextView.editable = NO;
+//    titleTextView.selectable = NO;
+//    titleTextView.userInteractionEnabled = NO;
+//
+//    [titleTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:18.0f]];
+//    titleTextView.text = recentArticle.title;
+//    [titleTextView setTextColor:[UIColor colorWithHexString:@"696566"]];
+//    [titleTextView setBackgroundColor:[UIColor clearColor]];
+//    
+//    UILabel *authorAndDateLbl = (UILabel *)[cell viewWithTag:102];
+//    authorAndDateLbl.text = [NSString stringWithFormat:@"%@ - %@", recentArticle.author, recentArticle.pubDate];
+//    [authorAndDateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:12.0f]];
+//    [authorAndDateLbl setTextColor:[UIColor colorWithHexString:@"8D8D8D"]];
+//    [authorAndDateLbl setBackgroundColor:[UIColor clearColor]];
+//    
+//    UIImageView *imageView = (UIImageView *)[cell viewWithTag:105];
+//    imageView.alpha = 0;
+//    imageView.contentMode = UIViewContentModeScaleAspectFit;
+//    
+//    /*
+//     Parameter   	Size             	Dimensions
+//     xlg	Extra Large	320 x 240
+//     lg	Large	200 x 150
+//     sm	Small	100 x 75
+//     vsm	Very Small	90 x 68
+//     mcr	Micro	75 x 57
+//     */
+//    
+//    NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=100&stwymax=90&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", recentArticle.guid];
+//    
+//    //[[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
+//    
+//    NSURL *url = [NSURL URLWithString:imageGetter];
+//    
+//    [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//        [UIView animateWithDuration:0.4 animations:^{
+//            
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Warc-retain-cycles"
+//            imageView.alpha = 1;
+//#pragma clang diagnostic pop
+//            
+//            
+//        } completion:^(BOOL finished) {
+//            NSLog(@"Image loaded");
+//        }];
+//    }];
+//}
+
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     Blog *recentArticle = [_fetchedResultsController objectAtIndexPath:indexPath];
     
     UITextView *titleTextView = (UITextView *)[cell viewWithTag:101];
@@ -106,46 +159,74 @@
     titleTextView.text = recentArticle.title;
     [titleTextView setTextColor:[UIColor colorWithHexString:@"696566"]];
     [titleTextView setBackgroundColor:[UIColor clearColor]];
-    
+
     UILabel *authorAndDateLbl = (UILabel *)[cell viewWithTag:102];
     authorAndDateLbl.text = [NSString stringWithFormat:@"%@ - %@", recentArticle.author, recentArticle.pubDate];
     [authorAndDateLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:12.0f]];
     [authorAndDateLbl setTextColor:[UIColor colorWithHexString:@"8D8D8D"]];
     [authorAndDateLbl setBackgroundColor:[UIColor clearColor]];
-    
-    UIImageView *imageView = (UIImageView *)[cell viewWithTag:105];
-    imageView.alpha = 0;
+
+    __weak UIImageView *imageView = (UIImageView *)[cell viewWithTag:105];
+    imageView.alpha = 1;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     
-    /*
+    __weak UIImage *image = [UIImage imageNamed:@"placeholder.png"];
+    imageView.image = image;
+    
+    /************************************************
      Parameter   	Size             	Dimensions
      xlg	Extra Large	320 x 240
      lg	Large	200 x 150
      sm	Small	100 x 75
      vsm	Very Small	90 x 68
      mcr	Micro	75 x 57
-     */
-    
+     
+     Mute warnings using:
+     #pragma clang diagnostic push
+     #pragma clang diagnostic ignored "-Warc-retain-cycles"
+     #pragma clang diagnostic pop
+     ************************************************/
+    //NSLog(@"GUID: %@", blog.guid);
     NSString *imageGetter = [NSString stringWithFormat:@"http://images.shrinktheweb.com/xino.php?stwembed=1&stwxmax=100&stwymax=90&stwaccesskeyid=ea6efd2fb0f678a&stwsize=sm&stwurl=%@", recentArticle.guid];
-    
-    //[[SDImageCache sharedImageCache] removeImageForKey:imageGetter fromDisk:YES];
     
     NSURL *url = [NSURL URLWithString:imageGetter];
     
-    [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-        [UIView animateWithDuration:0.4 animations:^{
-            
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            imageView.alpha = 1;
-#pragma clang diagnostic pop
-            
-            
-        } completion:^(BOOL finished) {
-            NSLog(@"Image loaded");
-        }];
-    }];
+    // Interesting way of handling batch image downloads http://stackoverflow.com/questions/23818055/handling-download-of-image-using-sdwebimage-while-reusing-uitableviewcell.
+    // request image.
+    UIImage *imageFromCache = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageGetter];
+    
+    if (imageFromCache)
+    {
+        imageView.image = imageFromCache;
+        [imageView setAlpha:1.0];
+    }
+    else
+    {
+        BOOL isLink = [[recentArticle.guid lowercaseString] hasPrefix:@"http://"];
+        
+        if (isLink)
+        {
+            [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"placeholder.png"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
+             {
+                 if (image == nil || error)
+                 {
+                     NSLog(@"Error: %@, Description: %@", error, error.description);
+                 }
+                 else
+                 {
+                     [imageView setAlpha:0.0];
+                     
+                     [UIView animateWithDuration:0.5 animations:^
+                      {
+                          imageView.image = image;
+                          [imageView setAlpha:1.0];
+                      }];
+                 }
+             }];
+        }
+    }
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //    NSLog(@"cellForRowAtIndexPath");
