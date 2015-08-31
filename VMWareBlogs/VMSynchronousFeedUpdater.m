@@ -49,19 +49,7 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
 
 - (NSArray*)fetchPersistedBlog
 {
-    VMAppDelegate*              appDelegate             = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
-//    NSFetchRequest*             request                 = [[NSFetchRequest alloc] initWithEntityName:@"Blog"];
-//    NSManagedObjectContext*     context                 = appDelegate.managedObjectContext;
-//    NSSortDescriptor*           sort                    = [NSSortDescriptor sortDescriptorWithKey:@"link"
-//                                                                                        ascending:YES
-//                                                                                         selector:@selector(caseInsensitiveCompare:)];
-//    NSArray*                    sortDescriptors         = @[sort];
-//    
-//    [request setSortDescriptors:sortDescriptors];
-//    
-//    NSError*                    error                   = nil;
-//    NSArray*                    blogs                   = [context executeFetchRequest:request error:&error];
-    
+    VMAppDelegate*      appDelegate = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     NSUserDefaults*     defaults    = [NSUserDefaults standardUserDefaults];
     NSURL*              uri         = [defaults URLForKey:@"rootItem"];
     NSManagedObjectID*  moid        = [appDelegate.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:uri];
@@ -76,8 +64,6 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
     BOOL            somethingToUpdate   = NO;
     VMAppDelegate*  appDelegate         = (VMAppDelegate *)[[UIApplication sharedApplication] delegate];
     NSArray*        sortedBlogs         = [self fetchPersistedBlog];
-
-    [self.updateContext reset];
     
     //Request data.
     NSString* urlString = [NSString stringWithFormat:@"%@/%@", kBaseURI, kCommunityRSSFeed];
@@ -117,8 +103,7 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
             {
                 do
                 {
-                    Blog* blog = [self createBlog:*itemElement];
-                    
+                    Blog*           blog            = [self createBlog:*itemElement];
                     NSString*       predicateFormat = @"link == %@";
                     NSArray*        existingBlog    = [sortedBlogs filteredArrayUsingPredicate: [NSPredicate predicateWithFormat:predicateFormat,
                                                                                                  blog.link]];
@@ -255,7 +240,6 @@ static const NSString* kCommunityRSSFeed    = @"rss.jsp";
     }
     
     return blogEntry;
-
 }
 
 @end
